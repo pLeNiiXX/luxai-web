@@ -1,0 +1,180 @@
+---
+import { routes, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; altPath: string; overlay?: boolean }
+const { lang, altPath, overlay = false } = Astro.props;
+const u = t(lang);
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const r = (k: keyof typeof routes) => routes[k][lang];
+/** 'page' en la página exacta; 'true' en la sección que la contiene (p. ej. Demostraciones dentro de una ficha) */
+const isCurrent = (href: string) => (path === href ? 'page' : href !== r('home') && path.startsWith(href) ? 'true' : undefined);
+
+const main = [
+  { href: r('demos'), label: u.nav.demos },
+  { href: r('how'), label: u.nav.how },
+  { href: r('pricing'), label: u.nav.pricing },
+  { href: r('agencies'), label: u.nav.agencies },
+  { href: r('rentals'), label: u.nav.rentals },
+];
+const groups = [
+  { title: u.menuGroups.service, links: [
+    { href: r('home'), label: u.links.home },
+    { href: r('demos'), label: u.links.demos },
+    { href: r('how'), label: u.links.how },
+    { href: r('pricing'), label: u.links.pricing },
+  ] },
+  { title: u.menuGroups.audience, links: [
+    { href: r('agencies'), label: u.links.agencies },
+    { href: r('rentals'), label: u.links.rentals },
+  ] },
+  { title: u.menuGroups.resources, links: [
+    { href: r('guides'), label: u.links.guides },
+    { href: r('faq'), label: u.links.faq },
+    { href: r('about'), label: u.links.about },
+    { href: r('contact'), label: u.links.contact },
+  ] },
+];
+const alt = u.langSwitch;
+---
+<header class="site-header" data-header data-overlay={overlay ? '' : undefined}>
+  <div class="wrap wrap--wide site-header__inner">
+    <a class="brand" href={r('home')} aria-label={u.homeAria}>
+      <img src="/brand/emblema.png" width="180" height="160" alt="" />
+      <span>Luxai</span>
+    </a>
+    <nav class="site-nav" aria-label={u.nav.main}>
+      <ul>
+        {main.map((l) => (
+          <li><a href={l.href} aria-current={isCurrent(l.href)}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <div class="header-right">
+      <a class="lang-switch" href={altPath} hreflang={alt.hreflang} lang={alt.hreflang} aria-label={`${alt.long} (${alt.short})`} title={alt.aria}>
+        <span class="lang-switch__short">{alt.short}</span><span class="lang-switch__long">{alt.long}</span>
+      </a>
+      <a class="header-cta" href={`${r('contact')}#demo`} data-open-demo-modal>{u.cta.demo}</a>
+      <button
+        class="menu-btn"
+        type="button"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label={u.nav.open}
+        data-label-open={u.nav.open}
+        data-label-close={u.nav.close}
+      ><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-menu" class="mobile-menu" inert data-lenis-prevent>
+  <div class="wrap mobile-menu__inner">
+    {groups.map((g) => (
+      <div class="mobile-menu__group">
+        <p class="small-caps muted">{g.title}</p>
+        <ul>
+          {g.links.map((l) => <li><a href={l.href} aria-current={isCurrent(l.href)}>{l.label}</a></li>)}
+        </ul>
+      </div>
+    ))}
+    <a class="btn btn--gold btn--block" href={`${r('contact')}#demo`} data-open-demo-modal>{u.cta.demo}</a>
+  </div>
+</div>
+
+<style>
+  .site-header {
+    position: fixed; inset: 0 0 auto; z-index: 60; padding-top: env(safe-area-inset-top);
+    transition: transform 0.4s var(--ease-drawer);
+  }
+  .site-header[data-hidden] { transform: translateY(-110%); }
+  .site-header::before {
+    content: ''; position: absolute; inset: 0; background: #0b0b0cf2; border-bottom: 1px solid var(--line);
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .site-header[data-overlay]::after {
+    content: ''; position: absolute; inset: 0 0 -40px; z-index: -1; pointer-events: none;
+    background: linear-gradient(#0b0b0cb3, #0b0b0c00); transition: opacity 0.3s ease;
+  }
+  /* con la barra ya sólida, el degradado sobrante (40 px por debajo) mancharía las secciones claras */
+  .site-header[data-solid]::after { opacity: 0; }
+  .site-header:not([data-overlay])::before, .site-header[data-solid]::before { opacity: 1; }
+  :global(html[data-menu-open]) .site-header::before { opacity: 1; }
+  .site-header__inner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 24px; height: var(--header-h); }
+
+  .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand img { width: 34px; height: auto; }
+  .brand span { font-family: var(--font-display); font-weight: 400; font-size: 1rem; letter-spacing: 0.42em; margin-right: -0.42em; text-transform: uppercase; }
+
+  .site-nav { display: none; }
+  .site-nav ul { display: flex; gap: clamp(18px, 2.4vw, 36px); }
+  .site-nav a {
+    position: relative; display: inline-block; padding-block: 10px;
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
+    color: var(--ink-soft); transition: color 0.2s ease;
+  }
+  .site-nav a::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 4px; height: 1px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.25s var(--ease-out);
+  }
+  .site-nav a[aria-current] { color: var(--ink); }
+  .site-nav a[aria-current]::after { transform: scaleX(1); }
+  @media (hover: hover) and (pointer: fine) {
+    .site-nav a:hover { color: var(--ink); }
+    .site-nav a:hover::after { transform: scaleX(1); }
+  }
+
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .lang-switch {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px;
+    font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none;
+    color: var(--muted); transition: color 0.2s ease;
+  }
+  .lang-switch__long { display: none; }
+  @media (hover: hover) and (pointer: fine) { .lang-switch:hover { color: var(--gold); } }
+  .header-cta {
+    display: none; align-items: center; min-height: 44px; padding: 0 20px; border: 1px solid var(--gold-soft);
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.16s var(--ease-out);
+  }
+  .header-cta:active { transform: scale(0.97); }
+  @media (hover: hover) and (pointer: fine) { .header-cta:hover { border-color: var(--gold); background: #c8a97e14; } }
+
+  .menu-btn {
+    position: relative; display: grid; place-items: center; width: 44px; height: 44px;
+    border: 0; background: transparent; cursor: pointer;
+  }
+  .menu-btn span {
+    position: absolute; left: 11px; right: 11px; height: 1px; background: var(--ink);
+    transition: transform 0.35s var(--ease-out);
+  }
+  .menu-btn span:first-child { transform: translateY(-4px); }
+  .menu-btn span:last-child { transform: translateY(4px); }
+  .menu-btn[aria-expanded='true'] span:first-child { transform: rotate(45deg); }
+  .menu-btn[aria-expanded='true'] span:last-child { transform: rotate(-45deg); }
+
+  @media (width >= 600px) { .header-cta { display: inline-flex; } }
+  @media (width >= 1280px) {
+    .site-nav { display: block; }
+    .menu-btn { display: none; }
+    .lang-switch__short { display: none; }
+    .lang-switch__long { display: inline; }
+  }
+
+  .mobile-menu {
+    position: fixed; inset: 0; z-index: 55; padding-top: calc(var(--header-h) + env(safe-area-inset-top));
+    background: var(--bg); overflow-y: auto;
+    opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+  }
+  :global(html[data-menu-open]) .mobile-menu { opacity: 1; visibility: visible; transition: opacity 0.3s ease; }
+  .mobile-menu__inner { display: grid; gap: 36px; padding-block: 32px 48px; }
+  .mobile-menu__group { display: grid; gap: 12px; }
+  .mobile-menu__group ul { display: grid; }
+  .mobile-menu__group a {
+    display: flex; align-items: center; min-height: 48px; text-decoration: none;
+    font-family: var(--font-display); font-weight: 300; font-size: clamp(1.0625rem, 0.9rem + 1.3vw, 1.375rem); letter-spacing: 0.1em; text-transform: uppercase; text-wrap: balance;
+  }
+  .mobile-menu__group a[aria-current] { color: var(--gold); }
+  @media (width >= 1280px) { .mobile-menu { display: none; } }
+</style>

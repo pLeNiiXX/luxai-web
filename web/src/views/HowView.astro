@@ -1,0 +1,244 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { routes, otherLang, abs, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import { faqNode } from '../lib/seo';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const u = t(lang);
+const r = (k: keyof typeof routes) => routes[k][lang];
+const path = r('how');
+const photoGuide = lang === 'es' ? '/guias/como-hacer-fotos-inmobiliarias/' : '/en/guides/real-estate-photos-for-video/';
+
+const c = {
+  es: {
+    title: 'Crear un vídeo inmobiliario con IA: el proceso | LUXAI',
+    description: 'De 5–15 fotos (mín. 1920×1080) a un vídeo de 20–30 s en 72 h: qué fotos enviar, qué hace la IA y qué revisamos, formatos 16:9 y 9:16 y revisiones.',
+    crumb: 'Cómo funciona',
+    eyebrow: 'Proceso',
+    h1: 'Cómo convertimos vuestras fotos en un vídeo inmobiliario con IA',
+    lede: 'Siete pasos entre vuestras fotos y un vídeo listo para publicar. Ninguno exige visitar la propiedad, volar un dron ni coordinar agendas.',
+    stepsTitle: 'Del envío a la entrega',
+    steps: [
+      { t: 'Nos enviáis las fotos', d: 'Entre 5 y 15 fotos actuales de la propiedad, por email o con un enlace de descarga. Si tenéis el anuncio publicado, nos basta con el enlace para valorar qué fotos sirven.' },
+      { t: 'Seleccionamos los planos', d: 'Elegimos las fotos que dan mejor movimiento y proponemos el orden del recorrido: llegada, exteriores, interiores, vistas.' },
+      { t: 'Retocamos luz, color y cielo', d: 'Corregimos exposición, balance de blancos y, si hace falta, el cielo. Nada más: en las fotos, la propiedad no se toca.' },
+      { t: 'Generamos el movimiento', d: 'La IA calcula la profundidad de cada foto y, con ella, mueve la cámara dentro de la imagen con paralaje real: avance, deslizamiento lateral o elevación. Cada plano sale de una sola foto; descartamos los que deforman líneas.' },
+      { t: 'Montamos con música', d: 'Unimos los planos en una pieza de 20–30 s con ritmo, transiciones y música. En los packs Profesional y Agencia, con vuestra marca.' },
+      { t: 'Entregamos', d: 'En 16:9 para portales y web y, según el pack, también en 9:16 para Reels, TikTok y Shorts. En 72 horas; en el pack Agencia, 5 días laborables.' },
+      { t: 'Revisamos con vosotros', d: 'Os enseñamos el vídeo antes de darlo por bueno y cambiamos cualquier plano que no represente la propiedad: una revisión en el pack Esencial, dos por vídeo en el Profesional y tres por vídeo en el Agencia.' },
+    ],
+    checklist: {
+      eyebrow: 'Antes de enviar',
+      title: 'Requisitos de las fotos',
+      lede: 'La calidad del vídeo depende de la foto de partida. Esta es la lista corta; en la guía la ampliamos con ejemplos.',
+      items: [
+        'Entre 5 y 15 fotos actuales de la propiedad.',
+        'Resolución mínima de 1920 × 1080 píxeles; mejor si es mayor.',
+        'En horizontal. Las verticales funcionan peor para el formato 16:9.',
+        'Variedad: llegada, fachada, exteriores, piscina, interiores principales y vistas.',
+        'Buena luz y verticales rectas. Mejor sin personas ni coches en primer plano.',
+        'Sin marcas de agua, collages ni textos sobre la imagen.',
+      ],
+      link: 'Cómo hacer fotos que sirvan para vídeo',
+    },
+    limits: {
+      eyebrow: 'Límites claros',
+      title: 'Lo que el proceso no hace',
+      items: [
+        { t: 'No es home staging', d: 'No amueblamos ni reformamos: cada plano sale de una foto tal como es.' },
+        { t: 'Sin foto elevada, sin plano aéreo', d: 'Un plano de estilo aéreo convincente necesita una foto tomada desde un punto alto. Si no la hay, os proponemos otros movimientos en lugar de recrearlo.' },
+        { t: 'No arregla una foto inservible', d: 'Mejoramos luz y color, pero una foto desenfocada o muy pequeña no da un buen plano. Os pediremos otra.' },
+      ],
+    },
+    times: {
+      eyebrow: 'Plazos',
+      items: [
+        { v: '< 24 h', l: 'para responder a vuestra solicitud' },
+        { v: '72 h', l: 'para la demo gratis y los packs Esencial y Profesional' },
+        { v: '5', s: 'días', l: 'laborables para las nueve piezas del pack Agencia' },
+        { v: '1–3', l: 'revisiones por vídeo según el pack' },
+      ],
+    },
+    faq: [
+      { q: '¿Cuánto tarda en estar el vídeo?', a: '72 horas desde que recibimos las fotos en los packs Esencial y Profesional, y 5 días laborables en el pack Agencia, que incluye nueve piezas.' },
+      { q: '¿Cuántas fotos necesito para un vídeo inmobiliario con IA?', a: 'Entre 5 y 15. Con cinco buenas fotos sale una pieza de 20–30 s; con más variedad de exteriores, interiores y vistas, tenemos más planos entre los que elegir.' },
+      { q: '¿Qué resolución mínima necesita la foto?', a: '1920 × 1080 píxeles. Por debajo, el movimiento de cámara deja ver la falta de detalle.' },
+      { q: '¿La IA corrige una foto mala?', a: 'Mejora la luz, el color y el cielo, pero no reconstruye lo que la foto no tiene. Si una foto está desenfocada o es muy pequeña, os pediremos otra antes que entregar un plano flojo.' },
+      { q: '¿Sirven fotos de una vivienda vacía o en obra?', a: 'Sí, si la foto es buena. No hacemos home staging: el vídeo enseña la vivienda tal como está en las fotos.' },
+      { q: '¿Funciona para obra nueva?', a: 'Para obra nueva terminada, sí: trabajamos con sus fotos como con cualquier otra propiedad. Para vivienda sobre plano, escribidnos: depende de las imágenes disponibles y de cómo vayáis a indicar que son recreaciones.' },
+      { q: '¿Tenemos que saber editar vídeo?', a: 'No. Nos enviáis las fotos y recibís el vídeo terminado, listo para publicar.' },
+    ],
+    links: [
+      { href: '', label: 'Ejemplos con las fotos originales', key: 'demos' },
+      { href: '', label: 'Packs, plazos y revisiones', key: 'pricing' },
+    ],
+    cta: { eyebrow: 'Primer paso', title: 'Empezad por una demo gratis', text: 'Enviadnos las fotos de un espacio y en 72 horas veis el resultado con vuestra propia propiedad.' },
+    howToName: 'Cómo convertir fotos de una propiedad en un vídeo inmobiliario con IA',
+  },
+  en: {
+    title: 'How We Turn Real Estate Photos into Video | LUXAI',
+    description: 'From 5–15 photos (min. 1920×1080) to a 20–30 s film in 72 hours: what to send, what the AI does and what we review, 16:9 and 9:16 delivery, revisions.',
+    crumb: 'How it works',
+    eyebrow: 'Process',
+    h1: 'How we turn your real estate photos into a film',
+    lede: 'Seven steps between your photos and a film ready to publish. None of them requires visiting the property, flying a drone or aligning diaries.',
+    stepsTitle: 'From upload to delivery',
+    steps: [
+      { t: 'You send the photos', d: 'Between 5 and 15 recent photos of the property, by email or via a download link. If the listing is live, the link is enough for us to judge which photos work.' },
+      { t: 'We select the shots', d: 'We choose the photos that give the best movement and propose the order of the walkthrough: arrival, exteriors, interiors, views.' },
+      { t: 'We retouch light, colour and sky', d: 'We correct exposure, white balance and, where needed, the sky. Nothing else: in the photos, the property itself is never touched.' },
+      { t: 'We generate the movement', d: 'The AI computes the depth of each photo and uses it to move the camera inside the image with real parallax: push-in, lateral glide or rise. Every shot comes from a single photo; we discard any that bend lines.' },
+      { t: 'We edit with music', d: 'We cut the shots into a 20–30 s piece with pacing, transitions and music. On the Professional and Agency packages, with your branding.' },
+      { t: 'We deliver', d: 'In 16:9 for portals and websites and, depending on the package, 9:16 for Reels, TikTok and Shorts. Within 72 hours; 5 business days for the Agency package.' },
+      { t: 'We revise with you', d: 'We show you the film before signing it off and change any shot that doesn’t represent the property: one revision on Essential, two per film on Professional and three per film on Agency.' },
+    ],
+    checklist: {
+      eyebrow: 'Before you send',
+      title: 'Photo requirements',
+      lede: 'The quality of the film depends on the source photo. This is the short list; the guide expands it with examples.',
+      items: [
+        'Between 5 and 15 recent photos of the property.',
+        'Minimum resolution of 1920 × 1080 pixels; higher is better.',
+        'Landscape orientation. Portrait photos work less well for 16:9.',
+        'Variety: arrival, façade, exteriors, pool, main interiors and views.',
+        'Good light and straight verticals. Ideally no people or cars in the foreground.',
+        'No watermarks, collages or text over the image.',
+      ],
+      link: 'Photos that work for video',
+    },
+    limits: {
+      eyebrow: 'Clear limits',
+      title: 'What the process doesn’t do',
+      items: [
+        { t: 'Not virtual staging', d: 'We don’t furnish or renovate: every shot comes from a photo exactly as it is.' },
+        { t: 'No high photo, no aerial shot', d: 'A convincing aerial-style shot needs a photo taken from a high point. If there isn’t one, we suggest other moves rather than recreating it.' },
+        { t: 'No rescuing an unusable photo', d: 'We improve light and colour, but an out-of-focus or tiny photo won’t make a good shot. We’ll ask you for another.' },
+      ],
+    },
+    times: {
+      eyebrow: 'Turnaround',
+      items: [
+        { v: '< 24 h', l: 'to reply to your request' },
+        { v: '72 h', l: 'for the free demo and the Essential and Professional packages' },
+        { v: '5', s: 'days', l: 'business days for the nine pieces of the Agency package' },
+        { v: '1–3', l: 'revisions per film depending on the package' },
+      ],
+    },
+    faq: [
+      { q: 'How long does the film take?', a: '72 hours from receiving your photos on the Essential and Professional packages, and 5 business days on the Agency package, which includes nine pieces.' },
+      { q: 'How many photos do you need for a property video?', a: 'Between 5 and 15. Five good photos make a 20–30 s piece; more variety of exteriors, interiors and views gives us more shots to choose from.' },
+      { q: 'What minimum resolution does a photo need?', a: '1920 × 1080 pixels. Below that, the camera movement exposes the lack of detail.' },
+      { q: 'Can the AI fix a bad photo?', a: 'It improves light, colour and sky, but it can’t rebuild what the photo doesn’t contain. If a photo is out of focus or very small, we’ll ask for another rather than deliver a weak shot.' },
+      { q: 'Do photos of an empty or unfinished home work?', a: 'Yes, if the photo is good. We don’t do virtual staging: the film shows the home exactly as it is in the photos.' },
+      { q: 'Does it work for new builds?', a: 'For finished new builds, yes: we work with their photos like any other property. For off-plan homes, get in touch: it depends on the images available and how you’ll disclose that they are renderings.' },
+      { q: 'Do we need to know how to edit video?', a: 'No. You send the photos and receive the finished film, ready to publish.' },
+    ],
+    links: [
+      { href: '', label: 'Examples with the original photos', key: 'demos' },
+      { href: '', label: 'Packages, turnaround and revisions', key: 'pricing' },
+    ],
+    cta: { eyebrow: 'First step', title: 'Start with a free demo', text: 'Send us the photos of one property and within 72 hours you’ll see the result with your own listing.' },
+    howToName: 'How to turn property photos into an AI real estate video',
+  },
+}[lang];
+
+const crumbs = [{ name: c.crumb, path }];
+const howTo = {
+  '@type': 'HowTo',
+  '@id': `${abs(path)}#howto`,
+  name: c.howToName,
+  totalTime: 'PT72H',
+  step: c.steps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.t, text: s.d })),
+};
+const schema = [howTo, faqNode(path, c.faq)];
+---
+<Base lang={lang} title={c.title} description={c.description} path={path} alt={routes.how[otherLang(lang)]} crumbs={crumbs} schema={schema}>
+  <PageHero lang={lang} crumbs={crumbs} eyebrow={c.eyebrow} title={c.h1} lede={c.lede} />
+
+  <section class="section section--light" aria-labelledby="steps-title">
+    <div class="wrap wrap--wide how">
+      <div class="how__aside">
+        <h2 id="steps-title" class="display title" data-reveal="lines">{c.stepsTitle}</h2>
+        <dl class="how__times" data-reveal="fade">
+          <dt class="eyebrow">{c.times.eyebrow}</dt>
+          {c.times.items.map((it) => (
+            <dd><span class="how__time-v num">{it.v}{it.s && <small> {it.s}</small>}</span><span class="how__time-l">{it.l}</span></dd>
+          ))}
+        </dl>
+      </div>
+      <ol class="how__steps">
+        {c.steps.map((s, i) => (
+          <li class="how__step" data-reveal="fade">
+            <span class="how__num num">{String(i + 1).padStart(2, '0')}</span>
+            <div><h3 class="how__step-title">{s.t}</h3><p>{s.d}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--raised" aria-labelledby="req-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.checklist.eyebrow} title={c.checklist.title} lede={c.checklist.lede} id="req-title">
+        <a class="link-quiet" href={photoGuide}>{c.checklist.link}<Icon name="arrow" /></a>
+      </SectionHead>
+      <ul class="req" data-reveal="stagger">
+        {c.checklist.items.map((it, i) => <li><span class="req__n num">{String(i + 1).padStart(2, '0')}</span>{it}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--light" aria-labelledby="limits-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.limits.eyebrow} title={c.limits.title} id="limits-title" stack />
+      <ul class="grid-3" data-reveal="stagger">
+        {c.limits.items.map((it) => <li class="card"><h3 class="card__title">{it.t}</h3><p>{it.d}</p></li>)}
+      </ul>
+      <nav class="related-links" aria-label={u.links.demos}>
+        {c.links.map((l) => <a class="link-quiet" href={r(l.key as 'demos' | 'pricing')}>{l.label}<Icon name="arrow" /></a>)}
+      </nav>
+    </div>
+  </section>
+
+  <section class="section section--raised" aria-labelledby="how-faq-title">
+    <div class="wrap wrap--wide faq-layout">
+      <SectionHead eyebrow={u.links.faq} title={lang === 'es' ? 'Dudas sobre el proceso' : 'Questions about the process'} id="how-faq-title" stack />
+      <FaqList items={c.faq} />
+    </div>
+  </section>
+
+  <CtaBand lang={lang} eyebrow={c.cta.eyebrow} title={c.cta.title} text={c.cta.text} secondary={{ href: r('pricing'), label: u.cta.seePricing }} />
+</Base>
+
+<style>
+  .how { display: grid; gap: 48px; }
+  @media (width >= 1000px) { .how { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 72px; align-items: start; } .how__aside { position: sticky; top: calc(var(--header-h) + 40px); } }
+  .how__aside { display: grid; gap: 40px; }
+  .how__times { display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .how__times dt { padding: 18px 0 8px; }
+  .how__times dd { display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--line); margin: 0; }
+  .how__time-v { font-family: var(--font-display); font-size: 1.375rem; letter-spacing: 0.04em; }
+  .how__time-v small { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+  .how__time-l { color: var(--muted); font-size: 0.9375rem; }
+  .how__steps { display: grid; border-top: 1px solid var(--line); }
+  .how__step { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 30px 0; border-bottom: 1px solid var(--line); }
+  .how__num { font-family: var(--font-display); font-weight: 300; font-size: 2rem; line-height: 1; color: var(--gold); }
+  .how__step-title { font-family: var(--font-display); font-weight: 400; font-size: 1.0625rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; }
+  .how__step p { color: var(--ink-soft); max-width: 62ch; }
+  .req { display: grid; gap: 0; border-top: 1px solid var(--line); }
+  @media (width >= 900px) { .req { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; } }
+  .req li { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 20px 0; border-bottom: 1px solid var(--line); color: var(--ink-soft); }
+  .req__n { font-family: var(--font-display); color: var(--gold); font-size: 0.8125rem; letter-spacing: 0.16em; padding-top: 3px; }
+  .related-links { display: flex; flex-wrap: wrap; gap: 8px 36px; margin-top: 40px; }
+  @media (width >= 1000px) {
+    .faq-layout { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; align-items: start; }
+    .faq-layout :global(.section-head) { position: sticky; top: calc(var(--header-h) + 32px); margin-bottom: 0; }
+  }
+</style>

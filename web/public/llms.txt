@@ -1,0 +1,35 @@
+# LUXAI Video
+
+> LUXAI Video (luxaivideo.com) es un estudio de vídeo inmobiliario con IA con base en Mallorca (España). Convierte las fotos reales de villas y propiedades de lujo en vídeos cinematográficos de estilo aéreo, sin rodaje, sin dron y sin permisos de vuelo. Cada plano sale de una sola foto: la IA calcula su profundidad y mueve la cámara dentro de ella, sin estancias, muebles ni vistas añadidas. Cada plano se revisa con el cliente antes de publicar y el vídeo se entrega listo para etiquetarlo como contenido hecho con IA. El retoque de las fotos se limita a luz, color y cielo. No tiene relación con LuxAI S.A. (robótica, Luxemburgo).
+
+Datos clave:
+- Entrada: entre 5 y 15 fotos actuales, mínimo 1920 × 1080 px.
+- Salida: vídeos de 20–30 s (y uno principal de 45–60 s en el pack Agencia), en 16:9 y 9:16 según el pack, en MP4.
+- Plazo: 72 h (Esencial y Profesional), 5 días laborables (Agencia). Demo gratis en 72 h. Respuesta en menos de 24 h.
+- Precios (IVA no incluido, precio de lanzamiento para los 10 primeros clientes): Esencial 129 € (1 vídeo), Profesional 379 € (4 vídeos, 95 €/vídeo), Agencia 649 € (8 vídeos + 1 principal, 81 €/vídeo).
+- Clientes: inmobiliarias de lujo y gestores de villas de alquiler vacacional en España e internacional.
+- Contacto: contacto@luxaivideo.com
+
+## Páginas principales (español)
+- [Vídeo inmobiliario con IA para villas de lujo](https://luxaivideo.com/): qué es el servicio, qué hace la IA y qué no
+- [Demostraciones](https://luxaivideo.com/demostraciones/): fotos originales junto al vídeo resultante
+- [Cómo funciona](https://luxaivideo.com/como-funciona/): proceso en 7 pasos y requisitos de las fotos
+- [Precios](https://luxaivideo.com/precios/): packs y comparativa con tarifas publicadas de vídeo con dron en España
+- [Vídeos para inmobiliarias de lujo](https://luxaivideo.com/video-para-inmobiliarias/)
+- [Vídeo para alquiler vacacional](https://luxaivideo.com/video-alquiler-vacacional/)
+- [Guías](https://luxaivideo.com/guias/): dron o IA, fotos, formatos y transparencia con la IA en anuncios
+- [Sobre LUXAI y política de transparencia con la IA](https://luxaivideo.com/sobre-luxai/)
+- [Preguntas frecuentes](https://luxaivideo.com/preguntas-frecuentes/)
+- [Pedir demo gratis](https://luxaivideo.com/contacto/)
+
+## Main pages (English)
+- [AI real estate video for luxury villas](https://luxaivideo.com/en/)
+- [Demos](https://luxaivideo.com/en/demos/)
+- [How it works](https://luxaivideo.com/en/how-it-works/)
+- [Pricing](https://luxaivideo.com/en/pricing/)
+- [For real estate agencies](https://luxaivideo.com/en/real-estate-agencies/)
+- [For luxury vacation rentals](https://luxaivideo.com/en/luxury-vacation-rentals/)
+- [Guides](https://luxaivideo.com/en/guides/)
+- [About LUXAI](https://luxaivideo.com/en/about/)
+- [FAQ](https://luxaivideo.com/en/faq/)
+- [Get a free demo](https://luxaivideo.com/en/contact/)

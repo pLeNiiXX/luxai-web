@@ -1,0 +1,230 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import VideoToggle from '../components/VideoToggle.astro';
+import PreviewSources from '../components/PreviewSources.astro';
+import heroImg from '../assets/demos/demo-02/photo-4.webp';
+import { DEMOS } from '../data/demos';
+import { routes, collectionBase, otherLang, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import { serviceNode, faqNode } from '../lib/seo';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const u = t(lang);
+const r = (k: keyof typeof routes) => routes[k][lang];
+const path = r('rentals');
+const finca = DEMOS.find((d) => d.key === 'finca-rustica')!;
+const fincaPath = `${collectionBase.demos[lang]}${finca.slug[lang]}/`;
+const formatsGuide = lang === 'es' ? '/guias/formatos-video-inmobiliario/' : '/en/guides/real-estate-video-formats/';
+
+const c = {
+  es: {
+    title: 'Vídeo para alquiler vacacional de lujo y villas | LUXAI',
+    description: 'Vídeos de vuestras villas de alquiler para la web de reservas directas, Instagram y campañas, hechos con las fotos que ya tenéis. Sin rodaje ni dron.',
+    crumb: 'Alquiler vacacional',
+    eyebrow: 'Para gestores de villas de alquiler',
+    h1: 'Vídeo para villas de alquiler vacacional de lujo',
+    lede: 'La villa está ocupada casi toda la temporada y rodarla significa bloquear fechas. Con las fotos que ya tenéis, el vídeo está en 72 horas y nadie tiene que pisar la casa.',
+    imgAlt: 'Piscina de piedra natural con tumbonas y cipreses, una de las fotos de la demo 02',
+    where: {
+      eyebrow: 'Dónde rinde el vídeo',
+      title: 'Los canales que son vuestros',
+      lede: 'El vídeo trabaja mejor donde controláis la presentación: vuestra web, vuestras redes y vuestras campañas.',
+      items: [
+        { t: 'Web de reservas directas', d: 'En la cabecera de la web y en la ficha de cada villa. Es donde el huésped decide si reserva sin intermediarios.' },
+        { t: 'Instagram y TikTok', d: 'La versión vertical 9:16 para Reels y TikTok, con vuestra marca y música (packs Profesional y Agencia).' },
+        { t: 'Campañas', d: 'Piezas de 20–30 s listas para anuncios en redes y buscadores, en horizontal y en vertical.' },
+        { t: 'Huéspedes que repiten', d: 'Un vídeo en el email de temporada a quien ya se alojó con vosotros recuerda mejor la villa que una foto.' },
+        { t: 'Captación de propietarios', d: 'Para quien gestiona villas de terceros: enseñad al propietario cómo presentaréis su casa antes de firmar.' },
+      ],
+    },
+    airbnb: {
+      eyebrow: 'Una duda frecuente',
+      title: '¿Y en Airbnb?',
+      text: 'La información se contradice. En la comunidad de Airbnb, varios anfitriones indican que el anuncio estándar no admite vídeo y que la plataforma solo lo pide para verificar el alojamiento; otras webs del sector afirman lo contrario. Antes de contar con Airbnb como canal, comprobadlo en vuestro panel de anfitrión. Nosotros no os vamos a prometer lo que no controlamos: el vídeo rinde seguro en vuestros canales propios.',
+      link: 'Hilo de la comunidad de Airbnb',
+      url: 'https://community.withairbnb.com/t5/Ayuda/Es-posible-publicar-un-video-en-mi-anuncio/td-p/147887',
+    },
+    license: {
+      title: 'Si el vídeo anuncia la villa, con su número de registro',
+      text: 'Los números de registro autonómicos siguen siendo obligatorios en la publicidad de viviendas turísticas, aunque el Supremo anulara en mayo de 2026 el registro estatal. Si usáis el vídeo como anuncio, incluid el número en el texto o en la propia pieza.',
+      sources: [
+        { l: 'Illes Balears · Ley 8/2012, art. 28', u: 'https://www.boe.es/eli/es-ib/l/2012/07/19/8/con' },
+        { l: 'Andalucía · Decreto 28/2016, art. 9.4', u: 'https://www.juntadeandalucia.es/export/drupaljda/Texto_consolidado_282016.pdf' },
+        { l: 'Comunitat Valenciana · Decreto-ley 9/2024', u: 'https://www.boe.es/buscar/doc.php?id=DOGV-r-2024-90168' },
+        { l: 'Canarias · Ley 6/2025', u: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26358' },
+      ],
+    },
+    demo: { eyebrow: 'Demo 02', title: 'Una finca en 24 segundos de vídeo', text: 'Cinco fotos de una finca de piedra entre olivos: jardines de lavanda, piscina y paso al salón con chimenea. Es el tipo de pieza que funciona en la cabecera de una web de reservas.' },
+    faq: [
+      { q: '¿Airbnb permite subir vídeos al anuncio?', a: 'Las fuentes se contradicen: en la comunidad de Airbnb se indica que el anuncio estándar no admite vídeo, y otras webs dicen que sí. Comprobadlo en vuestro panel antes de planificarlo. Donde el vídeo rinde con seguridad es en vuestra web, redes y campañas.' },
+      { q: '¿Cómo se promociona un alquiler vacacional con vídeo?', a: 'Con una pieza corta por villa en la web de reservas directas, la versión vertical en Instagram y TikTok, y la misma pieza en campañas y en el email de temporada a huéspedes que repiten.' },
+      { q: '¿Cuánto debe durar el vídeo de una villa?', a: 'Entre 20 y 30 segundos para redes, campañas y la ficha de cada villa. Para la cabecera de la web o la presentación a propietarios, el vídeo principal de 45–60 s del pack Agencia.' },
+      { q: '¿Tenemos que bloquear la villa?', a: 'No. Trabajamos con las fotos que ya tenéis: nadie va a la villa y los huéspedes no se enteran.' },
+      { q: '¿Y si las fotos son de otra temporada?', a: 'Sirven si reflejan la villa tal como está hoy. El retoque puede mejorar la luz y el cielo, pero no cambia la vegetación ni el mobiliario: si algo ha cambiado, mejor fotos nuevas.' },
+    ],
+    links: [
+      { href: '', key: 'finca', label: 'Una finca en 24 segundos de vídeo' },
+      { href: '', key: 'formats', label: 'Formatos para web, Instagram y TikTok' },
+      { href: '', key: 'pricing', label: 'Precio por vídeo según el pack' },
+    ],
+    cta: { eyebrow: 'Antes de la temporada', title: 'Tened el vídeo de la villa antes de que vuelvan las reservas', text: 'Enviadnos las fotos de una villa y en 72 horas tenéis una demo en vídeo, sin coste y sin bloquear fechas.' },
+  },
+  en: {
+    title: 'Vacation Rental Video for Luxury Villas | LUXAI',
+    description: 'Films of your rental villas for your direct-booking site, Instagram and ads, made from the photos you already have. No shoot, no drone, 72-hour delivery.',
+    crumb: 'Vacation rentals',
+    eyebrow: 'For luxury villa rental managers',
+    h1: 'Vacation rental video for luxury villas',
+    lede: 'The villa is booked most of the season and filming it means blocking dates. From the photos you already have, the film is ready in 72 hours and nobody sets foot in the house.',
+    imgAlt: 'Natural stone pool with loungers and cypress trees, one of the photos from demo 02',
+    where: {
+      eyebrow: 'Where video pays off',
+      title: 'The channels you own',
+      lede: 'Film works best where you control the presentation: your website, your social media and your campaigns.',
+      items: [
+        { t: 'Direct-booking website', d: 'At the top of your site and on each villa’s page. It’s where a guest decides to book without a middleman.' },
+        { t: 'Instagram and TikTok', d: 'The 9:16 vertical version for Reels and TikTok, with your branding and music (Professional and Agency packages).' },
+        { t: 'Campaigns', d: '20–30 s pieces ready for social and search ads, in landscape and vertical.' },
+        { t: 'Returning guests', d: 'A film in the seasonal email to people who have already stayed brings the villa back better than a photo.' },
+        { t: 'Winning new owners', d: 'If you manage villas for third parties: show the owner how you’ll present their home before they sign.' },
+      ],
+    },
+    airbnb: {
+      eyebrow: 'A frequent question',
+      title: 'What about Airbnb?',
+      text: 'The information is contradictory. In the Airbnb community, several hosts say standard listings don’t accept video and that the platform only asks for it to verify the property; other industry sites say the opposite. Before counting on Airbnb as a channel, check it in your host dashboard. We won’t promise what we don’t control: the film certainly pays off on your own channels.',
+      link: 'Airbnb community thread',
+      url: 'https://community.withairbnb.com/t5/Ayuda/Es-posible-publicar-un-video-en-mi-anuncio/td-p/147887',
+    },
+    license: {
+      title: 'If the film advertises the villa, include its registration number',
+      text: 'Regional tourist registration numbers are still mandatory in holiday-let advertising in Spain, even though the Supreme Court struck down the national register in May 2026. If you use the film as an ad, include the number in the copy or in the piece itself.',
+      sources: [
+        { l: 'Balearic Islands · Law 8/2012, art. 28', u: 'https://www.boe.es/eli/es-ib/l/2012/07/19/8/con' },
+        { l: 'Andalusia · Decree 28/2016, art. 9.4', u: 'https://www.juntadeandalucia.es/export/drupaljda/Texto_consolidado_282016.pdf' },
+        { l: 'Valencia region · Decree-Law 9/2024', u: 'https://www.boe.es/buscar/doc.php?id=DOGV-r-2024-90168' },
+        { l: 'Canary Islands · Law 6/2025', u: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26358' },
+      ],
+    },
+    demo: { eyebrow: 'Demo 02', title: 'A finca in 24 seconds of film', text: 'Five photos of a stone finca among olive trees: lavender gardens, the pool and the move into the living room with its fireplace. The kind of piece that works at the top of a booking site.' },
+    faq: [
+      { q: 'Can you add a video to an Airbnb listing?', a: 'Sources contradict each other: the Airbnb community says standard listings don’t accept video, while other sites say they do. Check it in your dashboard before planning around it. Where film certainly pays off is your website, social media and campaigns.' },
+      { q: 'How do you promote a vacation rental with video?', a: 'With a short piece per villa on your direct-booking site, the vertical version on Instagram and TikTok, and the same piece in campaigns and in the seasonal email to returning guests.' },
+      { q: 'How long should a villa film be?', a: 'Between 20 and 30 seconds for social media, campaigns and each villa’s page. For the top of your website or owner pitches, the 45–60 s hero film in the Agency package.' },
+      { q: 'Do we need to block the villa?', a: 'No. We work with the photos you already have: nobody visits the villa and guests won’t notice a thing.' },
+      { q: 'What if the photos are from another season?', a: 'They work if they show the villa as it is today. Retouching can improve light and sky, but it doesn’t change planting or furniture: if something has changed, new photos are better.' },
+    ],
+    links: [
+      { href: '', key: 'finca', label: 'A finca in 24 seconds of film' },
+      { href: '', key: 'formats', label: 'Formats for web, Instagram and TikTok' },
+      { href: '', key: 'pricing', label: 'Price per film by package' },
+    ],
+    cta: { eyebrow: 'Before the season', title: 'Have the villa’s film ready before bookings pick up', text: 'Send us the photos of one villa and within 72 hours you’ll have a demo film, free and without blocking any dates.' },
+  },
+}[lang];
+
+const hrefFor = (k: string) => (k === 'finca' ? fincaPath : k === 'formats' ? formatsGuide : r('pricing'));
+const crumbs = [{ name: c.crumb, path }];
+const schema = [serviceNode(lang, path), faqNode(path, c.faq)];
+---
+<Base lang={lang} title={c.title} description={c.description} path={path} alt={routes.rentals[otherLang(lang)]} crumbs={crumbs} schema={schema}>
+  <PageHero lang={lang} crumbs={crumbs} eyebrow={c.eyebrow} title={c.h1} lede={c.lede} split>
+    <a slot="actions" class="btn btn--gold" href={`${r('contact')}#demo`} data-open-demo-modal>{u.cta.demo}<Icon name="arrow" /></a>
+    <a slot="actions" class="link-quiet" href={fincaPath}>{u.cta.seeDemo}<Icon name="arrow" /></a>
+    <div slot="media" class="media-frame ratio-4x5 lp-media">
+      <Image src={heroImg} alt={c.imgAlt} widths={[480, 800, 1100]} sizes="(min-width: 1000px) 40vw, 100vw" quality={72} loading="eager" />
+    </div>
+  </PageHero>
+
+  <section class="section section--light" aria-labelledby="where-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.where.eyebrow} title={c.where.title} lede={c.where.lede} id="where-title" />
+      <ul class="where" data-reveal="stagger">
+        {c.where.items.map((it, i) => (
+          <li class="card"><span class="card__num num">{String(i + 1).padStart(2, '0')}</span><h3 class="card__title">{it.t}</h3><p>{it.d}</p></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--raised" aria-labelledby="demo2-title">
+    <div class="wrap wrap--wide rent-demo">
+      <div class="rent-demo__mediawrap">
+        <a class="media-frame ratio-16x9 rent-demo__media" href={fincaPath} style={`view-transition-name: ${finca.vt}`} aria-label={c.demo.title}>
+          <Image src={finca.poster} alt={finca.photos[0].alt[lang]} widths={[640, 960, 1440]} sizes="(min-width: 1000px) 60vw, 100vw" quality={70} loading="lazy" />
+          <video id="rent-vid" muted loop playsinline preload="none" data-inview aria-hidden="true">
+            <PreviewSources preview={finca.video.preview} />
+          </video>
+        </a>
+        <VideoToggle lang={lang} target="rent-vid" />
+      </div>
+      <div class="rent-demo__body">
+        <p class="eyebrow">{c.demo.eyebrow}</p>
+        <h2 id="demo2-title" class="display title" data-reveal="lines">{c.demo.title}</h2>
+        <p class="muted">{c.demo.text}</p>
+        <a class="link-quiet" href={fincaPath}>{u.cta.seeDemo}<Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--light" aria-labelledby="airbnb-title">
+    <div class="wrap wrap--wide airbnb">
+      <div>
+        <p class="eyebrow">{c.airbnb.eyebrow}</p>
+        <h2 id="airbnb-title" class="display title" data-reveal="lines">{c.airbnb.title}</h2>
+      </div>
+      <div class="airbnb__body" data-reveal="fade">
+        <p class="lede lede--ink">{c.airbnb.text}</p>
+        <a class="link-quiet" href={c.airbnb.url} target="_blank" rel="noopener">{c.airbnb.link}<Icon name="arrow" /></a>
+        <div class="note airbnb__license">
+          <h3 class="h-3">{c.license.title}</h3>
+          <p>{c.license.text}</p>
+          <ul class="airbnb__sources">{c.license.sources.map((s) => <li><a href={s.u} target="_blank" rel="noopener">{s.l}</a></li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--raised" aria-labelledby="rent-faq-title">
+    <div class="wrap wrap--wide faq-layout">
+      <SectionHead eyebrow={u.links.faq} title={lang === 'es' ? 'Lo que preguntan los gestores de villas' : 'What villa managers ask'} id="rent-faq-title" stack />
+      <div>
+        <FaqList items={c.faq} />
+        <nav class="related-links" aria-label={c.crumb}>
+          {c.links.map((l) => <a class="link-quiet" href={hrefFor(l.key)}>{l.label}<Icon name="arrow" /></a>)}
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand lang={lang} eyebrow={c.cta.eyebrow} title={c.cta.title} text={c.cta.text} secondary={{ href: r('pricing'), label: u.cta.seePricing }} />
+</Base>
+
+<style>
+  .lp-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .where { display: grid; gap: 14px; }
+  @media (width >= 760px) { .where { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (width >= 1100px) { .where { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .rent-demo { display: grid; gap: 32px; align-items: center; }
+  @media (width >= 1000px) { .rent-demo { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 56px; } }
+  .rent-demo__mediawrap { position: relative; }
+  .rent-demo__media { display: block; }
+  .rent-demo__media :global(img), .rent-demo__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .rent-demo__media video { opacity: 0; transition: opacity 0.8s var(--ease-out); }
+  .rent-demo__media video[data-playing] { opacity: 1; }
+  .rent-demo__body { display: grid; gap: 18px; justify-items: start; }
+  .airbnb { display: grid; gap: 32px; }
+  @media (width >= 1000px) { .airbnb { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; } }
+  .airbnb__body { display: grid; gap: 22px; justify-items: start; }
+  .airbnb__license { display: grid; gap: 12px; margin-top: 16px; }
+  .airbnb__sources { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 0.875rem; }
+  .airbnb__sources a { color: var(--ink-soft); }
+  .related-links { display: flex; flex-wrap: wrap; gap: 8px 36px; margin-top: 36px; }
+</style>

@@ -1,0 +1,204 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import PhotoToVideo from '../components/PhotoToVideo.astro';
+import DemoAccordion from '../components/DemoAccordion.astro';
+import SectionHead from '../components/SectionHead.astro';
+import PricingCards from '../components/PricingCards.astro';
+import FaqList from '../components/FaqList.astro';
+import GuideCards from '../components/GuideCards.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { home } from '../copy/home';
+import { DEMOS } from '../data/demos';
+import { routes, collectionBase, otherLang, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import { serviceNode, faqNode } from '../lib/seo';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = home[lang];
+const u = t(lang);
+const r = (k: keyof typeof routes) => routes[k][lang];
+const demo = DEMOS[0];
+const demoPath = `${collectionBase.demos[lang]}${demo.slug[lang]}/`;
+const path = r('home');
+// El VideoObject vive solo en las fichas de demo (watch pages); la home no es la página del vídeo.
+const schema = [serviceNode(lang, path), faqNode(path, c.faq.items)];
+---
+<Base lang={lang} title={c.meta.title} description={c.meta.description} path={path} alt={routes.home[otherLang(lang)]} schema={schema} overlayHeader>
+  <Hero
+    lang={lang}
+    eyebrow={c.hero.eyebrow}
+    title={c.hero.title}
+    lede={c.hero.lede}
+    primary={{ label: u.cta.demo, href: `${r('contact')}#demo`, modal: true }}
+    secondary={{ label: c.hero.secondary, href: r('demos') }}
+    facts={c.hero.facts}
+  />
+
+  <PhotoToVideo
+    lang={lang}
+    demo={demo}
+    eyebrow={c.p2v.eyebrow}
+    title={c.p2v.title}
+    lede={c.p2v.lede}
+    inLabel={c.p2v.inLabel}
+    outLabel={c.p2v.outLabel}
+    outDetail={`${c.p2v.outDetail} · ${demo.video.durationSec} s`}
+    link={{ href: demoPath, label: c.p2v.link }}
+  />
+
+  <section class="section section--light manifesto" aria-label={c.why.eyebrow}>
+    <div class="wrap wrap--wide">
+      <p class="manifesto__text" data-words>{c.manifesto}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="demos-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.demos.eyebrow} title={c.demos.title} lede={c.demos.lede} id="demos-title">
+        <a class="link-quiet" href={r('demos')}>{u.cta.seeDemos}<Icon name="arrow" /></a>
+      </SectionHead>
+      <DemoAccordion lang={lang} cta={c.demos.cta} />
+    </div>
+  </section>
+
+  <section class="section section--light" aria-labelledby="ai-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.ai.eyebrow} title={c.ai.title} lede={c.ai.lede} id="ai-title">
+        <a class="link-quiet" href={r('about')}>{c.ai.link}<Icon name="arrow" /></a>
+      </SectionHead>
+      <div class="ai-cols" data-reveal="stagger">
+        <div class="ai-col">
+          <h3 class="ai-col__title"><span class="ai-dot ai-dot--yes" aria-hidden="true"></span>{c.ai.does.title}</h3>
+          <ul class="check-list">{c.ai.does.items.map((it) => <li>{it}</li>)}</ul>
+        </div>
+        <div class="ai-col ai-col--never">
+          <h3 class="ai-col__title"><span class="ai-dot ai-dot--no" aria-hidden="true"></span>{c.ai.never.title}</h3>
+          <ul class="check-list">{c.ai.never.items.map((it) => <li>{it}</li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--raised" aria-labelledby="process-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.process.eyebrow} title={c.process.title} lede={c.process.lede} id="process-title">
+        <a class="link-quiet" href={r('how')}>{c.process.link}<Icon name="arrow" /></a>
+      </SectionHead>
+      <ol class="steps" data-reveal="stagger">
+        {c.process.steps.map((s, i) => (
+          <li class="step">
+            <span class="step__num num">0{i + 1}</span>
+            <h3 class="step__title">{s.title}</h3>
+            <p class="step__text">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--light" aria-labelledby="why-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.why.eyebrow} title={c.why.title} id="why-title" stack />
+      <ul class="reasons" data-reveal="stagger">
+        {c.why.items.map((it, i) => (
+          <li class="reason">
+            <span class="reason__num num">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="reason__title">{it.title}</h3>
+            <p>{it.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="audience-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.audience.eyebrow} title={c.audience.title} lede={c.audience.lede} id="audience-title" />
+      <ul class="grid-2" data-reveal="stagger">
+        {c.audience.cards.map((card, i) => (
+          <li class="audience-item">
+            <a class="card audience-card" href={r(card.key as 'agencies' | 'rentals')}>
+              <span class="card__num num">0{i + 1}</span>
+              <h3 class="card__title">{card.title}</h3>
+              <p>{card.text}</p>
+              <span class="link-quiet card__arrow">{u.cta.more}<Icon name="arrow" /></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--light" aria-labelledby="pricing-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.pricing.eyebrow} title={c.pricing.title} lede={c.pricing.lede} id="pricing-title">
+        <a class="link-quiet" href={r('pricing')}>{c.pricing.link}<Icon name="arrow" /></a>
+      </SectionHead>
+      <PricingCards lang={lang} />
+      <p class="price-note muted">{u.priceNote}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="guides-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.guides.eyebrow} title={c.guides.title} id="guides-title">
+        <a class="link-quiet" href={r('guides')}>{c.guides.link}<Icon name="arrow" /></a>
+      </SectionHead>
+      <GuideCards lang={lang} limit={3} />
+    </div>
+  </section>
+
+  <section class="section section--light" aria-labelledby="faq-title">
+    <div class="wrap wrap--wide faq-layout">
+      <SectionHead eyebrow={c.faq.eyebrow} title={c.faq.title} id="faq-title" stack>
+        <a class="link-quiet" href={r('faq')}>{c.faq.link}<Icon name="arrow" /></a>
+      </SectionHead>
+      <FaqList items={c.faq.items} />
+    </div>
+  </section>
+
+  <CtaBand lang={lang} eyebrow={c.cta.eyebrow} title={c.cta.title} text={c.cta.text} secondary={{ href: r('pricing'), label: c.cta.secondary }} />
+</Base>
+
+<style>
+  .manifesto { padding-block: clamp(120px, 16vw, 220px); }
+  .manifesto__text {
+    max-width: 30ch; font-family: var(--font-display); font-weight: 300; text-transform: uppercase;
+    font-size: clamp(1.5rem, 0.9rem + 2.6vw, 3.25rem); letter-spacing: 0.08em; line-height: 1.28; text-wrap: pretty;
+  }
+
+  .steps { display: grid; gap: 14px; }
+  @media (width >= 900px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .step { display: grid; gap: 14px; align-content: start; padding: clamp(28px, 3.4vw, 44px); background: var(--bg); border: 1px solid var(--line); }
+  .step__num { font-family: var(--font-display); font-weight: 300; font-size: 3rem; line-height: 1; color: var(--gold); letter-spacing: 0.04em; }
+  .step__title { font-family: var(--font-display); font-weight: 400; font-size: 1.125rem; letter-spacing: 0.16em; text-transform: uppercase; }
+  .step__text { color: var(--muted); }
+
+  .reasons { display: grid; gap: 0; border-top: 1px solid var(--line); }
+  @media (width >= 760px) { .reasons { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 5vw, 72px); } }
+  @media (width >= 1100px) { .reasons { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .reason { display: grid; grid-template-columns: 44px 1fr; gap: 6px 16px; align-content: start; padding-block: 28px 32px; border-bottom: 1px solid var(--line); }
+  .reason__num { grid-row: span 2; font-family: var(--font-display); font-size: 0.8125rem; letter-spacing: 0.2em; color: var(--gold); padding-top: 3px; }
+  .reason__title { font-family: var(--font-display); font-weight: 400; font-size: 1rem; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1.4; }
+  .reason p { color: var(--muted); }
+
+  .audience-item { display: grid; }
+  .ai-cols { display: grid; gap: 14px; }
+  @media (width >= 900px) { .ai-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .ai-col { display: grid; gap: 22px; align-content: start; padding: clamp(28px, 3.4vw, 44px); border: 1px solid var(--line); }
+  .ai-col--never { background: var(--bg-raised); }
+  .ai-col__title { display: flex; align-items: center; gap: 14px; font-family: var(--font-display); font-weight: 400; font-size: 1rem; letter-spacing: 0.18em; text-transform: uppercase; }
+  .ai-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .ai-dot--yes { background: var(--gold); }
+  .ai-dot--no { border: 1px solid var(--muted); }
+  .ai-col .check-list { color: var(--ink-soft); }
+  .audience-card { height: 100%; }
+  .price-note { margin-top: 20px; font-size: 0.875rem; }
+  @media (width >= 1000px) {
+    .faq-layout { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; align-items: start; }
+    .faq-layout :global(.section-head) { position: sticky; top: calc(var(--header-h) + 32px); margin-bottom: 0; }
+  }
+</style>

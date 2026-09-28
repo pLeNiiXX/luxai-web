@@ -1,0 +1,33 @@
+---
+import Icon from './Icon.astro';
+import { getGuides, guidePath } from '../lib/content';
+import type { Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; limit?: number; exclude?: string; keys?: string[] }
+const { lang, limit = 3, exclude, keys } = Astro.props;
+const u = t(lang);
+let guides = (await getGuides(lang)).filter((g) => g.data.key !== exclude);
+if (keys?.length) guides = keys.map((k) => guides.find((g) => g.data.key === k)).filter((g): g is NonNullable<typeof g> => Boolean(g));
+guides = guides.slice(0, limit);
+---
+{guides.length > 0 && (
+  <ul class="guide-cards grid-3" data-reveal="stagger">
+    {guides.map((g, i) => (
+      <li>
+        <a class="card guide-card" href={guidePath(g)}>
+          <span class="card__num num">{String(i + 1).padStart(2, '0')} · {g.data.readingMinutes} {u.guide.minutes}</span>
+          <h3 class="card__title">{g.data.title}</h3>
+          <p>{g.data.excerpt}</p>
+          <span class="link-quiet card__arrow">{u.cta.readGuide}<Icon name="arrow" /></span>
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .guide-cards > li { display: grid; }
+  .guide-card { height: 100%; }
+  .guide-card .card__title { font-size: 1rem; letter-spacing: 0.12em; }
+</style>

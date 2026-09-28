@@ -1,0 +1,28 @@
+---
+import { routes, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import type { Crumb } from '../lib/seo';
+
+interface Props { lang: Lang; crumbs: Crumb[] }
+const { lang, crumbs } = Astro.props;
+const u = t(lang);
+const all = [{ name: u.breadcrumbHome, path: routes.home[lang] }, ...crumbs];
+---
+<nav class="crumbs" aria-label={u.breadcrumbAria}>
+  <ol>
+    {all.map((c, i) => (
+      <li>
+        {i < all.length - 1 ? <a href={c.path}>{c.name}</a> : <span aria-current="page">{c.name}</span>}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 0; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .crumbs li { display: inline-flex; align-items: center; }
+  .crumbs li + li::before { content: '/'; margin-inline: 10px; opacity: 0.5; }
+  .crumbs a { display: inline-flex; align-items: center; min-height: 32px; text-decoration: none; transition: color 0.2s ease; }
+  .crumbs span[aria-current] { color: var(--ink-soft); }
+  @media (hover: hover) and (pointer: fine) { .crumbs a:hover { color: var(--ink); } }
+</style>

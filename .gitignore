@@ -1,0 +1,33 @@
+# dependencias, compilaciones y caché
+node_modules/
+web/dist/
+web/.astro/
+.vercel/
+vista-previa-vercel/
+
+# copias locales (la versión oscura está en la etiqueta git «estilo-oscuro»)
+versiones/
+
+# originales: solo las fotos de partida de las demos (las usa herramientas/demos)
+media-originales/*
+!media-originales/media/
+media-originales/media/*
+!media-originales/media/demos/
+media-originales/media/demos/*/*
+!media-originales/media/demos/*/photo-*.webp
+
+# salidas del proceso de demos (se regeneran); se conservan las dos comparativas de control
+herramientas/demos/work/*
+!herramientas/demos/work/qa/
+herramientas/demos/work/qa/*
+!herramientas/demos/work/qa/profundidad-base-nc-vs-small-apache.jpg
+!herramientas/demos/work/qa/fotos-vs-fotogramas.jpg
+
+# local
+.claude/
+.DS_Store
+*.log
+.env
+.env.*
+__pycache__/
+.venv/

@@ -1,0 +1,44 @@
+---
+import DemoForm from './DemoForm.astro';
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const u = t(lang).modal;
+---
+<dialog id="demo-modal" class="demo-modal" aria-labelledby="demo-modal-title" data-lenis-prevent>
+  <div class="demo-modal__panel">
+    <button type="button" class="demo-modal__close" data-modal-close aria-label={u.close}><Icon name="close" /></button>
+    <p class="eyebrow">{u.eyebrow}</p>
+    <h2 id="demo-modal-title" class="display demo-modal__title">{u.title}</h2>
+    <p class="demo-modal__text">{u.text}</p>
+    <DemoForm lang={lang} id="modal" />
+  </div>
+</dialog>
+
+<style>
+  .demo-modal {
+    width: min(560px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    margin: auto; padding: 0; border: 1px solid var(--line-strong);
+    background: var(--bg-raised); color: var(--ink);
+    overflow: auto; overscroll-behavior: contain;
+    opacity: 0; transform: translateY(16px) scale(0.98);
+    transition: opacity 0.24s var(--ease-out), transform 0.3s var(--ease-out);
+  }
+  .demo-modal[data-open] { opacity: 1; transform: none; }
+  .demo-modal::backdrop { background: #070708cc; backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.24s ease; }
+  .demo-modal[data-open]::backdrop { opacity: 1; }
+  .demo-modal__panel { position: relative; display: grid; gap: 18px; padding: clamp(28px, 5vw, 48px); }
+  .demo-modal__title { font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem); letter-spacing: 0.2em; }
+  .demo-modal__text { color: var(--muted); margin-bottom: 8px; }
+  .demo-modal__close {
+    position: absolute; top: 12px; right: 12px; display: grid; place-items: center;
+    width: 44px; height: 44px; border: 0; background: transparent; color: var(--muted); cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .demo-modal__close :global(svg) { width: 16px; height: 16px; }
+  @media (hover: hover) and (pointer: fine) { .demo-modal__close:hover { color: var(--ink); } }
+</style>

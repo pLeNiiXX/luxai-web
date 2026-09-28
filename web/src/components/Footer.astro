@@ -1,0 +1,87 @@
+---
+import { routes, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import { SITE } from '../data/site';
+import Icon from './Icon.astro';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const u = t(lang);
+const r = (k: keyof typeof routes) => routes[k][lang];
+const cols = [
+  { title: u.menuGroups.service, links: [
+    { href: r('home'), label: u.links.home },
+    { href: r('demos'), label: u.links.demos },
+    { href: r('how'), label: u.links.how },
+    { href: r('pricing'), label: u.links.pricing },
+  ] },
+  { title: u.menuGroups.audience, links: [
+    { href: r('agencies'), label: u.links.agencies },
+    { href: r('rentals'), label: u.links.rentals },
+    { href: r('contact'), label: u.links.contact },
+  ] },
+  { title: u.menuGroups.resources, links: [
+    { href: r('guides'), label: u.links.guides },
+    { href: r('faq'), label: u.links.faq },
+    { href: r('about'), label: u.links.about },
+  ] },
+];
+---
+<footer class="footer">
+  <div class="wrap wrap--wide">
+    <div class="footer__top">
+      <div class="footer__brand-col">
+        <a class="footer__brand" href={r('home')} aria-label={u.homeAria}>
+          <img src="/brand/emblema.png" width="180" height="160" alt="" loading="lazy" />
+          <span>Luxai</span>
+        </a>
+        <p class="footer__line">{u.footer.line}</p>
+        <div class="footer__contact">
+          <a class="link-quiet" href={`mailto:${SITE.email}`}><Icon name="mail" />{SITE.email}</a>
+          <a class="btn btn--gold" href={`${r('contact')}#demo`} data-open-demo-modal>{u.cta.demo}<Icon name="arrow" /></a>
+        </div>
+      </div>
+      <nav class="footer__cols" aria-label={u.menuGroups.resources}>
+        {cols.map((c) => (
+          <div class="footer__col">
+            <p class="small-caps footer__col-title">{c.title}</p>
+            <ul>{c.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__made">{u.footer.madeIn}</p>
+      <nav aria-label={u.footer.legal} class="footer__legal">
+        <a href={r('legal')}>{u.links.legal}</a>
+        <a href={r('privacy')}>{u.links.privacy}</a>
+        <a href={r('contact')}>{u.links.contact}</a>
+        <span class="num">{u.footer.rights}</span>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { border-top: 1px solid var(--line); padding-block: clamp(64px, 8vw, 104px) max(40px, env(safe-area-inset-bottom)); background: var(--bg-sunk); }
+  .footer__top { display: grid; gap: 56px; }
+  @media (width >= 960px) { .footer__top { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; } }
+  .footer__brand-col { display: grid; gap: 22px; align-content: start; }
+  .footer__brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+  .footer__brand img { width: 30px; height: auto; }
+  .footer__brand span { font-family: var(--font-display); font-size: 0.9375rem; letter-spacing: 0.42em; text-transform: uppercase; }
+  .footer__line { max-width: 38ch; color: var(--muted); }
+  .footer__contact { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
+  .footer__contact .link-quiet { text-transform: none; letter-spacing: 0.04em; font-size: 0.9375rem; }
+  .footer__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; }
+  @media (width >= 640px) { .footer__cols { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .footer__col { display: grid; gap: 14px; align-content: start; }
+  .footer__col-title { color: var(--gold); }
+  .footer__col ul { display: grid; gap: 2px; }
+  .footer__col a { display: inline-flex; align-items: center; min-height: 40px; color: var(--ink-soft); text-decoration: none; font-size: 0.9375rem; transition: color 0.2s ease; }
+  @media (hover: hover) and (pointer: fine) { .footer__col a:hover { color: var(--ink); } }
+  .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.875rem; }
+  .footer__legal { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; }
+  .footer__legal a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; transition: color 0.2s ease; }
+  @media (hover: hover) and (pointer: fine) { .footer__legal a:hover { color: var(--ink); } }
+</style>

@@ -1,0 +1,128 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { routes, otherLang, type Lang } from '../i18n/routes';
+import { faqNode } from '../lib/seo';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const r = (k: keyof typeof routes) => routes[k][lang];
+const path = r('faq');
+
+const c = {
+  es: {
+    title: 'Preguntas frecuentes: vídeo inmobiliario con IA | LUXAI',
+    description: 'Plazos, revisiones, derechos de uso, música, formatos y qué hace (y qué no) la IA con vuestras fotos. Lo que nos preguntan antes de encargar.',
+    crumb: 'Preguntas frecuentes',
+    eyebrow: 'Antes de encargar',
+    h1: 'Preguntas frecuentes',
+    lede: 'Las dudas de contratación y uso de los vídeos. Las preguntas sobre el proceso, los precios o cada tipo de cliente están en su página.',
+    groups: [
+      {
+        title: 'La demo y el encargo',
+        items: [
+          { q: '¿Cómo funciona la demo gratis?', a: 'Nos enviáis las fotos de uno de vuestros espacios y preparamos una muestra de vídeo sin coste ni compromiso en 72 horas, para que comprobéis el acabado antes de contratar.' },
+          { q: '¿Qué pasa si el resultado no nos convence?', a: 'Para eso están la demo gratis y las revisiones incluidas en cada pack: podéis ver el acabado con una propiedad vuestra antes de contratar y ajustar el vídeo después de la entrega.' },
+          { q: '¿Trabajáis con propiedades fuera de Mallorca?', a: 'Sí. Trabajamos en remoto con propiedades de toda España y del extranjero: solo necesitamos las fotos.' },
+          { q: '¿En qué idiomas trabajáis?', a: 'En español y en inglés.' },
+        ],
+      },
+      {
+        title: 'Revisiones y entrega',
+        items: [
+          { q: '¿Cuántas revisiones incluye cada pack?', a: 'Depende del pack: Esencial, 1 revisión; Profesional, 2 revisiones por vídeo; Agencia, 3 revisiones por vídeo.' },
+          { q: '¿Qué se puede cambiar en una revisión?', a: 'Cualquier ajuste sobre el vídeo entregado: el orden o la duración de los planos, la música o los rótulos. Si queréis cambiar las fotos de partida, habladlo con nosotros antes.' },
+          { q: '¿En qué formato entregáis?', a: 'En MP4, en horizontal 16:9 y, en los packs Profesional y Agencia, también en vertical 9:16 para Reels, TikTok y Shorts.' },
+          { q: '¿Podemos poner nuestra propia voz en off?', a: 'Los packs incluyen música, no locución. Si queréis voz en off, decídnoslo al hacer el encargo y lo valoramos.' },
+        ],
+      },
+      {
+        title: 'Derechos, música y privacidad',
+        items: [
+          { q: '¿Quién tiene los derechos del vídeo y dónde podemos usarlo?', a: 'Los derechos de uso se fijan en cada presupuesto o contrato de encargo, como recoge nuestro <a href="/aviso-legal/">aviso legal</a>. El uso previsto es promocionar la propiedad en vuestros canales: web, portales, redes y campañas.' },
+          { q: '¿La música se puede usar en anuncios de pago?', a: 'Si vais a usar el vídeo en campañas de pago, indicádnoslo al hacer el encargo para elegir música con licencia apta para publicidad.' },
+          { q: '¿Qué hacéis con nuestras fotos?', a: 'Las usamos para producir vuestro vídeo. No publicamos vuestras fotos ni vuestros vídeos como ejemplo sin vuestro permiso. Los datos de contacto se tratan según nuestra <a href="/privacidad/">política de privacidad</a>.' },
+          { q: '¿Tenemos que indicar que el vídeo está hecho con IA?', a: 'Es lo prudente: desde el 2 de agosto de 2026 el Reglamento europeo de IA exige transparencia con los contenidos generados o manipulados con IA. Lo explicamos, con fuentes, en <a href="/guias/ia-en-anuncios-inmobiliarios/">nuestra guía sobre IA en anuncios inmobiliarios</a>.' },
+        ],
+      },
+    ],
+    links: [
+      { key: 'pricing', label: 'Qué incluye cada pack' },
+      { key: 'how', label: 'El proceso paso a paso' },
+      { key: 'contact', label: 'Escribidnos si vuestra duda no está aquí' },
+    ],
+    cta: { eyebrow: '¿Otra duda?', title: 'Preguntadnos con una propiedad delante', text: 'Pedid la demo gratis y resolvemos lo que falte sobre un vídeo real de vuestra propiedad.' },
+  },
+  en: {
+    title: 'AI Real Estate Video FAQ | LUXAI',
+    description: 'Turnaround, revisions, usage rights, music, invoicing and what the AI does (and never does) with your photos: what clients ask before ordering.',
+    crumb: 'FAQ',
+    eyebrow: 'Before you order',
+    h1: 'Frequently asked questions',
+    lede: 'Questions about ordering and using the films. Questions about the process, pricing or each type of client live on their own pages.',
+    groups: [
+      {
+        title: 'The demo and the order',
+        items: [
+          { q: 'How does the free demo work?', a: 'Send us the photos of one of your properties and we’ll prepare a sample film within 72 hours, with no cost or commitment, so you can judge the finish before hiring us.' },
+          { q: 'What if we don’t like the result?', a: 'That’s what the free demo and the revisions in every package are for: you can see the finish on one of your own properties before hiring us, and adjust the film after delivery.' },
+          { q: 'Do you work with properties outside Mallorca?', a: 'Yes. We work remotely with properties all over Spain and abroad: all we need are the photos.' },
+          { q: 'Which languages do you work in?', a: 'Spanish and English.' },
+        ],
+      },
+      {
+        title: 'Revisions and delivery',
+        items: [
+          { q: 'How many revisions does each package include?', a: 'It depends on the package: Essential, 1 revision; Professional, 2 revisions per film; Agency, 3 revisions per film.' },
+          { q: 'What can be changed in a revision?', a: 'Any adjustment to the delivered film: the order or length of the shots, the music or the captions. If you want to change the source photos, talk to us first.' },
+          { q: 'What format do you deliver in?', a: 'MP4, in 16:9 landscape and, on the Professional and Agency packages, 9:16 vertical as well for Reels, TikTok and Shorts.' },
+          { q: 'Can we add our own voice-over?', a: 'The packages include music, not voice-over. If you’d like a voice-over, tell us when you order and we’ll look into it.' },
+        ],
+      },
+      {
+        title: 'Rights, music and privacy',
+        items: [
+          { q: 'Who owns the film and where can we use it?', a: 'Usage rights are set out in each quote or commission, as our <a href="/en/aviso-legal/">legal notice</a> states. The intended use is promoting the property on your channels: website, portals, social media and campaigns.' },
+          { q: 'Can the music be used in paid ads?', a: 'If you plan to use the film in paid campaigns, tell us when you order so we can choose music licensed for advertising.' },
+          { q: 'What do you do with our photos?', a: 'We use them to produce your film. We don’t publish your photos or films as examples without your permission. Contact details are handled under our <a href="/en/privacidad/">privacy policy</a>.' },
+          { q: 'Do we have to disclose that the film is AI-made?', a: 'It’s the prudent thing to do: since 2 August 2026 the EU AI Act requires transparency about AI-generated or manipulated content. We explain it, with sources, in <a href="/en/guides/ai-disclosure-real-estate-listings/">our guide to AI in property listings</a>.' },
+        ],
+      },
+    ],
+    links: [
+      { key: 'pricing', label: 'What each package includes' },
+      { key: 'how', label: 'The process step by step' },
+      { key: 'contact', label: 'Write to us if your question isn’t here' },
+    ],
+    cta: { eyebrow: 'Another question?', title: 'Ask us with a property in front of you', text: 'Request the free demo and we’ll answer anything else on a real film of your property.' },
+  },
+}[lang];
+
+const all = c.groups.flatMap((g) => g.items);
+const crumbs = [{ name: c.crumb, path }];
+---
+<Base lang={lang} title={c.title} description={c.description} path={path} alt={routes.faq[otherLang(lang)]} crumbs={crumbs} schema={[faqNode(path, all)]}>
+  <PageHero lang={lang} crumbs={crumbs} eyebrow={c.eyebrow} title={c.h1} lede={c.lede} />
+
+  {c.groups.map((g, i) => (
+    <section class:list={['section', 'section--tight', i % 2 === 0 ? 'section--light' : 'section--raised']}>
+      <div class="wrap wrap--wide faq-layout">
+        <header class="section-head section-head--stack"><h2 class="display title">{g.title}</h2></header>
+        <FaqList items={g.items} />
+      </div>
+    </section>
+  ))}
+
+  <section class="section section--tight">
+    <div class="wrap wrap--wide">
+      <nav class="related-links" aria-label={c.crumb}>
+        {c.links.map((l) => <a class="link-quiet" href={r(l.key as 'pricing' | 'how' | 'contact')}>{l.label}<Icon name="arrow" /></a>)}
+      </nav>
+    </div>
+  </section>
+
+  <CtaBand lang={lang} eyebrow={c.cta.eyebrow} title={c.cta.title} text={c.cta.text} />
+</Base>

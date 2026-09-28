@@ -1,0 +1,169 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import heroImg from '../assets/demos/demo-02/photo-2.webp';
+import { routes, otherLang, type Lang } from '../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const r = (k: keyof typeof routes) => routes[k][lang];
+const path = r('about');
+const aiGuide = lang === 'es' ? '/guias/ia-en-anuncios-inmobiliarios/' : '/en/guides/ai-disclosure-real-estate-listings/';
+
+const c = {
+  es: {
+    title: 'Sobre LUXAI: quién hace vuestros vídeos inmobiliarios',
+    description: 'Quién está detrás de LUXAI, desde dónde trabajamos (Mallorca) y cómo usamos la IA: vídeo a partir de vuestras fotos, revisado plano a plano y etiquetado.',
+    crumb: 'Sobre LUXAI',
+    eyebrow: 'LUXAI Video',
+    h1: 'Sobre LUXAI',
+    lede: 'LUXAI Video es un estudio de vídeo inmobiliario con IA con base en Mallorca. Hacemos una sola cosa: convertir las fotos reales de villas y propiedades de lujo en vídeos de estilo aéreo, sin rodaje ni dron.',
+    imgAlt: 'Vista aérea de una finca con piscina entre viñedos y olivos, de la demo 02',
+    story: {
+      eyebrow: 'Por qué existimos',
+      title: 'El vídeo que merece una villa, sin el rodaje que cuesta',
+      paragraphs: [
+        'Una villa de lujo se vende y se alquila por lo que se siente al llegar: el camino de entrada, la piscina, la luz sobre la fachada, las vistas. Eso se entiende mejor en movimiento que en una galería de fotos.',
+        'El problema es que rodar ese vídeo exige coordinar visitas, pedir permisos de vuelo, esperar al buen tiempo y pagar una jornada de producción. Por eso casi siempre se queda para la propiedad estrella.',
+        'Nosotros partimos de las fotos que ya existen. La IA genera el movimiento de cámara sobre cada una y nosotros hacemos lo que siempre ha hecho un estudio: elegir planos, montarlos con ritmo y cuidar que el resultado esté a la altura de la propiedad.',
+      ],
+    },
+    policy: {
+      eyebrow: 'Política de transparencia',
+      title: 'Seis compromisos sobre cómo usamos la IA',
+      lede: 'Los escribimos para que sepáis exactamente qué hace la IA, qué hacemos nosotros y qué os entregamos.',
+      items: [
+        { t: 'Cada plano, de una sola foto', d: 'La IA calcula la profundidad de cada foto y mueve la cámara dentro de ella. No generamos estancias, muebles ni vistas que no estén en vuestras fotos.' },
+        { t: 'Revisión antes de publicar', d: 'Os enseñamos el vídeo antes de darlo por bueno. Cualquier plano que no represente la propiedad tal como es se cambia con las revisiones del pack.' },
+        { t: 'Retoque limitado', d: 'En las fotos solo corregimos luz, color y cielo. Nunca acabados, metros, vistas ni mobiliario.' },
+        { t: 'Trazabilidad', d: 'Cada vídeo sale de fotos concretas que conservamos durante el encargo, para que podáis demostrar de dónde viene cada plano.' },
+        { t: 'Aviso listo para usar', d: 'Os proponemos un texto para acompañar el vídeo en el anuncio: «Vídeo generado con IA a partir de fotografías reales de la propiedad».' },
+        { t: 'Vuestro material es vuestro', d: 'No publicamos vuestras fotos ni vuestros vídeos como ejemplo sin vuestro permiso.' },
+      ],
+      guide: 'Qué dice la ley sobre la IA en anuncios',
+    },
+    facts: [
+      { v: 'Mallorca', l: 'base del estudio, en Illes Balears' },
+      { v: 'ES · EN', l: 'trabajamos en español y en inglés' },
+      { v: '72 h', l: 'de las fotos al vídeo' },
+    ],
+    note: 'No tenemos relación con LuxAI S.A., la empresa luxemburguesa de robótica con un nombre parecido.',
+    links: [
+      { key: 'demos', label: 'Nuestro trabajo' },
+      { key: 'contact', label: 'Hablad con nosotros' },
+    ],
+    cta: { eyebrow: 'Conocednos trabajando', title: 'La mejor presentación es una demo', text: 'Enviadnos las fotos de una propiedad y en 72 horas veis cómo trabajamos, sin coste.' },
+  },
+  en: {
+    title: 'About LUXAI: Who Makes Your Property Films',
+    description: 'Who is behind LUXAI, where we work from (Mallorca) and how we use AI: films made from your photos, reviewed shot by shot and clearly labelled.',
+    crumb: 'About',
+    eyebrow: 'LUXAI Video',
+    h1: 'About LUXAI',
+    lede: 'LUXAI Video is an AI real estate video studio based in Mallorca. We do one thing: turn the real photographs of villas and luxury homes into aerial-style films, with no shoot and no drone.',
+    imgAlt: 'Aerial view of an estate with a pool among vineyards and olive trees, from demo 02',
+    story: {
+      eyebrow: 'Why we exist',
+      title: 'The film a villa deserves, without the shoot it costs',
+      paragraphs: [
+        'A luxury villa sells and rents on how it feels to arrive: the drive, the pool, the light on the façade, the view. That comes across better in motion than in a photo gallery.',
+        'The trouble is that filming it means coordinating visits, applying for flight permits, waiting for good weather and paying for a production day. So it usually stays reserved for the flagship listing.',
+        'We start from photos that already exist. The AI generates the camera movement over each one, and we do what a studio has always done: choose the shots, cut them with rhythm and make sure the result lives up to the property.',
+      ],
+    },
+    policy: {
+      eyebrow: 'Transparency policy',
+      title: 'Six commitments on how we use AI',
+      lede: 'We wrote them down so you know exactly what the AI does, what we do and what you receive.',
+      items: [
+        { t: 'Every shot from a single photo', d: 'The AI computes the depth of each photo and moves the camera inside it. We don’t generate rooms, furniture or views that aren’t in your photos.' },
+        { t: 'Review before publishing', d: 'We show you the film before signing it off. Any shot that doesn’t represent the property as it is gets changed within the package’s revisions.' },
+        { t: 'Limited retouching', d: 'In the photos we only correct light, colour and sky. Never finishes, size, views or furniture.' },
+        { t: 'Traceability', d: 'Every film comes from specific photos that we keep for the duration of the commission, so you can show where each shot comes from.' },
+        { t: 'A ready-made disclosure', d: 'We suggest a line to accompany the film in your listing: “Video generated with AI from real photographs of the property.”' },
+        { t: 'Your material stays yours', d: 'We don’t publish your photos or films as examples without your permission.' },
+      ],
+      guide: 'What the law says about AI in listings',
+    },
+    facts: [
+      { v: 'Mallorca', l: 'where the studio is based, in the Balearic Islands' },
+      { v: 'ES · EN', l: 'we work in Spanish and English' },
+      { v: '72 h', l: 'from photos to film' },
+    ],
+    note: 'We are not affiliated with LuxAI S.A., the Luxembourg robotics company with a similar name.',
+    links: [
+      { key: 'demos', label: 'Our work' },
+      { key: 'contact', label: 'Talk to us' },
+    ],
+    cta: { eyebrow: 'See us at work', title: 'The best introduction is a demo', text: 'Send us the photos of one property and within 72 hours you’ll see how we work, free of charge.' },
+  },
+}[lang];
+
+const crumbs = [{ name: c.crumb, path }];
+---
+<Base lang={lang} title={c.title} description={c.description} path={path} alt={routes.about[otherLang(lang)]} crumbs={crumbs} pageType="AboutPage">
+  <PageHero lang={lang} crumbs={crumbs} eyebrow={c.eyebrow} title={c.h1} lede={c.lede} split>
+    <div slot="media" class="media-frame ratio-4x5 lp-media">
+      <Image src={heroImg} alt={c.imgAlt} widths={[480, 800, 1100]} sizes="(min-width: 1000px) 40vw, 100vw" quality={72} loading="eager" />
+    </div>
+  </PageHero>
+  <!-- [CONFIRMAR] Añadir aquí a la persona responsable: nombre, foto, trayectoria y perfiles (LinkedIn), y actualizar el schema Person. -->
+
+  <section class="section section--light" aria-labelledby="story-title">
+    <div class="wrap wrap--wide story">
+      <div>
+        <p class="eyebrow">{c.story.eyebrow}</p>
+        <h2 id="story-title" class="display title" data-reveal="lines">{c.story.title}</h2>
+      </div>
+      <div class="prose" data-reveal="fade">{c.story.paragraphs.map((p) => <p>{p}</p>)}</div>
+    </div>
+    <div class="wrap wrap--wide">
+      <dl class="facts about-facts">
+        {c.facts.map((f) => <div class="fact"><dt class="fact__label">{f.l}</dt><dd class="fact__value">{f.v}</dd></div>)}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section--raised" id="transparencia" aria-labelledby="policy-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.policy.eyebrow} title={c.policy.title} lede={c.policy.lede} id="policy-title">
+        <a class="link-quiet" href={aiGuide}>{c.policy.guide}<Icon name="arrow" /></a>
+      </SectionHead>
+      <ol class="policy" data-reveal="stagger">
+        {c.policy.items.map((it, i) => (
+          <li><span class="policy__n num">{String(i + 1).padStart(2, '0')}</span><div><h3 class="policy__t">{it.t}</h3><p>{it.d}</p></div></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--light section--tight">
+    <div class="wrap wrap--wide">
+      <p class="muted about-note">{c.note}</p>
+      <nav class="related-links" aria-label={c.crumb}>
+        {c.links.map((l) => <a class="link-quiet" href={r(l.key as 'demos' | 'contact')}>{l.label}<Icon name="arrow" /></a>)}
+      </nav>
+    </div>
+  </section>
+
+  <CtaBand lang={lang} eyebrow={c.cta.eyebrow} title={c.cta.title} text={c.cta.text} />
+</Base>
+
+<style>
+  .lp-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .story { display: grid; gap: 32px; margin-bottom: clamp(56px, 7vw, 96px); }
+  @media (width >= 1000px) { .story { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; } }
+  .about-facts { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  @media (width >= 760px) { .about-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .about-facts .fact__value { font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.5rem); letter-spacing: 0.12em; text-transform: uppercase; }
+  .policy { display: grid; border-top: 1px solid var(--line); }
+  .policy li { display: grid; grid-template-columns: 56px 1fr; gap: 18px; padding: 28px 0; border-bottom: 1px solid var(--line); }
+  .policy__n { font-family: var(--font-display); font-weight: 300; font-size: 1.75rem; line-height: 1; color: var(--gold); }
+  .policy__t { font-family: var(--font-display); font-weight: 400; font-size: 1.0625rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 8px; }
+  .policy p { color: var(--ink-soft); max-width: 70ch; }
+  .about-note { font-size: 0.9375rem; }
+</style>

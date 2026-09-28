@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+---
+<Base lang="es" title="Página no encontrada · LUXAI" description="La página que buscáis no existe o se ha movido." path="/404/" noindex>
+  <section class="nf">
+    <div class="wrap wrap--wide nf__inner">
+      <p class="eyebrow">Error 404</p>
+      <h1 class="h-1">Esta página no existe</h1>
+      <p class="lede">Puede que el enlace esté roto o que la página se haya movido. <span lang="en">This page doesn’t exist or has moved.</span></p>
+      <div class="actions">
+        <a class="btn btn--gold" href="/">Volver a la home<Icon name="arrow" /></a>
+        <a class="link-quiet" href="/demostraciones/">Ver demostraciones<Icon name="arrow" /></a>
+        <a class="link-quiet" href="/en/" lang="en">English version<Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { min-height: 80svh; display: grid; align-items: center; padding: calc(var(--header-h) + 64px) 0 96px; }
+  .nf__inner { display: grid; gap: 24px; justify-items: start; }
+</style>

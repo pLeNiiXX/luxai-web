@@ -1,0 +1,97 @@
+---
+import Icon from './Icon.astro';
+import { PACKS, packName, SITE, type Pack } from '../data/site';
+import { routes, type Lang } from '../i18n/routes';
+
+interface Props { lang: Lang; compact?: boolean }
+const { lang, compact = false } = Astro.props;
+
+const copy = {
+  es: {
+    pitch: { esencial: 'Para probar con una villa.', profesional: 'Web, portales y redes cubiertos.', agencia: 'Para carteras con varias propiedades.' },
+    recommended: 'Recomendado',
+    perVideo: (n: number) => `${n} € por vídeo`,
+    vat: 'IVA no incluido',
+    choose: (name: string) => `Elegir ${name}`,
+    features: (p: Pack) => [
+      `${p.videos} ${p.videos === 1 ? 'vídeo' : 'vídeos'} de ${SITE.clipLength}`,
+      ...(p.mainFilm ? [`1 vídeo principal de la propiedad de ${SITE.mainFilmLength}`] : []),
+      `${p.photos} fotos retocadas de regalo`,
+      ...(p.vertical ? ['Versión vertical para Reels y TikTok'] : []),
+      ...(p.musicBranding ? ['Música y branding de vuestra marca'] : []),
+      p.id === 'agencia' ? `Entrega prioritaria en ${p.deliveryDays.es}` : `Entrega en ${p.deliveryDays.es}`,
+      p.revisions === 1 ? '1 revisión' : `${p.revisions} revisiones por vídeo`,
+    ],
+  },
+  en: {
+    pitch: { esencial: 'Try it on one villa.', profesional: 'Website, portals and social covered.', agencia: 'For portfolios with several properties.' },
+    recommended: 'Recommended',
+    perVideo: (n: number) => `€${n} per video`,
+    vat: 'VAT not included',
+    choose: (name: string) => `Choose ${name}`,
+    features: (p: Pack) => [
+      `${p.videos} ${p.videos === 1 ? 'video' : 'videos'} of ${SITE.clipLength}`,
+      ...(p.mainFilm ? [`1 main property film of ${SITE.mainFilmLength}`] : []),
+      `${p.photos} retouched photos included`,
+      ...(p.vertical ? ['Vertical version for Reels and TikTok'] : []),
+      ...(p.musicBranding ? ['Music and your brand identity'] : []),
+      p.id === 'agencia' ? `Priority delivery in ${p.deliveryDays.en}` : `Delivery in ${p.deliveryDays.en}`,
+      p.revisions === 1 ? '1 revision' : `${p.revisions} revisions per video`,
+    ],
+  },
+}[lang];
+---
+<ul class:list={['packs', { 'packs--compact': compact }]} data-reveal="stagger">
+  {PACKS.map((p) => (
+    <li class:list={['pack', { 'pack--featured': p.featured }]}>
+      {p.featured && <span class="pack__badge small-caps">{copy.recommended}</span>}
+      <h3 class="pack__name">{packName[p.id][lang]}</h3>
+      <p class="pack__price num"><span class="pack__amount">{p.price}</span><span class="pack__currency">€</span></p>
+      <p class="pack__meta">{copy.vat}{p.perVideo && <><span aria-hidden="true"> · </span>{copy.perVideo(p.perVideo)}</>}</p>
+      <p class="pack__pitch">{copy.pitch[p.id]}</p>
+      {!compact && (
+        <ul class="pack__features">
+          {copy.features(p).map((f) => <li><Icon name="check" />{f}</li>)}
+        </ul>
+      )}
+      <a
+        class:list={['btn', { 'btn--gold': p.featured }, 'pack__cta']}
+        href={`${routes.contact[lang]}#demo`}
+        data-open-demo-modal
+        data-pack={packName[p.id][lang]}
+      >{copy.choose(packName[p.id][lang])}</a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .packs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  @media (width >= 900px) { .packs { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; } }
+  .pack {
+    position: relative; display: flex; flex-direction: column; gap: 14px;
+    padding: clamp(28px, 3vw, 40px); border: 1px solid var(--line); background: var(--bg-raised);
+  }
+  .pack--featured { border-color: var(--gold-soft); background: linear-gradient(180deg, #1b1815 0%, var(--bg-raised) 70%); }
+  /* sobre fondo blanco, el pack recomendado se invierte (tarjeta oscura) */
+  :global(.section--light) .pack--featured {
+    --ink: #f2ede4; --ink-soft: #f2ede4d1; --muted: #9a948a; --line: #f2ede41f; --line-strong: #f2ede438;
+    --gold: #c8a97e; --gold-soft: #c8a97e73;
+    background: #141312; border-color: #141312; color: var(--ink);
+  }
+  :global(.section--light) .pack--featured :global(.btn--gold) { --btn-bg: #c8a97e; --btn-ink: #0b0b0c; --btn-border: #c8a97e; }
+  @media (hover: hover) and (pointer: fine) {
+    :global(.section--light) .pack--featured :global(.btn--gold:hover) { --btn-bg: #d6bb93; --btn-border: #d6bb93; }
+  }
+  .pack__badge { position: absolute; top: -1px; right: -1px; padding: 8px 12px; background: var(--gold); color: #0b0b0c; }
+  .pack__name { font-family: var(--font-display); font-weight: 400; font-size: 1.125rem; letter-spacing: 0.24em; text-transform: uppercase; }
+  .pack__price { display: flex; align-items: flex-start; gap: 6px; margin-top: 6px; }
+  .pack__amount { font-family: var(--font-display); font-weight: 300; font-size: clamp(3rem, 2.4rem + 2vw, 4.25rem); line-height: 0.95; letter-spacing: 0.02em; }
+  .pack__currency { font-family: var(--font-display); font-size: 1.25rem; color: var(--gold); margin-top: 6px; }
+  .pack__meta { color: var(--muted); font-size: 0.875rem; }
+  .pack__pitch { color: var(--ink-soft); padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .pack__features { display: grid; gap: 12px; padding-top: 6px; font-size: 0.9688rem; }
+  .pack__features li { display: grid; grid-template-columns: 16px 1fr; gap: 12px; align-items: start; }
+  .pack__features :global(svg) { width: 14px; height: 14px; margin-top: 5px; color: var(--gold); }
+  .pack__cta { margin-top: auto; }
+  .packs--compact .pack__cta { margin-top: 8px; }
+</style>

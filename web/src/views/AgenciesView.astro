@@ -1,0 +1,164 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import heroImg from '../assets/demos/demo-01/photo-4.webp';
+import { routes, otherLang, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import { serviceNode, faqNode } from '../lib/seo';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const u = t(lang);
+const r = (k: keyof typeof routes) => routes[k][lang];
+const path = r('agencies');
+const formatsGuide = lang === 'es' ? '/guias/formatos-video-inmobiliario/' : '/en/guides/real-estate-video-formats/';
+
+const c = {
+  es: {
+    title: 'Vídeos para inmobiliarias de lujo: toda la cartera | LUXAI',
+    description: 'Un vídeo por inmueble sin mandar a nadie a grabar: 16:9 para portales y web, 9:16 para Reels, con vuestra marca. Pack Agencia: 8 vídeos + 1 principal.',
+    crumb: 'Para inmobiliarias',
+    eyebrow: 'Para inmobiliarias de lujo',
+    h1: 'Vídeos para inmobiliarias de lujo: cada propiedad de la cartera, en vídeo',
+    lede: 'El vídeo suele reservarse para la propiedad estrella porque rodar cuesta tiempo, dinero y agenda. Con las fotos que ya tenéis, cada inmueble de la cartera puede tener el suyo.',
+    imgAlt: 'Vista aérea de una villa contemporánea sobre el mar, una de las fotos de la demo 01',
+    blocks: {
+      eyebrow: 'Lo que cambia',
+      title: 'Vídeo con el ritmo de una agencia, no de una productora',
+      items: [
+        { t: 'Para captar la exclusiva', d: 'Llegad a la reunión con el propietario con un vídeo de su casa, hecho con las fotos que ya tenéis. Es otra forma de enseñarle cómo vais a presentar su propiedad.' },
+        { t: 'Toda la cartera, no solo la estrella', d: 'El pack Agencia cubre ocho propiedades y un vídeo principal de 45–60 s, a 81 € por vídeo. El vídeo deja de ser una excepción.' },
+        { t: 'Con vuestra marca', d: 'Música y branding de la agencia en cada pieza (packs Profesional y Agencia). Cada vídeo se reconoce como vuestro, publique quien lo publique.' },
+        { t: 'Plazos de portal', d: 'En 72 horas tenéis el vídeo, mientras el anuncio todavía es nuevo. En el pack Agencia, cinco días laborables para las nueve piezas.' },
+        { t: 'Sin coordinar visitas', d: 'Nadie tiene que ir a la propiedad: ni molestar al propietario ni cuadrar agendas con el fotógrafo o el piloto de dron.' },
+        { t: 'Un formato por canal', d: 'Horizontal 16:9 para portales y la ficha de vuestra web; vertical 9:16 para Reels, TikTok y Shorts.' },
+      ],
+    },
+    flow: {
+      eyebrow: 'Cómo trabajamos con una agencia',
+      title: 'Un lote de fotos por propiedad, un vídeo por propiedad',
+      steps: [
+        'Nos enviáis una carpeta por propiedad, con entre 5 y 15 fotos y su referencia interna.',
+        'Os proponemos el orden de los planos de cada una y os avisamos si alguna foto no da la calidad.',
+        'Recibís cada vídeo nombrado con vuestra referencia, en 16:9 y 9:16, listo para subir.',
+        'Revisamos lo que haga falta: hasta tres revisiones por vídeo en el pack Agencia.',
+      ],
+    },
+    faq: [
+      { q: '¿Los anuncios con vídeo salen más arriba en idealista?', a: 'No conocemos datos públicos de idealista que lo demuestren, así que no lo prometemos. Lo que el vídeo sí hace es enseñar la propiedad de otra manera a quien ya está en el anuncio y daros material para redes y campañas.' },
+      { q: '¿Sirven para portales internacionales?', a: 'El 16:9 es el formato estándar para vídeo en portales y en la ficha de vuestra web. Cada portal admite el vídeo a su manera (subida directa o enlace a YouTube): lo detallamos en la guía de formatos.' },
+      { q: '¿Los reels ayudan a conseguir contactos?', a: 'Un reel no sustituye al anuncio, pero pone la propiedad delante de gente que no está buscando en portales. Por eso los packs Profesional y Agencia incluyen la versión vertical 9:16.' },
+      { q: '¿Qué conviene publicar en los reels de la agencia?', a: 'Lo que no cabe en una foto: la llegada a la propiedad, el plano de la piscina o de las vistas, el paso del exterior al salón. Una pieza de 20–30 s por propiedad funciona mejor que un montaje largo.' },
+      { q: '¿Podemos poner nuestra marca y nuestra música?', a: 'Sí, en los packs Profesional y Agencia: música y branding de vuestra marca en cada vídeo.' },
+    ],
+    links: [
+      { key: 'pricing', label: 'Pack Agencia: 8 vídeos y uno principal de 45–60 s' },
+      { key: 'formats', label: 'Formatos para idealista, Fotocasa y Reels' },
+      { key: 'demos', label: 'Ejemplos: fotos de partida y vídeo final' },
+    ],
+    cta: { eyebrow: 'Para vuestra cartera', title: 'Probadlo con una de vuestras propiedades', text: 'Elegid la que peor luce en el portal. Enviadnos sus fotos y en 72 horas tenéis una demo en vídeo, sin coste.' },
+  },
+  en: {
+    title: 'Luxury Real Estate Video Production for Agencies | LUXAI',
+    description: 'A film for every listing without sending anyone to shoot: 16:9 for portals and web, 9:16 for Reels, in your branding. Agency pack: 8 videos + 1 hero film.',
+    crumb: 'For agencies',
+    eyebrow: 'For luxury real estate agencies',
+    h1: 'Luxury real estate video production for agencies',
+    lede: 'Video tends to be reserved for the flagship listing because filming costs time, money and scheduling. With the photos you already have, every property in your portfolio can have its own film.',
+    imgAlt: 'Aerial view of a contemporary villa above the sea, one of the photos from demo 01',
+    blocks: {
+      eyebrow: 'What changes',
+      title: 'Video at the pace of an agency, not a production company',
+      items: [
+        { t: 'To win the instruction', d: 'Walk into the valuation meeting with a film of the owner’s home, made from the photos you already have. It shows them how you’ll present their property.' },
+        { t: 'The whole portfolio, not just the flagship', d: 'The Agency package covers eight properties plus a 45–60 s hero film, at €81 per film. Video stops being the exception.' },
+        { t: 'In your branding', d: 'Your music and branding on every piece (Professional and Agency packages). Every film is recognisably yours, whoever shares it.' },
+        { t: 'Portal timings', d: 'You have the film within 72 hours, while the listing is still fresh. On the Agency package, five business days for all nine pieces.' },
+        { t: 'No visits to coordinate', d: 'Nobody needs to go to the property: no disturbing the owner, no aligning diaries with a photographer or drone pilot.' },
+        { t: 'A format for each channel', d: '16:9 landscape for portals and your property pages; 9:16 vertical for Reels, TikTok and Shorts.' },
+      ],
+    },
+    flow: {
+      eyebrow: 'How we work with an agency',
+      title: 'One set of photos per property, one film per property',
+      steps: [
+        'You send one folder per property, with 5 to 15 photos and your internal reference.',
+        'We propose the shot order for each one and flag any photo that won’t hold up.',
+        'You receive every film named with your reference, in 16:9 and 9:16, ready to upload.',
+        'We revise as needed: up to three revisions per film on the Agency package.',
+      ],
+    },
+    faq: [
+      { q: 'Do listings with video rank higher on portals?', a: 'We don’t know of any public data from the portals that proves it, so we won’t promise it. What a film does is show the property differently to people already on the listing, and give you material for social media and campaigns.' },
+      { q: 'Do the films work on international portals?', a: '16:9 is the standard format for video on portals and on your own property pages. Each portal handles video its own way (direct upload or a YouTube link): our formats guide covers the details.' },
+      { q: 'Do Reels actually help agents get leads?', a: 'A Reel doesn’t replace the listing, but it puts the property in front of people who aren’t searching portals. That’s why the Professional and Agency packages include a 9:16 vertical version.' },
+      { q: 'What should an agency post as Reels?', a: 'What a photo can’t show: the arrival at the property, the pool or the view, the move from outside to the living room. One 20–30 s piece per property works better than a long montage.' },
+      { q: 'Can the films carry our branding and music?', a: 'Yes, on the Professional and Agency packages: your music and branding on every film.' },
+    ],
+    links: [
+      { key: 'pricing', label: 'Agency pack: 8 films plus a 45–60 s hero film' },
+      { key: 'formats', label: 'Formats for Idealista, Rightmove, Kyero and Reels' },
+      { key: 'demos', label: 'Examples: source photos and finished film' },
+    ],
+    cta: { eyebrow: 'For your portfolio', title: 'Try it on one of your listings', text: 'Pick the one that looks weakest on the portal. Send us its photos and within 72 hours you’ll have a demo film, free of charge.' },
+  },
+}[lang];
+
+const hrefFor = (k: string) => (k === 'formats' ? formatsGuide : r(k as 'pricing' | 'demos'));
+const crumbs = [{ name: c.crumb, path }];
+const schema = [serviceNode(lang, path), faqNode(path, c.faq)];
+---
+<Base lang={lang} title={c.title} description={c.description} path={path} alt={routes.agencies[otherLang(lang)]} crumbs={crumbs} schema={schema}>
+  <PageHero lang={lang} crumbs={crumbs} eyebrow={c.eyebrow} title={c.h1} lede={c.lede} split>
+    <a slot="actions" class="btn btn--gold" href={`${r('contact')}#demo`} data-open-demo-modal>{u.cta.demo}<Icon name="arrow" /></a>
+    <a slot="actions" class="link-quiet" href={r('pricing')}>{u.cta.seePricing}<Icon name="arrow" /></a>
+    <div slot="media" class="media-frame ratio-4x5 lp-media">
+      <Image src={heroImg} alt={c.imgAlt} widths={[480, 800, 1100]} sizes="(min-width: 1000px) 40vw, 100vw" quality={72} loading="eager" />
+    </div>
+  </PageHero>
+
+  <section class="section section--light" aria-labelledby="blocks-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.blocks.eyebrow} title={c.blocks.title} id="blocks-title" stack />
+      <ul class="grid-3" data-reveal="stagger">
+        {c.blocks.items.map((it, i) => (
+          <li class="card"><span class="card__num num">{String(i + 1).padStart(2, '0')}</span><h3 class="card__title">{it.t}</h3><p>{it.d}</p></li>
+        ))}
+      </ul>
+      <nav class="related-links" aria-label={c.crumb}>
+        {c.links.map((l) => <a class="link-quiet" href={hrefFor(l.key)}>{l.label}<Icon name="arrow" /></a>)}
+      </nav>
+    </div>
+  </section>
+
+  <section class="section section--raised" aria-labelledby="flow-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.flow.eyebrow} title={c.flow.title} id="flow-title" stack />
+      <ol class="flow" data-reveal="stagger">
+        {c.flow.steps.map((s, i) => <li><span class="flow__n num">{String(i + 1).padStart(2, '0')}</span><p>{s}</p></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--light" aria-labelledby="ag-faq-title">
+    <div class="wrap wrap--wide faq-layout">
+      <SectionHead eyebrow={u.links.faq} title={lang === 'es' ? 'Lo que preguntan las agencias' : 'What agencies ask'} id="ag-faq-title" stack />
+      <FaqList items={c.faq} />
+    </div>
+  </section>
+
+  <CtaBand lang={lang} eyebrow={c.cta.eyebrow} title={c.cta.title} text={c.cta.text} secondary={{ href: r('demos'), label: u.cta.seeDemos }} />
+</Base>
+
+<style>
+  .lp-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .flow { display: grid; gap: 14px; }
+  @media (width >= 900px) { .flow { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .flow li { display: grid; gap: 14px; align-content: start; padding: 28px; border: 1px solid var(--line); background: var(--bg); color: var(--ink-soft); }
+  .flow__n { font-family: var(--font-display); font-weight: 300; font-size: 2rem; color: var(--gold); line-height: 1; }
+</style>

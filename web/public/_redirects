@@ -1,0 +1,3 @@
+# Cloudflare Pages
+/sitemap.xml    /sitemap-index.xml   301
+/sitemap-0.xml  /sitemap-pages.xml   301

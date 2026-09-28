@@ -1,0 +1,112 @@
+---
+import '@fontsource-variable/jost';
+import '@fontsource-variable/hanken-grotesk';
+import '../styles/global.css';
+import jostLatin from '@fontsource-variable/jost/files/jost-latin-wght-normal.woff2?url';
+import hankenLatin from '@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import DemoModal from '../components/DemoModal.astro';
+import { abs, routes, otherLang, ogLocale, htmlLang, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import { baseGraph, webPageNode, breadcrumbNode, type Crumb } from '../lib/seo';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Ruta canónica con barra final */
+  path: string;
+  /** Ruta equivalente en el otro idioma (si no existe, el conmutador lleva a la home del otro idioma y no se emite hreflang) */
+  alt?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article';
+  pageType?: string;
+  schema?: Record<string, unknown>[];
+  /** Migas para el schema (la primera siempre es Inicio) */
+  crumbs?: Crumb[];
+  noindex?: boolean;
+  overlayHeader?: boolean;
+  /** Imágenes/pósteres a precargar (candidatos a LCP) */
+  preload?: { href: string; media?: string; imagesrcset?: string; imagesizes?: string }[];
+}
+
+const {
+  lang, title, description, path, alt, ogImage = '/og-image.jpg', ogImageAlt,
+  ogType = 'website', pageType = 'WebPage', schema = [], crumbs, noindex = false, overlayHeader = false, preload = [],
+} = Astro.props;
+
+const u = t(lang);
+const other = otherLang(lang);
+const canonical = abs(path);
+const esPath = lang === 'es' ? path : alt;
+const enPath = lang === 'en' ? path : alt;
+const hasAlt = Boolean(alt);
+const switchHref = alt ?? routes.home[other];
+const ogImg = ogImage.startsWith('http') ? ogImage : abs(ogImage);
+
+const fullCrumbs: Crumb[] | undefined = crumbs ? [{ name: u.breadcrumbHome, path: routes.home[lang] }, ...crumbs] : undefined;
+const graph = [
+  ...baseGraph(lang),
+  webPageNode({ path, name: title, description, lang, type: pageType, image: ogImage, hasBreadcrumb: Boolean(fullCrumbs) }),
+  ...(fullCrumbs ? [breadcrumbNode(path, fullCrumbs)] : []),
+  ...schema,
+];
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+---
+<!doctype html>
+<html lang={htmlLang[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {!noindex && hasAlt && esPath && <link rel="alternate" hreflang="es" href={abs(esPath)} />}
+    {!noindex && hasAlt && enPath && <link rel="alternate" hreflang="en" href={abs(enPath)} />}
+    {!noindex && hasAlt && esPath && <link rel="alternate" hreflang="x-default" href={abs(esPath)} />}
+    <meta name="theme-color" content="#0b0b0c" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href={jostLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={hankenLatin} as="font" type="font/woff2" crossorigin />
+    {preload.map((p) => <link rel="preload" as="image" href={p.href} media={p.media} imagesrcset={p.imagesrcset} imagesizes={p.imagesizes} fetchpriority="high" />)}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="LUXAI" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    {hasAlt && <meta property="og:locale:alternate" content={ogLocale[other]} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImg} />
+    <meta property="og:image:alt" content={ogImageAlt ?? title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImg} />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    {!noindex && <script type="application/ld+json" set:html={jsonLd} />}
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">{u.skip}</a>
+    <Header lang={lang} altPath={switchHref} overlay={overlayHeader} />
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <DemoModal lang={lang} />
+    <script>
+      import '../scripts/site.ts';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  main:focus { outline: none; }
+</style>

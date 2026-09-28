@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { routes, otherLang, type Lang } from '../i18n/routes';
+import esAviso from '../legal/es-aviso.html?raw';
+import esPriv from '../legal/es-privacidad.html?raw';
+import enAviso from '../legal/en-aviso.html?raw';
+import enPriv from '../legal/en-privacidad.html?raw';
+
+interface Props { lang: Lang; doc: 'legal' | 'privacy' }
+const { lang, doc } = Astro.props;
+const path = routes[doc][lang];
+const meta = {
+  legal: {
+    es: { title: 'Aviso legal | LUXAI', h1: 'Aviso legal', description: 'Datos del titular de luxaivideo.com, condiciones de uso del sitio, propiedad intelectual y legislación aplicable.' },
+    en: { title: 'Legal Notice | LUXAI', h1: 'Legal notice', description: 'Details of the owner of luxaivideo.com, terms of use of the site, intellectual property and applicable law.' },
+  },
+  privacy: {
+    es: { title: 'Política de privacidad | LUXAI', h1: 'Política de privacidad', description: 'Qué datos recogemos en el formulario de demo, para qué los usamos, cuánto tiempo los guardamos y cómo ejercer vuestros derechos.' },
+    en: { title: 'Privacy Policy | LUXAI', h1: 'Privacy policy', description: 'What data the demo form collects, what we use it for, how long we keep it and how to exercise your rights.' },
+  },
+}[doc][lang];
+const html = { legal: { es: esAviso, en: enAviso }, privacy: { es: esPriv, en: enPriv } }[doc][lang];
+const crumbs = [{ name: meta.h1, path }];
+---
+<Base lang={lang} title={meta.title} description={meta.description} path={path} alt={routes[doc][otherLang(lang)]} crumbs={crumbs}>
+  <article>
+    <header class="legal__head">
+      <div class="wrap wrap--narrow legal__inner">
+        <Breadcrumbs lang={lang} crumbs={crumbs} />
+        <h1 class="h-1">{meta.h1}</h1>
+      </div>
+    </header>
+    <div class="section--light legal__body">
+      <div class="wrap wrap--narrow">
+        <div class="prose" set:html={html} />
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal__head { padding: calc(var(--header-h) + clamp(40px, 6vw, 80px)) 0 clamp(36px, 5vw, 64px); border-bottom: 1px solid var(--line); }
+  .legal__inner { display: grid; gap: 32px; }
+  .legal__body { padding-block: clamp(48px, 6vw, 88px) clamp(80px, 10vw, 140px); }
+</style>

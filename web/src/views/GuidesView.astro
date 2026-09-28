@@ -1,0 +1,98 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { routes, otherLang, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import { itemListNode } from '../lib/seo';
+import { getGuides, guidePath } from '../lib/content';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const u = t(lang);
+const r = (k: keyof typeof routes) => routes[k][lang];
+const path = r('guides');
+const guides = await getGuides(lang);
+const fmt = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+const c = {
+  es: {
+    title: 'Guías de vídeo inmobiliario con IA | LUXAI',
+    description: 'Para inmobiliarias y gestores de villas: dron o IA, cómo hacer las fotos, formatos para idealista y redes, y cómo usar IA en anuncios sin engañar.',
+    h1: 'Guías de vídeo inmobiliario',
+    eyebrow: 'Recursos',
+    lede: 'Lo que conviene saber antes de encargar o publicar un vídeo de una propiedad: normativa, formatos, fotos y transparencia. Con fuentes y fecha de actualización.',
+    links: [
+      { key: 'how', label: 'Cómo trabajamos' },
+      { key: 'pricing', label: 'Precios y comparativa' },
+      { key: 'demos', label: 'Ejemplos reales' },
+    ],
+  },
+  en: {
+    title: 'Real Estate Video Guides | LUXAI',
+    description: 'For agencies and villa managers: drone or AI, which photos to take, video formats for portals and social, and how to use AI in listings honestly.',
+    h1: 'Real estate video guides',
+    eyebrow: 'Resources',
+    lede: 'What’s worth knowing before you commission or publish a property film: regulation, formats, photos and transparency. With sources and update dates.',
+    links: [
+      { key: 'how', label: 'How we work' },
+      { key: 'pricing', label: 'Pricing and comparison' },
+      { key: 'demos', label: 'Real examples' },
+    ],
+  },
+}[lang];
+
+const crumbs = [{ name: u.links.guides, path }];
+const schema = [itemListNode(path, guides.map((g) => ({ name: g.data.title, path: guidePath(g) })))];
+---
+<Base lang={lang} title={c.title} description={c.description} path={path} alt={routes.guides[otherLang(lang)]} crumbs={crumbs} pageType="CollectionPage" schema={schema}>
+  <PageHero lang={lang} crumbs={crumbs} eyebrow={c.eyebrow} title={c.h1} lede={c.lede} />
+
+  <section class="section section--light section--tight">
+    <div class="wrap wrap--wide">
+      <ol class="guides">
+        {guides.map((g, i) => (
+          <li data-reveal="fade">
+            <a class="guide-row" href={guidePath(g)}>
+              <span class="guide-row__n num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="guide-row__main">
+                <span class="guide-row__title">{g.data.title}</span>
+                <span class="guide-row__excerpt">{g.data.excerpt}</span>
+              </span>
+              <span class="guide-row__meta small-caps muted">{g.data.readingMinutes} {u.guide.minutes}<br />{u.guide.updated} {fmt.format(g.data.updated)}</span>
+              <span class="guide-row__arrow" aria-hidden="true"><Icon name="arrow" /></span>
+            </a>
+          </li>
+        ))}
+      </ol>
+      <nav class="related-links" aria-label={u.links.guides}>
+        {c.links.map((l) => <a class="link-quiet" href={r(l.key as 'how' | 'pricing' | 'demos')}>{l.label}<Icon name="arrow" /></a>)}
+      </nav>
+    </div>
+  </section>
+
+  <CtaBand lang={lang} eyebrow={u.cta.demo} title={lang === 'es' ? 'La mejor guía es ver vuestra propiedad en vídeo' : 'The best guide is seeing your own property on film'} text={lang === 'es' ? 'Enviadnos las fotos de un espacio y en 72 horas tenéis una demo, sin coste.' : 'Send us the photos of one property and within 72 hours you’ll have a demo, free of charge.'} />
+</Base>
+
+<style>
+  .guides { display: grid; border-top: 1px solid var(--line); }
+  .guide-row {
+    display: grid; grid-template-columns: 48px 1fr; gap: 12px 20px; align-items: start;
+    padding: 32px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink);
+  }
+  @media (width >= 900px) { .guide-row { grid-template-columns: 64px minmax(0, 1fr) 180px 32px; align-items: center; } }
+  .guide-row__n { font-family: var(--font-display); color: var(--gold); letter-spacing: 0.16em; font-size: 0.875rem; }
+  .guide-row__main { display: grid; gap: 10px; }
+  .guide-row__title { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.0625rem, 0.95rem + 0.6vw, 1.375rem); letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.35; }
+  .guide-row__excerpt { color: var(--muted); max-width: 70ch; }
+  .guide-row__meta { grid-column: 2; line-height: 1.8; }
+  @media (width >= 900px) { .guide-row__meta { grid-column: auto; text-align: right; } }
+  .guide-row__arrow { display: none; color: var(--gold); }
+  .guide-row__arrow :global(svg) { width: 18px; height: 18px; transition: transform 0.25s var(--ease-out); }
+  @media (width >= 900px) { .guide-row__arrow { display: block; } }
+  @media (hover: hover) and (pointer: fine) {
+    .guide-row:hover .guide-row__title { color: var(--gold-bright); }
+    .guide-row:hover .guide-row__arrow :global(svg) { transform: translateX(4px); }
+  }
+</style>

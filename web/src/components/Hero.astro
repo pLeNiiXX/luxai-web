@@ -1,0 +1,205 @@
+---
+import { getImage } from 'astro:assets';
+import heroPoster from '../assets/hero/hero-poster.webp';
+import heroPosterMobile from '../assets/hero/hero-poster-mobile.webp';
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  eyebrow: string;
+  title: string;
+  lede: string;
+  primary: { label: string; href: string; modal?: boolean };
+  secondary?: { label: string; href: string };
+  facts?: { value: string; label: string }[];
+}
+const { lang, eyebrow, title, lede, primary, secondary, facts = [] } = Astro.props;
+const u = t(lang);
+
+const desk = await Promise.all([1280, 1920].map((w) => getImage({ src: heroPoster, width: w, format: 'webp', quality: 72 })));
+const mob = await Promise.all([540, 720].map((w) => getImage({ src: heroPosterMobile, width: w, format: 'webp', quality: 70 })));
+const deskSet = desk.map((i, k) => `${i.src} ${[1280, 1920][k]}w`).join(', ');
+const mobSet = mob.map((i, k) => `${i.src} ${[540, 720][k]}w`).join(', ');
+---
+<section class="hero" data-hero>
+  <div class="hero__media" data-hero-media>
+    <picture>
+      <source media="(max-width: 767px)" srcset={mobSet} sizes="100vw" />
+      <img class="hero__poster" src={desk[1].src} srcset={deskSet} sizes="100vw" width="1920" height="1080" alt="" fetchpriority="high" decoding="async" />
+    </picture>
+    <video
+      class="hero__video"
+      id="hero-video"
+      muted
+      loop
+      playsinline
+      preload="none"
+      disablepictureinpicture
+      aria-hidden="true"
+      data-hero-video
+      data-desktop-av1="/media/hero/hero-1080-av1.mp4"
+      data-desktop="/media/hero/hero-1080.mp4"
+      data-mobile-av1="/media/hero/hero-mobile-av1.mp4"
+      data-mobile="/media/hero/hero-mobile.mp4"
+    ></video>
+    <div class="hero__shade" aria-hidden="true"></div>
+  </div>
+
+  <div class="wrap wrap--wide hero__content" data-hero-content>
+    <h1 class="hero__title">
+      <span class="eyebrow hero__eyebrow" data-hero-fade>{eyebrow}</span>
+      <span class="h-hero hero__headline" data-hero-headline>{title}</span>
+    </h1>
+    <p class="lede lede--ink hero__lede" data-hero-fade>{lede}</p>
+    <div class="actions" data-hero-fade>
+      <a class="btn btn--gold" href={primary.href} data-open-demo-modal={primary.modal ? '' : undefined}>{primary.label}<Icon name="arrow" /></a>
+      {secondary && <a class="link-quiet" href={secondary.href}>{secondary.label}<Icon name="arrow" /></a>}
+    </div>
+  </div>
+
+  <div class="wrap wrap--wide hero__foot" data-hero-fade>
+    {facts.length > 0 && (
+      <ul class="hero__facts">
+        {facts.map((f) => <li><span class="hero__fact-value num">{f.value}</span><span class="hero__fact-label">{f.label}</span></li>)}
+      </ul>
+    )}
+    <button
+      class="hero__toggle small-caps"
+      type="button"
+      data-video-toggle
+      aria-controls="hero-video"
+      data-label-pause={u.video.pause}
+      data-label-play={u.video.play}
+    ><span class="hero__toggle-icon" aria-hidden="true"></span><span data-label>{u.video.pause}</span></button>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr auto;
+    padding-top: calc(var(--header-h) + 40px); isolation: isolate; overflow: clip;
+  }
+  .hero__media { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: var(--bg); }
+  .hero__poster, .hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero__video { opacity: 0; transition: opacity 1.2s var(--ease-out); }
+  .hero__video[data-playing] { opacity: 1; }
+  .hero__shade {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, #0b0b0cb3 0%, #0b0b0c40 26%, #0b0b0c4d 55%, #0b0b0cf2 100%),
+      linear-gradient(90deg, #0b0b0cd1 0%, #0b0b0c99 38%, #0b0b0c26 72%, #0b0b0c14 100%);
+  }
+  @media (width < 768px) {
+    .hero__shade { background: linear-gradient(180deg, #0b0b0cb3 0%, #0b0b0c59 30%, #0b0b0c8c 55%, #0b0b0cf5 100%); }
+  }
+  .hero__content { align-self: end; display: grid; gap: 26px; padding-bottom: clamp(32px, 5vw, 56px); }
+  .hero__title { display: grid; gap: 22px; margin: 0; font-weight: inherit; }
+  .hero__headline { max-width: 17ch; }
+  .hero__lede { max-width: 50ch; }
+  .hero__foot {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px;
+    padding-block: 22px max(22px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line);
+  }
+  .hero__facts { display: flex; flex-wrap: wrap; gap: 14px 40px; }
+  .hero__facts li { display: flex; align-items: baseline; gap: 10px; }
+  .hero__fact-value { font-family: var(--font-display); font-size: 1.125rem; letter-spacing: 0.08em; color: var(--ink); }
+  .hero__fact-label { font-size: 0.8125rem; color: var(--muted); letter-spacing: 0.04em; }
+  .hero__toggle {
+    display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0;
+    border: 0; background: transparent; color: var(--ink-soft); cursor: pointer; transition: color 0.2s ease;
+  }
+  .hero__toggle-icon { position: relative; width: 10px; height: 12px; }
+  .hero__toggle-icon::before, .hero__toggle-icon::after { content: ''; position: absolute; top: 0; bottom: 0; width: 2px; background: currentColor; }
+  .hero__toggle-icon::before { left: 1px; }
+  .hero__toggle-icon::after { right: 1px; }
+  .hero__toggle[data-paused] .hero__toggle-icon::before { left: 1px; width: 0; height: 0; top: 0; background: none; border-style: solid; border-width: 6px 0 6px 9px; border-color: transparent transparent transparent currentColor; }
+  .hero__toggle[data-paused] .hero__toggle-icon::after { display: none; }
+  @media (hover: hover) and (pointer: fine) { .hero__toggle:hover { color: var(--ink); } }
+  @media (width < 700px) {
+    .hero__facts { gap: 10px 24px; }
+    .hero__facts li { flex-direction: column; gap: 2px; }
+  }
+  /* entrada en CSS puro: no depende del JS, así el texto pinta en el primer fotograma (LCP) */
+  .hero__eyebrow, .hero__headline, .hero__lede, .hero__content .actions, .hero__foot {
+    animation: hero-in 1.1s var(--ease-out) both;
+  }
+  .hero__eyebrow { animation-delay: 0.1s; }
+  .hero__headline { animation-duration: 1.4s; animation-delay: 0.18s; }
+  .hero__lede { animation-delay: 0.42s; }
+  .hero__content .actions { animation-delay: 0.54s; }
+  .hero__foot { animation-delay: 0.7s; }
+  @keyframes hero-in {
+    from { opacity: 0.01; transform: translateY(26px); }
+    to { opacity: 1; transform: none; }
+  }
+  .hero__poster, .hero__video { animation: hero-zoom 2.4s var(--ease-out) both; }
+  /* escritorio: el encuadre se abre desde un marco hasta la pantalla completa (en CSS, sin saltos) */
+  @media (min-width: 768px) {
+    .hero__media { animation: hero-frame 1.5s var(--ease-in-out) both; }
+  }
+  @keyframes hero-frame { from { clip-path: inset(5% 4% 5% 4%); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes hero-zoom { from { transform: scale(1.1); } to { transform: none; } }
+</style>
+
+<script>
+  import { loadMotion, canAutoplay } from '../scripts/core';
+
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+
+  function pickSources(v: HTMLVideoElement) {
+    const mobile = window.matchMedia('(max-width: 767px)').matches;
+    const av1 = mobile ? v.dataset.mobileAv1 : v.dataset.desktopAv1;
+    const h264 = mobile ? v.dataset.mobile : v.dataset.desktop;
+    const probe = document.createElement('video');
+    const canAv1 = probe.canPlayType('video/mp4; codecs="av01.0.08M.08"') === 'probably';
+    v.src = (canAv1 && av1) || h264 || '';
+  }
+
+  function startVideo() {
+    if (!video) return;
+    pickSources(video);
+    // con movimiento reducido, ahorro de datos o red lenta no arranca solo: queda el botón «Reproducir vídeo»
+    if (!canAutoplay()) {
+      video.setAttribute('data-user-paused', '');
+      return;
+    }
+    video.play().catch(() => {});
+  }
+  // visible siempre que se reproduzca, también si se arranca a mano
+  video?.addEventListener('playing', () => video.setAttribute('data-playing', ''));
+
+  // el vídeo arranca cuando la página ya ha pintado (no compite con el LCP)
+  if (document.readyState === 'complete') setTimeout(startVideo, 150);
+  else window.addEventListener('load', () => setTimeout(startVideo, 150), { once: true });
+
+  // pausa si el hero sale de pantalla; reintenta si el navegador aplazó la reproducción
+  if (hero && video) {
+    let heroVisible = true;
+    const tryPlay = () => {
+      if (heroVisible && !video.hasAttribute('data-user-paused') && video.src && video.paused) video.play().catch(() => {});
+    };
+    new IntersectionObserver(([e]) => {
+      heroVisible = e.isIntersecting;
+      if (!e.isIntersecting) video.pause();
+      else tryPlay();
+    }).observe(hero);
+    document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && tryPlay());
+    window.addEventListener('pointerdown', tryPlay, { once: true });
+    window.addEventListener('scroll', tryPlay, { once: true, passive: true });
+    video.addEventListener('canplay', tryPlay, { once: true });
+  }
+
+  loadMotion().then((m) => {
+    const media = document.querySelector<HTMLElement>('[data-hero-media]');
+    const content = document.querySelector<HTMLElement>('[data-hero-content]');
+    if (!m || !hero || !media || !content) return;
+    const { gsap } = m;
+
+    // salida con el scroll: el vídeo se hunde y el texto sube
+    gsap.to(media, { yPercent: 14, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to(content, { yPercent: -18, opacity: 0.2, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
+  });
+</script>

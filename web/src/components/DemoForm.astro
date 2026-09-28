@@ -1,0 +1,75 @@
+---
+import Icon from './Icon.astro';
+import { SITE } from '../data/site';
+import { routes, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang; id: string; channel?: string; compact?: boolean }
+const { lang, id, channel, compact = false } = Astro.props;
+const u = t(lang).modal;
+const wa = SITE.whatsapp.replace(/\D/g, '');
+---
+<div class:list={['demo-form', { 'demo-form--compact': compact }]} data-form-scope>
+  <div data-form-content>
+    <form
+      data-demo-form
+      action={SITE.formEndpoint}
+      method="POST"
+      data-sending={u.sending}
+      data-channel={channel ?? u.channel}
+      class="demo-form__form"
+    >
+      <div class="field">
+        <label for={`${id}-name`}>{u.name}</label>
+        <input class="field-input" type="text" id={`${id}-name`} name="name" required autocomplete="name" placeholder={u.namePh} />
+      </div>
+      <div class="field">
+        <label for={`${id}-email`}>{u.email}</label>
+        <input class="field-input" type="email" id={`${id}-email`} name="email" required autocomplete="email" placeholder={u.emailPh} />
+      </div>
+      <div class="field">
+        <label for={`${id}-property`}>{u.property}</label>
+        <textarea class="field-input field-textarea" id={`${id}-property`} name="property" rows="3" placeholder={u.propertyPh}></textarea>
+      </div>
+      <input type="hidden" name="pack" value="" data-pack-input />
+      <input type="hidden" name="_subject" value="Nueva solicitud de demo (luxaivideo.com)" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+      <button type="submit" class="btn btn--gold btn--block"><span>{u.submit}</span><Icon name="arrow" /></button>
+      <p class="demo-form__fine">{u.fine}</p>
+      <p class="demo-form__privacy">{u.privacy} <a href={routes.privacy[lang]}>{u.privacyLink}</a>.</p>
+    </form>
+    <div
+      class="demo-form__error"
+      data-form-error
+      role="alert"
+      hidden
+      data-template={u.fallbackTemplate}
+      data-subject={u.emailSubject}
+      data-email={SITE.email}
+    >
+      <p>{u.errorText}</p>
+      <div class="actions">
+        <a class="btn" data-error-email href={`mailto:${SITE.email}`}><Icon name="mail" /><span>{u.errorEmail}</span></a>
+        {wa && <a class="btn" data-error-whatsapp data-number={wa} href={`https://wa.me/${wa}`} target="_blank" rel="noopener"><Icon name="whatsapp" /><span>{u.errorWhatsApp}</span></a>}
+      </div>
+    </div>
+  </div>
+  <div class="demo-form__success" data-form-success hidden>
+    <span class="demo-form__check"><Icon name="check" /></span>
+    <p class="h-3" tabindex="-1">{u.successTitle}</p>
+    <p class="muted">{u.successText}</p>
+  </div>
+</div>
+
+<style>
+  .demo-form__form { display: grid; gap: 20px; }
+  .demo-form__fine { text-align: center; color: var(--muted); font-size: 0.8125rem; letter-spacing: 0.04em; }
+  .demo-form__privacy { color: var(--muted); font-size: 0.8125rem; text-align: center; margin-top: -8px; }
+  .demo-form__privacy a { color: var(--ink); }
+  .demo-form__error { display: grid; gap: 18px; margin-top: 20px; padding: 20px; border: 1px solid var(--gold-soft); font-size: 0.9375rem; }
+  .demo-form__success { display: grid; justify-items: start; gap: 12px; padding-block: 24px; }
+  .demo-form__success [tabindex='-1']:focus { outline: none; }
+  .demo-form__check { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--gold); color: var(--gold); }
+  .demo-form__check :global(svg) { width: 20px; height: 20px; }
+</style>

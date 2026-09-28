@@ -1,0 +1,116 @@
+---
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FaqList from '../components/FaqList.astro';
+import GuideCards from '../components/GuideCards.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { routes, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import { articleNode, faqNode } from '../lib/seo';
+import { guidePath, guideAlt, type Guide } from '../lib/content';
+
+interface Props { guide: Guide }
+const { guide } = Astro.props;
+const d = guide.data;
+const lang = d.lang as Lang;
+const u = t(lang);
+const path = guidePath(guide);
+const alt = await guideAlt(guide);
+const { Content, headings } = await render(guide);
+// Las tablas se envuelven en un contenedor desplazable y enfocable (teclado, lectores de pantalla)
+const tableLabel = lang === 'es' ? 'Tabla (se puede desplazar en horizontal)' : 'Table (scrolls horizontally)';
+const html = guide.rendered?.html
+  ? guide.rendered.html
+      .replace(/<table>/g, `<div class="table-scroll" role="region" tabindex="0" aria-label="${tableLabel}"><table>`)
+      .replace(/<\/table>/g, '</table></div>')
+      // Cabeceras semánticas: las de <thead> son de columna (la esquina vacía no es cabecera)
+      // y la primera celda de cada fila del cuerpo es la etiqueta de esa fila
+      .replace(/<thead>[\s\S]*?<\/thead>/g, (m) => m.replace(/<th><\/th>/g, '<td></td>').replace(/<th>/g, '<th scope="col">'))
+      .replace(/<tbody>[\s\S]*?<\/tbody>/g, (m) => m.replace(/<tr>\n<td>([\s\S]*?)<\/td>/g, '<tr>\n<th scope="row">$1</th>'))
+  : null;
+const toc = headings.filter((h) => h.depth === 2);
+const fmt = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const iso = (x: Date) => x.toISOString().slice(0, 10);
+const crumbs = [{ name: u.links.guides, path: routes.guides[lang] }, { name: d.title, path }];
+const schema = [
+  articleNode({ path, headline: d.title, description: d.description, lang, datePublished: iso(d.published), dateModified: iso(d.updated), image: '/og-image.jpg' }),
+  ...(d.faq.length ? [faqNode(path, d.faq)] : []),
+];
+const l = {
+  es: { faq: 'Preguntas frecuentes', sources: 'Fuentes', cta: { eyebrow: 'Del texto al vídeo', title: 'Vedlo con una de vuestras propiedades', text: 'Enviadnos las fotos de un espacio y en 72 horas tenéis una demo en vídeo, sin coste ni compromiso.' } },
+  en: { faq: 'Frequently asked questions', sources: 'Sources', cta: { eyebrow: 'From reading to watching', title: 'See it with one of your properties', text: 'Send us the photos of one property and within 72 hours you’ll have a demo film, free and with no commitment.' } },
+}[lang];
+---
+<Base lang={lang} title={d.seoTitle} description={d.description} path={path} alt={alt} crumbs={crumbs} schema={schema} ogType="article">
+  <article>
+    <header class="g-hero">
+      <div class="wrap wrap--wide g-hero__inner">
+        <Breadcrumbs lang={lang} crumbs={crumbs} />
+        <p class="eyebrow">{u.links.guides} · {d.readingMinutes} {u.guide.minutes}</p>
+        <h1 class="h-1 g-hero__title enter" style="--d: 0.1s">{d.title}</h1>
+        <p class="lede lede--ink enter" style="--d: 0.22s">{d.excerpt}</p>
+        <p class="g-hero__meta small-caps muted">{u.guide.by} · {u.guide.updated} <time datetime={iso(d.updated)}>{fmt.format(d.updated)}</time></p>
+      </div>
+    </header>
+
+    <div class="section--light g-body-bg">
+    <div class="wrap wrap--wide g-body">
+      {toc.length > 2 && (
+        <aside class="g-toc" aria-label={u.guide.toc}>
+          <p class="small-caps gold">{u.guide.toc}</p>
+          <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+        </aside>
+      )}
+      <div class="prose g-prose">
+        {html ? <Fragment set:html={html} /> : <Content />}
+      </div>
+    </div>
+    </div>
+
+    {d.faq.length > 0 && (
+      <section class="section section--raised" aria-labelledby="g-faq">
+        <div class="wrap wrap--wide faq-layout">
+          <header class="section-head section-head--stack"><h2 id="g-faq" class="display title">{l.faq}</h2></header>
+          <FaqList items={d.faq} />
+        </div>
+      </section>
+    )}
+
+    {d.sources.length > 0 && (
+      <section class="section section--light section--tight" aria-labelledby="g-sources">
+        <div class="wrap wrap--narrow">
+          <h2 id="g-sources" class="small-caps gold">{l.sources}</h2>
+          <ol class="g-sources">{d.sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.label}</a></li>)}</ol>
+        </div>
+      </section>
+    )}
+  </article>
+
+  <section class="section" aria-labelledby="g-related">
+    <div class="wrap wrap--wide">
+      <header class="section-head section-head--stack"><h2 id="g-related" class="display title">{u.guide.related}</h2></header>
+      <GuideCards lang={lang} limit={3} exclude={d.key} keys={d.related.length ? d.related : undefined} />
+    </div>
+  </section>
+
+  <CtaBand lang={lang} eyebrow={l.cta.eyebrow} title={l.cta.title} text={l.cta.text} />
+</Base>
+
+<style>
+  .g-hero { padding: calc(var(--header-h) + clamp(40px, 6vw, 88px)) 0 clamp(40px, 6vw, 72px); border-bottom: 1px solid var(--line); }
+  .g-hero__inner { display: grid; gap: 22px; max-width: calc(980px + var(--gutter) * 2); margin-inline: 0; }
+  .g-hero__title { font-size: clamp(1.75rem, 1rem + 2.6vw, 3.25rem); }
+  /* minmax(0, …): sin él, la tabla (min-width 560 px) ensancha la columna y el texto se corta en móvil */
+  .g-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; padding-block: clamp(48px, 7vw, 96px); }
+  @media (width >= 1100px) { .g-body { grid-template-columns: minmax(0, 3fr) minmax(0, 8fr); gap: 72px; align-items: start; } }
+  .g-toc { display: grid; gap: 16px; align-content: start; }
+  @media (width >= 1100px) { .g-toc { position: sticky; top: calc(var(--header-h) + 32px); } }
+  .g-toc ol { display: grid; gap: 4px; border-left: 1px solid var(--line); }
+  .g-toc a { display: block; padding: 8px 0 8px 16px; margin-left: -1px; border-left: 1px solid transparent; color: var(--muted); text-decoration: none; font-size: 0.9375rem; line-height: 1.4; transition: color 0.2s ease, border-color 0.2s ease; }
+  @media (hover: hover) and (pointer: fine) { .g-toc a:hover { color: var(--ink); border-left-color: var(--gold); } }
+  .g-prose { max-width: 72ch; }
+  .g-prose :global(h2) { scroll-margin-top: calc(var(--header-h) + 24px); }
+  .g-sources { display: grid; gap: 10px; margin-top: 16px; padding-left: 20px; list-style: decimal; color: var(--muted); font-size: 0.9375rem; }
+  .g-sources a { color: var(--ink-soft); word-break: break-word; }
+</style>

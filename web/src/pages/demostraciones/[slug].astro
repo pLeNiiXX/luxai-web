@@ -1,0 +1,10 @@
+---
+import DemoView from '../../views/DemoView.astro';
+import { DEMOS } from '../../data/demos';
+
+export function getStaticPaths() {
+  return DEMOS.map((demo) => ({ params: { slug: demo.slug.es }, props: { demo } }));
+}
+const { demo } = Astro.props;
+---
+<DemoView lang="es" demo={demo} />

@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import DemoForm from '../components/DemoForm.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../data/site';
+import { routes, otherLang, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const u = t(lang);
+const r = (k: keyof typeof routes) => routes[k][lang];
+const path = r('contact');
+const wa = SITE.whatsapp.replace(/\D/g, '');
+
+const c = {
+  es: {
+    title: 'Pedid una demo gratis de vídeo inmobiliario con IA | LUXAI',
+    description: 'Enviadnos las fotos de una propiedad y en 72 h tendréis una demo en vídeo, sin coste ni compromiso. Respondemos en menos de 24 h.',
+    crumb: 'Contacto',
+    eyebrow: 'Demo gratis',
+    h1: 'Pedid vuestra demo gratis',
+    lede: 'Contadnos qué propiedad queréis ver en vídeo. Con el enlace al anuncio o con sus fotos nos basta para empezar.',
+    steps: [
+      { t: 'Nos escribís', d: 'Con el formulario, o por email con el enlace al anuncio o las fotos.' },
+      { t: 'Os respondemos', d: 'En menos de 24 horas, para confirmar las fotos y resolver dudas.' },
+      { t: 'Veis la demo', d: 'En 72 horas tenéis el vídeo de muestra. Sin coste y sin compromiso.' },
+    ],
+    direct: 'O escribidnos directamente',
+    formTitle: 'Solicitar demo',
+    links: [
+      { key: 'pricing', label: 'Packs y precios' },
+      { key: 'demos', label: 'Qué vais a recibir' },
+      { key: 'faq', label: 'Preguntas antes de enviar las fotos' },
+    ],
+  },
+  en: {
+    title: 'Get a Free AI Real Estate Video Demo | LUXAI',
+    description: 'Send us the photos of one property and you will have a video demo within 72 hours, free and with no commitment. We reply within 24 hours.',
+    crumb: 'Contact',
+    eyebrow: 'Free demo',
+    h1: 'Get your free demo',
+    lede: 'Tell us which property you’d like to see on film. A link to the listing or its photos is all we need to start.',
+    steps: [
+      { t: 'You write to us', d: 'Through the form, or by email with the listing link or the photos.' },
+      { t: 'We reply', d: 'Within 24 hours, to confirm the photos and answer any questions.' },
+      { t: 'You watch the demo', d: 'Within 72 hours you have the sample film. No cost, no commitment.' },
+    ],
+    direct: 'Or write to us directly',
+    formTitle: 'Request a demo',
+    links: [
+      { key: 'pricing', label: 'Packages & pricing' },
+      { key: 'demos', label: 'What you’ll receive' },
+      { key: 'faq', label: 'Questions before sending photos' },
+    ],
+  },
+}[lang];
+
+const crumbs = [{ name: c.crumb, path }];
+---
+<Base lang={lang} title={c.title} description={c.description} path={path} alt={routes.contact[otherLang(lang)]} crumbs={crumbs} pageType="ContactPage">
+  <section class="contact">
+    <div class="wrap wrap--wide contact__inner">
+      <div class="contact__text">
+        <Breadcrumbs lang={lang} crumbs={crumbs} />
+        <div class="contact__title">
+          <p class="eyebrow enter" style="--d: 0.05s">{c.eyebrow}</p>
+          <h1 class="h-1 enter" style="--d: 0.1s">{c.h1}</h1>
+        </div>
+        <p class="lede lede--ink">{c.lede}</p>
+        <ol class="contact__steps">
+          {c.steps.map((s, i) => (
+            <li><span class="contact__n num">{String(i + 1).padStart(2, '0')}</span><div><h2 class="contact__step-t">{s.t}</h2><p>{s.d}</p></div></li>
+          ))}
+        </ol>
+        <div class="contact__direct">
+          <p class="small-caps muted">{c.direct}</p>
+          <a class="link-quiet contact__mail" href={`mailto:${SITE.email}?subject=${encodeURIComponent(u.modal.emailSubject)}`}><Icon name="mail" />{SITE.email}</a>
+          {wa && <a class="link-quiet" href={`https://wa.me/${wa}`} target="_blank" rel="noopener"><Icon name="whatsapp" />WhatsApp</a>}
+        </div>
+        <nav class="related-links" aria-label={c.crumb}>
+          {c.links.map((l) => <a class="link-quiet" href={r(l.key as 'pricing' | 'demos' | 'faq')}>{l.label}<Icon name="arrow" /></a>)}
+        </nav>
+      </div>
+      <div class="contact__form" id="demo" tabindex="-1" data-inline-demo>
+        <p class="eyebrow eyebrow--plain">{c.formTitle}</p>
+        <DemoForm lang={lang} id="contact" channel={lang === 'es' ? 'Página de contacto' : 'Contact page (EN)'} />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact { padding-top: calc(var(--header-h) + clamp(40px, 6vw, 88px)); padding-bottom: clamp(72px, 10vw, 140px); }
+  .contact__inner { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+  @media (width >= 1000px) { .contact__inner { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 72px; align-items: start; } }
+  .contact__text { display: grid; gap: 28px; align-content: start; }
+  .contact__title { display: grid; gap: 18px; margin: 0; font-weight: inherit; }
+  .contact__steps { display: grid; border-top: 1px solid var(--line); }
+  .contact__steps li { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .contact__n { font-family: var(--font-display); color: var(--gold); letter-spacing: 0.16em; font-size: 0.875rem; padding-top: 2px; }
+  .contact__step-t { font-family: var(--font-display); font-weight: 400; font-size: 1rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 6px; }
+  .contact__steps p { color: var(--muted); }
+  .contact__direct { display: grid; gap: 6px; justify-items: start; }
+  .contact__mail { text-transform: none; letter-spacing: 0.04em; font-size: 1rem; }
+  .contact__form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; padding: clamp(28px, 4vw, 48px); border: 1px solid var(--line-strong); background: var(--bg-raised); scroll-margin-top: calc(var(--header-h) + 24px); }
+  .contact__form:focus { outline: none; }
+  @media (width >= 1000px) { .contact__form { position: sticky; top: calc(var(--header-h) + 32px); } }
+</style>

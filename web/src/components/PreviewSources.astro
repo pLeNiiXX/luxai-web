@@ -1,0 +1,11 @@
+---
+/** Fuentes de las muestras en bucle: 960 px en escritorio, 640 px en móvil; AV1 con H.264 de respaldo. */
+interface Props { preview: string }
+const { preview } = Astro.props;
+const base = preview.replace(/\.mp4$/, '');
+const AV1 = 'video/mp4; codecs="av01.0.08M.08"';
+---
+<source media="(min-width: 900px)" src={`${base}-av1.mp4`} type={AV1} />
+<source media="(min-width: 900px)" src={`${base}.mp4`} type="video/mp4" />
+<source src={`${base}-640-av1.mp4`} type={AV1} />
+<source src={`${base}-640.mp4`} type="video/mp4" />

@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import VideoToggle from '../components/VideoToggle.astro';
+import PreviewSources from '../components/PreviewSources.astro';
+import { DEMOS } from '../data/demos';
+import { routes, collectionBase, otherLang, type Lang } from '../i18n/routes';
+import { itemListNode } from '../lib/seo';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const r = (k: keyof typeof routes) => routes[k][lang];
+const path = r('demos');
+const demoPath = (i: number) => `${collectionBase.demos[lang]}${DEMOS[i].slug[lang]}/`;
+
+const c = {
+  es: {
+    title: 'Ejemplos de vídeo inmobiliario con IA, foto a foto | LUXAI',
+    description: 'Ved las fotos originales y el vídeo que sale de ellas: una villa contemporánea con piscina infinita y una finca rústica de piedra. Sin dron ni rodaje.',
+    crumb: 'Demostraciones',
+    eyebrow: 'Demostraciones',
+    h1: 'Ejemplos de vídeo inmobiliario con IA: las fotos y el vídeo final',
+    lede: 'Dos propiedades, dos lenguajes y el mismo método. En cada demo veis las fotografías de partida junto al vídeo: cada plano sale de una de ellas.',
+    anchors: ['Villa contemporánea: de 4 fotos a vídeo', 'Finca rústica: 5 fotos, 24 segundos'],
+    photos: 'fotos',
+    format: 'Formato',
+    duration: 'Duración',
+    label: 'Movimiento de cámara con IA dentro de las fotos',
+    look: {
+      eyebrow: 'Cómo mirarlas',
+      title: 'Tres cosas en las que fijarse',
+      lede: 'Una demo no se juzga por lo bonita que es la villa, sino por lo que el vídeo hace con sus fotos.',
+      items: [
+        { t: 'El movimiento', d: 'La cámara avanza, se desliza o se eleva sin saltos. Los planos cercanos y lejanos se separan como lo harían con una cámara real, sin deformar las líneas de la arquitectura.' },
+        { t: 'La luz', d: 'Cada plano mantiene la hora y la atmósfera de su foto de partida. El retoque de las fotos solo corrige luz, color y cielo.' },
+        { t: 'La fidelidad', d: 'Comparad cada plano con su foto de partida: sale de una sola imagen, sin estancias, muebles ni vistas añadidas. Lo único que cambia es la posición de la cámara.' },
+      ],
+    },
+    cta: { eyebrow: 'Demo 03', title: 'La siguiente puede ser la vuestra', text: 'Pedid una demo con una de vuestras propiedades: nos enviáis las fotos y en 72 horas tenéis el vídeo, sin coste.' },
+  },
+  en: {
+    title: 'AI Real Estate Video Examples: Photos to Film | LUXAI',
+    description: 'See the original photos next to the finished film: a contemporary sea-view villa and a Mediterranean stone estate. No drone, no film crew.',
+    crumb: 'Demos',
+    eyebrow: 'Demos',
+    h1: 'AI real estate video examples: the photos and the finished film',
+    lede: 'Two properties, two languages, one method. Each demo shows the photographs we started from next to the film: every shot comes from one of them.',
+    anchors: ['Coastal villa: 4 photos to film', 'Stone estate: 5 photos, 24 seconds'],
+    photos: 'photos',
+    format: 'Format',
+    duration: 'Length',
+    label: 'AI camera movement inside the photos',
+    look: {
+      eyebrow: 'How to watch them',
+      title: 'Three things to look for',
+      lede: 'A demo shouldn’t be judged by how beautiful the villa is, but by what the film does with its photos.',
+      items: [
+        { t: 'The movement', d: 'The camera pushes in, glides or rises without jumps. Near and far planes separate as they would with a real camera, without bending the lines of the architecture.' },
+        { t: 'The light', d: 'Each shot keeps the time of day and the mood of its source photo. Photo retouching only corrects light, colour and sky.' },
+        { t: 'The fidelity', d: 'Compare each shot with its source photo: it comes from a single image, with no rooms, furniture or views added. The only thing that changes is where the camera is.' },
+      ],
+    },
+    cta: { eyebrow: 'Demo 03', title: 'The next one could be yours', text: 'Get a demo with one of your properties: send us the photos and within 72 hours you’ll have the film, free of charge.' },
+  },
+}[lang];
+
+const schema = [itemListNode(path, DEMOS.map((d, i) => ({ name: d.title[lang], path: demoPath(i) })))];
+---
+<Base lang={lang} title={c.title} description={c.description} path={path} alt={routes.demos[otherLang(lang)]} pageType="CollectionPage" crumbs={[{ name: c.crumb, path }]} schema={schema}>
+  <PageHero lang={lang} crumbs={[{ name: c.crumb, path }]} eyebrow={c.eyebrow} title={c.h1} lede={c.lede} />
+
+  <section class="section section--tight">
+    <div class="wrap wrap--wide">
+      <ul class="demo-list">
+        {DEMOS.map((d, i) => (
+          <li class="demo-row">
+            <div class="demo-row__mediawrap">
+              <a class="demo-row__media media-frame ratio-16x9" href={demoPath(i)} style={`view-transition-name: ${d.vt}`} aria-label={c.anchors[i]}>
+                <Image src={d.poster} alt={d.photos[0].alt[lang]} widths={[640, 960, 1440]} sizes="(min-width: 1000px) 62vw, 100vw" quality={70} loading={i === 0 ? 'eager' : 'lazy'} />
+                <video id={`demos-vid-${d.key}`} muted loop playsinline preload="none" data-inview aria-hidden="true">
+                  <PreviewSources preview={d.video.preview} />
+                </video>
+                <span class="demo-row__label small-caps">{c.label}</span>
+              </a>
+              <VideoToggle lang={lang} target={`demos-vid-${d.key}`} />
+            </div>
+            <div class="demo-row__body">
+              <p class="small-caps gold">Demo {d.num}</p>
+              <h2 class="h-3 demo-row__title">{d.title[lang]}</h2>
+              <p class="muted">{d.tagline[lang]}</p>
+              <dl class="demo-row__facts">
+                <div><dt class="small-caps muted">{c.photos}</dt><dd class="num">{d.photos.length}</dd></div>
+                <div><dt class="small-caps muted">{c.duration}</dt><dd class="num">{d.video.durationSec} s</dd></div>
+                <div><dt class="small-caps muted">{c.format}</dt><dd class="num">16:9</dd></div>
+              </dl>
+              <a class="link-quiet" href={demoPath(i)}>{c.anchors[i]}<Icon name="arrow" /></a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--light" aria-labelledby="look-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.look.eyebrow} title={c.look.title} lede={c.look.lede} id="look-title" />
+      <ol class="grid-3" data-reveal="stagger">
+        {c.look.items.map((it, i) => (
+          <li class="card"><span class="card__num num">0{i + 1}</span><h3 class="card__title">{it.t}</h3><p>{it.d}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand lang={lang} eyebrow={c.cta.eyebrow} title={c.cta.title} text={c.cta.text} secondary={{ href: r('pricing'), label: lang === 'es' ? 'Ver packs y precios' : 'See packages & pricing' }} />
+</Base>
+
+<style>
+  .demo-list { display: grid; gap: clamp(56px, 8vw, 104px); }
+  .demo-row { display: grid; gap: 28px; align-items: end; }
+  @media (width >= 1000px) {
+    .demo-row { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 48px; }
+    .demo-row:nth-child(even) .demo-row__mediawrap { order: 2; }
+  }
+  .demo-row__mediawrap { position: relative; }
+  .demo-row__media { display: block; }
+  .demo-row__media :global(img), .demo-row__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .demo-row__media video { opacity: 0; transition: opacity 0.8s var(--ease-out); }
+  .demo-row__media video[data-playing] { opacity: 1; }
+  .demo-row__label { position: absolute; left: 14px; bottom: 14px; padding: 6px 10px; background: #0b0b0cb8; font-size: 0.625rem; color: var(--ink-soft); }
+  .demo-row__body { display: grid; gap: 14px; justify-items: start; }
+  .demo-row__title { font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem); letter-spacing: 0.16em; font-weight: 300; }
+  .demo-row__facts { display: flex; gap: 32px; margin: 8px 0; padding: 16px 0; border-block: 1px solid var(--line); width: 100%; }
+  .demo-row__facts dd { font-family: var(--font-display); font-size: 1.375rem; margin-top: 4px; }
+</style>

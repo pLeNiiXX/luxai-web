@@ -1,0 +1,199 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import PricingCards from '../components/PricingCards.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { routes, otherLang, type Lang } from '../i18n/routes';
+import { t } from '../i18n/ui';
+import { serviceNode, faqNode } from '../lib/seo';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const u = t(lang);
+const r = (k: keyof typeof routes) => routes[k][lang];
+const path = r('pricing');
+const droneGuide = lang === 'es' ? '/guias/video-inmobiliario-dron-o-ia/' : '/en/guides/drone-vs-ai-property-video/';
+
+const c = {
+  es: {
+    title: 'Precio de un vídeo inmobiliario: packs desde 129 € | LUXAI',
+    description: 'Packs de 129 €, 379 € y 649 € (IVA no incluido) y lo que cuesta en España un vídeo con videógrafo o con dron. Precio de lanzamiento: 10 primeros clientes.',
+    crumb: 'Precios',
+    eyebrow: 'Packs y precios',
+    h1: 'Precio de un vídeo inmobiliario, con y sin rodaje',
+    lede: 'Tres packs de precio cerrado para vídeos hechos a partir de vuestras fotos. Y al lado, lo que cuesta hoy en España un vídeo con dron o con videógrafo según sus tarifas publicadas.',
+    launch: 'Precio de lanzamiento, solo para los 10 primeros clientes. Precios en euros, IVA no incluido.',
+    includes: {
+      eyebrow: 'En todos los packs',
+      title: 'Qué incluye cada vídeo',
+      items: [
+        { t: 'Una pieza montada, no un clip', d: 'Cada vídeo de 20–30 s se construye con varios planos, transiciones y ritmo de montaje.' },
+        { t: 'Fotos retocadas de regalo', d: 'Mejoramos luz, color y cielo en las fotos del pack (2, 6 o 15 según el pack). En esas fotos, la propiedad no se altera.' },
+        { t: 'Listo para publicar', d: 'Entregamos en 16:9 y, en los packs Profesional y Agencia, también en vertical 9:16.' },
+        { t: 'Revisiones incluidas', d: 'Una en el pack Esencial, dos por vídeo en el Profesional y tres por vídeo en el pack Agencia.' },
+      ],
+      link: 'Qué incluye cada vídeo y cómo se hace',
+    },
+    market: {
+      eyebrow: 'Comparativa',
+      title: 'Lo que cuesta un vídeo inmobiliario en España',
+      lede: 'Tarifas publicadas por proveedores de vídeo con dron, consultadas el 27 de septiembre de 2026. Son precios orientativos: cada proveedor cotiza según la propiedad y el desplazamiento.',
+      head: ['Opción', 'Precio publicado', 'Qué incluye', 'Fuente'],
+      rows: [
+        ['Vídeo con dron de vivienda o parcela', '150–300 €', 'Vuelos sencillos y perimetrales. La postproducción puede sumar 200–600 € aparte.', 'From The Sky (18/03/2026)', 'https://fromthesky.es/cuanto-cuesta-video-grabado-dron'],
+        ['Vídeo con dron (Tenerife)', '160 € sin IGIC', 'Permisos de vuelo y de localización aparte.', 'Fotopisos.pro', 'https://fotopisos.pro/precios/'],
+        ['Vídeo aéreo · pack villa (Alicante)', '140 € · 350 €', 'Vídeo 4K con música; el pack de villa incluye reportaje en tierra y desplazamiento de hasta 50 km.', 'FotoArte Inmobiliario', 'https://fotoarteinmobiliario.es/fotografia-video-drones-inmobiliaria/'],
+        ['Pack villa con dron (Barcelona)', '340 € + IVA', 'De 5 a 8 fotos o clips aéreos, sesión de dron de 30–60 minutos.', 'Blue Iris Media', 'https://www.blueirismedia.es/fotografia-dron-inmobiliario'],
+        ['Rodaje cinematográfico o FPV', '600–1.200 € (4 h) · 1.000–2.500 €+ (8 h)', 'Por jornada de rodaje; la postproducción se cobra aparte.', 'From The Sky (18/03/2026)', 'https://fromthesky.es/cuanto-cuesta-video-grabado-dron'],
+      ],
+      luxai: ['LUXAI, a partir de vuestras fotos', '129 € · 379 € · 649 €', '1, 4 u 8 + 1 vídeos montados, sin desplazamientos ni permisos de vuelo, en 72 h (Agencia: 5 días laborables).'],
+      note: 'No es exactamente la misma comparación: un dron graba el entorno real desde el aire y nosotros damos movimiento a fotos que ya existen. Si necesitáis enseñar la parcela, los accesos o el vecindario desde arriba, el dron sigue siendo la herramienta adecuada.',
+      guide: 'Dron o IA: permisos y plazos',
+    },
+    faq: [
+      { q: '¿Cuánto cuesta un vídeo inmobiliario profesional?', a: 'Depende de cómo se haga. Las tarifas publicadas de vídeo con dron para vivienda van de unos 140 a 350 € por inmueble, y un rodaje cinematográfico se cobra por jornada, de 600 a más de 2.500 €. Nuestros vídeos a partir de fotos cuestan 129 € el primero, o 95 € y 81 € por vídeo en los packs Profesional y Agencia (IVA no incluido).' },
+      { q: '¿Cuánto cuesta un vídeo con dron?', a: 'Según las tarifas publicadas que recogemos arriba, entre 140 y 350 € un vídeo sencillo de vivienda o parcela, con los permisos y la postproducción a veces aparte. Antes de encargarlo conviene saber qué exige el vuelo: lo explicamos en nuestra guía de dron o IA.' },
+      { q: '¿Los precios llevan IVA?', a: 'No. Todos los precios de los packs se muestran sin IVA, que se añade en la factura.' },
+      { q: '¿Hasta cuándo dura el precio de lanzamiento?', a: 'Hasta completar los 10 primeros clientes. Si lo reserváis ahora, el precio que veis es el que pagáis por ese pack.' },
+      { q: '¿Qué pack nos conviene?', a: 'El Esencial, para probar con una villa. El Profesional, si queréis cubrir web, portales y redes con versión vertical y vuestra marca. El Agencia, para carteras con varias propiedades: ocho vídeos y uno principal de 45–60 s.' },
+      { q: '¿Podemos verlo antes de pagar?', a: 'Sí. Preparamos una demo gratis con las fotos de uno de vuestros espacios en 72 horas, sin compromiso. <a href="/contacto/">Pedid la demo gratis antes de elegir pack</a>.' },
+    ],
+    cta: { eyebrow: 'Antes de elegir', title: 'Pedid la demo gratis y decidid con el vídeo delante', text: 'Nos enviáis las fotos de una propiedad y en 72 horas tenéis una muestra. Sin coste y sin compromiso.' },
+  },
+  en: {
+    title: 'Real Estate Video Cost: Packages from €129 | LUXAI',
+    description: 'Packages at €129, €379 and €649 (VAT excluded), plus what a videographer or drone shoot typically costs in Spain. Launch pricing for our first 10 clients.',
+    crumb: 'Pricing',
+    eyebrow: 'Packages & pricing',
+    h1: 'What a real estate video costs, with and without a shoot',
+    lede: 'Three fixed-price packages for films made from your photos. And alongside them, what a drone or videographer shoot costs in Spain today, according to published rates.',
+    launch: 'Launch pricing, for our first 10 clients only. Prices in euros, VAT not included.',
+    includes: {
+      eyebrow: 'In every package',
+      title: 'What each film includes',
+      items: [
+        { t: 'An edited piece, not a clip', d: 'Every 20–30 s film is built from several shots, with transitions and editing rhythm.' },
+        { t: 'Retouched photos included', d: 'We improve light, colour and sky in the package photos (2, 6 or 15 depending on the package). In those photos, the property itself is never altered.' },
+        { t: 'Ready to publish', d: 'Delivered in 16:9 and, in the Professional and Agency packages, in 9:16 vertical as well.' },
+        { t: 'Revisions included', d: 'One on the Essential package, two per film on Professional and three per film on Agency.' },
+      ],
+      link: 'What each film includes',
+    },
+    market: {
+      eyebrow: 'Comparison',
+      title: 'What a property video costs in Spain',
+      lede: 'Rates published by drone video providers, checked on 27 September 2026. They are indicative: each provider quotes according to the property and travel.',
+      head: ['Option', 'Published price', 'What it includes', 'Source'],
+      rows: [
+        ['Drone video of a home or plot', '€150–300', 'Simple, perimeter flights. Post-production can add €200–600.', 'From The Sky (18/03/2026)', 'https://fromthesky.es/cuanto-cuesta-video-grabado-dron'],
+        ['Drone video (Tenerife)', '€160 excl. IGIC', 'Flight and location permits charged separately.', 'Fotopisos.pro', 'https://fotopisos.pro/precios/'],
+        ['Aerial video · villa package (Alicante)', '€140 · €350', '4K video with music; the villa package includes a ground shoot and travel up to 50 km.', 'FotoArte Inmobiliario', 'https://fotoarteinmobiliario.es/fotografia-video-drones-inmobiliaria/'],
+        ['Villa package with drone (Barcelona)', '€340 + VAT', '5 to 8 aerial photos or clips, 30–60 minute drone session.', 'Blue Iris Media', 'https://www.blueirismedia.es/fotografia-dron-inmobiliario'],
+        ['Cinematic or FPV shoot', '€600–1,200 (4 h) · €1,000–2,500+ (8 h)', 'Per shoot day; post-production charged separately.', 'From The Sky (18/03/2026)', 'https://fromthesky.es/cuanto-cuesta-video-grabado-dron'],
+      ],
+      luxai: ['LUXAI, from your photos', '€129 · €379 · €649', '1, 4 or 8 + 1 edited films, no travel and no flight permits, in 72 hours (Agency: 5 business days).'],
+      note: 'It isn’t a like-for-like comparison: a drone films the real surroundings from the air, while we bring existing photos to life. If you need to show the plot, the access or the neighbourhood from above, a drone is still the right tool.',
+      guide: 'Drone or AI: permits and timing',
+    },
+    faq: [
+      { q: 'How much does real estate videography cost in Spain?', a: 'It depends on how it’s made. Published drone video rates for a home run from about €140 to €350 per property, and a cinematic shoot is charged per day, from €600 to over €2,500. Our films made from photos cost €129 for the first, or €95 and €81 per film on the Professional and Agency packages (VAT excluded).' },
+      { q: 'What does a real estate drone video cost?', a: 'According to the published rates above, between €140 and €350 for a simple video of a home or plot, with permits and post-production sometimes extra. Before booking one, it helps to know what the flight involves: we cover it in our drone or AI guide.' },
+      { q: 'Do prices include VAT?', a: 'No. All package prices are shown excluding VAT, which is added to the invoice.' },
+      { q: 'How long does launch pricing last?', a: 'Until we reach our first 10 clients. If you book now, the price you see is the price you pay for that package.' },
+      { q: 'Which package suits us?', a: 'Essential, to try it on one villa. Professional, to cover your website, portals and social media with a vertical version and your branding. Agency, for portfolios with several properties: eight films and one 45–60 s hero film.' },
+      { q: 'Can we see it before paying?', a: 'Yes. We prepare a free demo from the photos of one of your properties within 72 hours, with no commitment. <a href="/en/contact/">Get the free demo before choosing</a>.' },
+    ],
+    cta: { eyebrow: 'Before you choose', title: 'Get the free demo and decide with the film in front of you', text: 'Send us the photos of one property and within 72 hours you’ll have a sample. No cost, no commitment.' },
+  },
+}[lang];
+
+const crumbs = [{ name: c.crumb, path }];
+const schema = [serviceNode(lang, path), faqNode(path, c.faq)];
+---
+<Base lang={lang} title={c.title} description={c.description} path={path} alt={routes.pricing[otherLang(lang)]} crumbs={crumbs} schema={schema}>
+  <PageHero lang={lang} crumbs={crumbs} eyebrow={c.eyebrow} title={c.h1} lede={c.lede} />
+
+  <section class="section section--light section--tight">
+    <div class="wrap wrap--wide">
+      <h2 class="visually-hidden">{c.eyebrow}</h2>
+      <p class="launch small-caps"><span class="launch__dot" aria-hidden="true"></span>{c.launch}</p>
+      <PricingCards lang={lang} />
+    </div>
+  </section>
+
+  <section class="section section--raised" aria-labelledby="includes-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.includes.eyebrow} title={c.includes.title} id="includes-title">
+        <a class="link-quiet" href={r('how')}>{c.includes.link}<Icon name="arrow" /></a>
+      </SectionHead>
+      <ul class="includes" data-reveal="stagger">
+        {c.includes.items.map((it, i) => (
+          <li class="card"><span class="card__num num">0{i + 1}</span><h3 class="card__title">{it.t}</h3><p>{it.d}</p></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--light" aria-labelledby="market-title">
+    <div class="wrap wrap--wide">
+      <SectionHead eyebrow={c.market.eyebrow} title={c.market.title} lede={c.market.lede} id="market-title" />
+      <div class="table-wrap" data-reveal="fade" role="region" tabindex="0" aria-label={c.market.title}>
+        <table class="market">
+          <thead><tr>{c.market.head.map((h) => <th scope="col">{h}</th>)}</tr></thead>
+          <tbody>
+            {c.market.rows.map((row) => (
+              <tr>
+                <th scope="row">{row[0]}</th>
+                <td class="num market__price">{row[1]}</td>
+                <td>{row[2]}</td>
+                <td><a href={row[4]} rel="noopener" target="_blank">{row[3]}</a></td>
+              </tr>
+            ))}
+            <tr class="market__luxai">
+              <th scope="row">{c.market.luxai[0]}</th>
+              <td class="num market__price">{c.market.luxai[1]}</td>
+              <td colspan="2">{c.market.luxai[2]}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note market__note">{c.market.note} <a href={droneGuide}>{c.market.guide}</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section--raised" aria-labelledby="pricing-faq-title">
+    <div class="wrap wrap--wide faq-layout">
+      <SectionHead eyebrow={u.links.faq} title={lang === 'es' ? 'Preguntas sobre precios' : 'Questions about pricing'} id="pricing-faq-title" stack />
+      <FaqList items={c.faq} />
+    </div>
+  </section>
+
+  <CtaBand lang={lang} eyebrow={c.cta.eyebrow} title={c.cta.title} text={c.cta.text} secondary={{ href: r('demos'), label: u.cta.seeDemos }} />
+</Base>
+
+<style>
+  .launch { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 28px; color: var(--ink-soft); }
+  .launch__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 15%, transparent); }
+  .includes { display: grid; gap: 14px; }
+  @media (width >= 760px) { .includes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (width >= 1100px) { .includes { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); }
+  .market { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 0.9375rem; }
+  .market th, .market td { padding: 18px 20px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+  .market thead th { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); background: var(--bg-raised); }
+  .market tbody th { font-weight: 500; color: var(--ink); max-width: 240px; }
+  .market td { color: var(--ink-soft); }
+  .market__price { white-space: nowrap; font-family: var(--font-display); letter-spacing: 0.04em; color: var(--ink); }
+  .market a { color: var(--ink-soft); text-decoration-color: var(--gold-soft); }
+  .market__luxai { background: color-mix(in srgb, var(--gold) 8%, transparent); }
+  .market__luxai th, .market__luxai td { border-bottom: 0; color: var(--ink); }
+  .market__note { margin-top: 20px; max-width: 90ch; color: var(--ink-soft); }
+  .market__note a { color: var(--ink); }
+  @media (width >= 1000px) {
+    .faq-layout { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; align-items: start; }
+    .faq-layout :global(.section-head) { position: sticky; top: calc(var(--header-h) + 32px); margin-bottom: 0; }
+  }
+</style>
