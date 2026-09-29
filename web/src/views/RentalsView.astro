@@ -74,14 +74,14 @@ const c = {
       { href: '', key: 'formats', label: 'Formatos para web, Instagram y TikTok' },
       { href: '', key: 'pricing', label: 'Precio por vídeo según el pack' },
     ],
-    cta: { eyebrow: 'Antes de la temporada', title: 'Tened el vídeo de la villa antes de que vuelvan las reservas', text: 'Enviadnos las fotos de una villa y en 72 horas tenéis una demo en vídeo, sin coste y sin bloquear fechas.' },
+    cta: { eyebrow: 'Antes de la temporada', title: 'Tened el vídeo de la villa | antes de que vuelvan las reservas', text: 'Enviadnos las fotos de una villa y en 72 horas tenéis una demo en vídeo, sin coste y sin bloquear fechas.' },
   },
   en: {
     title: 'Vacation Rental Video for Luxury Villas | LUXAI',
     description: 'Films of your rental villas for your direct-booking site, Instagram and ads, made from the photos you already have. No shoot, no drone, 72-hour delivery.',
     crumb: 'Vacation rentals',
     eyebrow: 'For luxury villa rental managers',
-    h1: 'Vacation rental video for luxury villas',
+    h1: 'Vacation rental video | for luxury villas',
     lede: 'The villa is booked most of the season and filming it means blocking dates. From the photos you already have, the film is ready in 72 hours and nobody sets foot in the house.',
     imgAlt: 'Natural stone pool with loungers and cypress trees, one of the photos from demo 02',
     where: {
@@ -126,7 +126,7 @@ const c = {
       { href: '', key: 'formats', label: 'Formats for web, Instagram and TikTok' },
       { href: '', key: 'pricing', label: 'Price per film by package' },
     ],
-    cta: { eyebrow: 'Before the season', title: 'Have the villa’s film ready before bookings pick up', text: 'Send us the photos of one villa and within 72 hours you’ll have a demo film, free and without blocking any dates.' },
+    cta: { eyebrow: 'Before the season', title: 'Have the villa’s film ready | before bookings pick up', text: 'Send us the photos of one villa and within 72 hours you’ll have a demo film, free and without blocking any dates.' },
   },
 }[lang];
 
@@ -209,22 +209,22 @@ const schema = [serviceNode(lang, path), faqNode(path, c.faq)];
 
 <style>
   .lp-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .where { display: grid; gap: 14px; }
+  .where { display: grid; gap: 12px; }
   @media (width >= 760px) { .where { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (width >= 1100px) { .where { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   .rent-demo { display: grid; gap: 32px; align-items: center; }
   @media (width >= 1000px) { .rent-demo { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 56px; } }
   .rent-demo__mediawrap { position: relative; }
-  .rent-demo__media { display: block; }
+  .rent-demo__media { display: block; border-radius: var(--radius-lg); }
   .rent-demo__media :global(img), .rent-demo__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .rent-demo__media video { opacity: 0; transition: opacity 0.8s var(--ease-out); }
   .rent-demo__media video[data-playing] { opacity: 1; }
-  .rent-demo__body { display: grid; gap: 18px; justify-items: start; }
+  .rent-demo__body { display: grid; gap: 20px; justify-items: start; }
   .airbnb { display: grid; gap: 32px; }
   @media (width >= 1000px) { .airbnb { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; } }
   .airbnb__body { display: grid; gap: 22px; justify-items: start; }
   .airbnb__license { display: grid; gap: 12px; margin-top: 16px; }
   .airbnb__sources { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 0.875rem; }
   .airbnb__sources a { color: var(--ink-soft); }
-  .related-links { display: flex; flex-wrap: wrap; gap: 8px 36px; margin-top: 36px; }
+  .related-links { display: flex; flex-wrap: wrap; gap: 4px 28px; margin-top: 36px; }
 </style>

@@ -23,7 +23,7 @@ const c = {
     description: 'Packs de 129 €, 379 € y 649 € (IVA no incluido) y lo que cuesta en España un vídeo con videógrafo o con dron. Precio de lanzamiento: 10 primeros clientes.',
     crumb: 'Precios',
     eyebrow: 'Packs y precios',
-    h1: 'Precio de un vídeo inmobiliario, con y sin rodaje',
+    h1: 'Precio de un vídeo inmobiliario, | con y sin rodaje',
     lede: 'Tres packs de precio cerrado para vídeos hechos a partir de vuestras fotos. Y al lado, lo que cuesta hoy en España un vídeo con dron o con videógrafo según sus tarifas publicadas.',
     launch: 'Precio de lanzamiento, solo para los 10 primeros clientes. Precios en euros, IVA no incluido.',
     includes: {
@@ -61,14 +61,14 @@ const c = {
       { q: '¿Qué pack nos conviene?', a: 'El Esencial, para probar con una villa. El Profesional, si queréis cubrir web, portales y redes con versión vertical y vuestra marca. El Agencia, para carteras con varias propiedades: ocho vídeos y uno principal de 45–60 s.' },
       { q: '¿Podemos verlo antes de pagar?', a: 'Sí. Preparamos una demo gratis con las fotos de uno de vuestros espacios en 72 horas, sin compromiso. <a href="/contacto/">Pedid la demo gratis antes de elegir pack</a>.' },
     ],
-    cta: { eyebrow: 'Antes de elegir', title: 'Pedid la demo gratis y decidid con el vídeo delante', text: 'Nos enviáis las fotos de una propiedad y en 72 horas tenéis una muestra. Sin coste y sin compromiso.' },
+    cta: { eyebrow: 'Antes de elegir', title: 'Pedid la demo gratis y decidid | con el vídeo delante', text: 'Nos enviáis las fotos de una propiedad y en 72 horas tenéis una muestra. Sin coste y sin compromiso.' },
   },
   en: {
     title: 'Real Estate Video Cost: Packages from €129 | LUXAI',
     description: 'Packages at €129, €379 and €649 (VAT excluded), plus what a videographer or drone shoot typically costs in Spain. Launch pricing for our first 10 clients.',
     crumb: 'Pricing',
     eyebrow: 'Packages & pricing',
-    h1: 'What a real estate video costs, with and without a shoot',
+    h1: 'What a real estate video costs, | with and without a shoot',
     lede: 'Three fixed-price packages for films made from your photos. And alongside them, what a drone or videographer shoot costs in Spain today, according to published rates.',
     launch: 'Launch pricing, for our first 10 clients only. Prices in euros, VAT not included.',
     includes: {
@@ -106,7 +106,7 @@ const c = {
       { q: 'Which package suits us?', a: 'Essential, to try it on one villa. Professional, to cover your website, portals and social media with a vertical version and your branding. Agency, for portfolios with several properties: eight films and one 45–60 s hero film.' },
       { q: 'Can we see it before paying?', a: 'Yes. We prepare a free demo from the photos of one of your properties within 72 hours, with no commitment. <a href="/en/contact/">Get the free demo before choosing</a>.' },
     ],
-    cta: { eyebrow: 'Before you choose', title: 'Get the free demo and decide with the film in front of you', text: 'Send us the photos of one property and within 72 hours you’ll have a sample. No cost, no commitment.' },
+    cta: { eyebrow: 'Before you choose', title: 'Get the free demo and decide | with the film in front of you', text: 'Send us the photos of one property and within 72 hours you’ll have a sample. No cost, no commitment.' },
   },
 }[lang];
 
@@ -175,25 +175,21 @@ const schema = [serviceNode(lang, path), faqNode(path, c.faq)];
 </Base>
 
 <style>
-  .launch { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 28px; color: var(--ink-soft); }
-  .launch__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 15%, transparent); }
-  .includes { display: grid; gap: 14px; }
+  .launch { display: flex; width: fit-content; align-items: center; gap: 10px; margin: 0 auto 28px; padding: 9px 16px; border-radius: 999px; background: var(--bg-raised); color: var(--ink-soft); }
+  .launch__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 4px #26262614; }
+  .includes { display: grid; gap: 12px; }
   @media (width >= 760px) { .includes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (width >= 1100px) { .includes { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-  .table-wrap { overflow-x: auto; border: 1px solid var(--line); }
+  .table-wrap { overflow-x: auto; border-radius: var(--radius); background: var(--bg-raised); }
   .market { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 0.9375rem; }
   .market th, .market td { padding: 18px 20px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
-  .market thead th { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); background: var(--bg-raised); }
+  .market thead th { font-family: var(--font-label); font-size: 0.875rem; font-weight: 400; text-transform: uppercase; color: var(--muted); }
   .market tbody th { font-weight: 500; color: var(--ink); max-width: 240px; }
   .market td { color: var(--ink-soft); }
-  .market__price { white-space: nowrap; font-family: var(--font-display); letter-spacing: 0.04em; color: var(--ink); }
+  .market__price { white-space: nowrap; font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em; color: var(--ink); }
   .market a { color: var(--ink-soft); text-decoration-color: var(--gold-soft); }
-  .market__luxai { background: color-mix(in srgb, var(--gold) 8%, transparent); }
-  .market__luxai th, .market__luxai td { border-bottom: 0; color: var(--ink); }
+  .market__luxai { background: var(--dark); }
+  .market__luxai th, .market__luxai td { border-bottom: 0; color: #ffffff; }
   .market__note { margin-top: 20px; max-width: 90ch; color: var(--ink-soft); }
   .market__note a { color: var(--ink); }
-  @media (width >= 1000px) {
-    .faq-layout { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; align-items: start; }
-    .faq-layout :global(.section-head) { position: sticky; top: calc(var(--header-h) + 32px); margin-bottom: 0; }
-  }
 </style>

@@ -1,9 +1,10 @@
 ---
-import '@fontsource-variable/jost';
-import '@fontsource-variable/hanken-grotesk';
+import '@fontsource/abel/latin-400.css';
 import '../styles/global.css';
-import jostLatin from '@fontsource-variable/jost/files/jost-latin-wght-normal.woff2?url';
-import hankenLatin from '@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2?url';
+// Google Sans Flex (OFL) recortada a los caracteres de la web y a los pesos 400–600: 31 KB en vez de 51
+import sansLatin from '../assets/fonts/google-sans-flex-luxai.woff2?url';
+// Abel se precarga también: sin ella, la franja de datos de la portada cambia de alto al llegar la fuente (CLS)
+import abelLatin from '@fontsource/abel/files/abel-latin-400-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import DemoModal from '../components/DemoModal.astro';
@@ -67,12 +68,12 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
     {!noindex && hasAlt && esPath && <link rel="alternate" hreflang="es" href={abs(esPath)} />}
     {!noindex && hasAlt && enPath && <link rel="alternate" hreflang="en" href={abs(enPath)} />}
     {!noindex && hasAlt && esPath && <link rel="alternate" hreflang="x-default" href={abs(esPath)} />}
-    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="preload" href={jostLatin} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={hankenLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={sansLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={abelLatin} as="font" type="font/woff2" crossorigin />
     {preload.map((p) => <link rel="preload" as="image" href={p.href} media={p.media} imagesrcset={p.imagesrcset} imagesizes={p.imagesizes} fetchpriority="high" />)}
 
     <meta property="og:type" content={ogType} />

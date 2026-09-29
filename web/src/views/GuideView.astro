@@ -98,17 +98,18 @@ const l = {
 </Base>
 
 <style>
-  .g-hero { padding: calc(var(--header-h) + clamp(40px, 6vw, 88px)) 0 clamp(40px, 6vw, 72px); border-bottom: 1px solid var(--line); }
-  .g-hero__inner { display: grid; gap: 22px; max-width: calc(980px + var(--gutter) * 2); margin-inline: 0; }
-  .g-hero__title { font-size: clamp(1.75rem, 1rem + 2.6vw, 3.25rem); }
+  .g-hero { padding: calc(var(--header-h) + clamp(56px, 8vw, 112px)) 0 clamp(40px, 6vw, 72px); background: #ffffff; }
+  .g-hero__inner { display: grid; gap: 22px; max-width: calc(1000px + var(--gutter) * 2); margin-inline: 0; }
+  .g-hero__title { font-size: clamp(2.25rem, 1.2rem + 3.2vw, 4.25rem); }
+  .g-body-bg { background: #ffffff; border-top: 1px solid var(--line); }
   /* minmax(0, …): sin él, la tabla (min-width 560 px) ensancha la columna y el texto se corta en móvil */
   .g-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; padding-block: clamp(48px, 7vw, 96px); }
   @media (width >= 1100px) { .g-body { grid-template-columns: minmax(0, 3fr) minmax(0, 8fr); gap: 72px; align-items: start; } }
-  .g-toc { display: grid; gap: 16px; align-content: start; }
+  .g-toc { display: grid; gap: 14px; align-content: start; padding: 22px; border-radius: var(--radius); background: var(--bg); }
   @media (width >= 1100px) { .g-toc { position: sticky; top: calc(var(--header-h) + 32px); } }
-  .g-toc ol { display: grid; gap: 4px; border-left: 1px solid var(--line); }
-  .g-toc a { display: block; padding: 8px 0 8px 16px; margin-left: -1px; border-left: 1px solid transparent; color: var(--muted); text-decoration: none; font-size: 0.9375rem; line-height: 1.4; transition: color 0.2s ease, border-color 0.2s ease; }
-  @media (hover: hover) and (pointer: fine) { .g-toc a:hover { color: var(--ink); border-left-color: var(--gold); } }
+  .g-toc ol { display: grid; gap: 2px; }
+  .g-toc a { display: block; padding: 8px 12px; margin-inline: -12px; border-radius: 10px; color: var(--muted); text-decoration: none; font-size: 0.9375rem; line-height: 1.35; transition: color 0.2s ease, background-color 0.2s ease; }
+  @media (hover: hover) and (pointer: fine) { .g-toc a:hover { color: var(--ink); background: #ffffff; } }
   .g-prose { max-width: 72ch; }
   .g-prose :global(h2) { scroll-margin-top: calc(var(--header-h) + 24px); }
   .g-sources { display: grid; gap: 10px; margin-top: 16px; padding-left: 20px; list-style: decimal; color: var(--muted); font-size: 0.9375rem; }

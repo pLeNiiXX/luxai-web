@@ -6,7 +6,7 @@ const es = {
   },
   hero: {
     eyebrow: 'Vídeo inmobiliario con IA para villas de lujo',
-    title: 'Vuestras fotos ya tienen una película dentro',
+    title: 'Vuestras fotos ya tienen una *película* dentro',
     lede: 'Convertimos las fotos de vuestras villas en vídeos de estilo aéreo generados con inteligencia artificial. Sin rodaje, sin dron y sin permisos: listos en 72 horas para portales, web y redes.',
     secondary: 'Ver demostraciones',
     facts: [
@@ -18,7 +18,7 @@ const es = {
   },
   p2v: {
     eyebrow: 'De foto a vídeo',
-    title: 'Cuatro fotos. Una secuencia de cine.',
+    title: 'Cuatro fotos. | Una secuencia de cine.',
     lede: 'Esta es la demo 01: las cuatro fotografías de partida y el vídeo que sale de ellas. Cada plano nace de una sola foto y la cámara se mueve dentro de ella. Nadie voló un dron ni pisó la villa.',
     inLabel: 'fotografías de partida',
     outLabel: 'vídeo de estilo aéreo',
@@ -29,13 +29,13 @@ const es = {
     'Partimos de lo que ya existe: vuestras fotos. La IA lee la profundidad de cada una y mueve la cámara dentro de ella; nada entra en el plano que no estuviera en la foto. Nosotros elegimos, montamos y revisamos con vosotros hasta que el vídeo cuente vuestra villa y no otra.',
   demos: {
     eyebrow: 'Demostraciones',
-    title: 'Dos propiedades, dos lenguajes',
+    title: 'Dos propiedades, | dos lenguajes',
     lede: 'Una villa contemporánea frente al mar y una finca rústica entre olivos. El mismo método: cada plano sale de una sola foto, con la cámara moviéndose dentro de ella, y montaje de estudio.',
     cta: { eyebrow: 'Demo 03', title: 'La vuestra', text: 'Enviadnos las fotos de un espacio y en 72 horas tenéis una muestra en vídeo, sin coste.' },
   },
   process: {
     eyebrow: 'Proceso',
-    title: 'De vuestras fotos al vídeo, en 72 horas',
+    title: 'De vuestras fotos al vídeo, | en 72 horas',
     lede: 'Tres pasos y ninguna visita a la propiedad. Vosotros ponéis las fotos; nosotros, la cámara.',
     steps: [
       { title: 'Nos enviáis las fotos', text: 'Entre 5 y 15 fotos actuales de la propiedad, a 1920 × 1080 o más. Cuanta más variedad de exteriores e interiores, más planos salen.' },
@@ -46,7 +46,7 @@ const es = {
   },
   why: {
     eyebrow: 'Por qué LUXAI',
-    title: 'Todo lo que aporta un vídeo aéreo, sin lo que cuesta rodarlo',
+    title: 'Todo lo que aporta un vídeo aéreo, | sin lo que cuesta rodarlo',
     items: [
       { title: 'Sin permisos ni meteorología', text: 'Ni autorizaciones para volar un dron ni esperar a que amaine el viento o se vaya la bruma. Trabajamos con las fotos que ya tenéis.' },
       { title: 'Sin visitas a la propiedad', text: 'Nadie tiene que desplazarse ni coordinar fechas con propietarios, huéspedes o mantenimiento.' },
@@ -58,7 +58,7 @@ const es = {
   },
   audience: {
     eyebrow: 'Para quién',
-    title: 'Para quien vende y alquila propiedades de lujo',
+    title: 'Para quien vende | y alquila propiedades de lujo',
     lede: 'Trabajamos desde Mallorca y en remoto con propiedades de toda España: no hace falta que nadie viaje, solo que nos enviéis las fotos.',
     cards: [
       { key: 'agencies', title: 'Inmobiliarias de lujo', text: 'Un vídeo por cada propiedad de la cartera, no solo para la estrella: para portales, la ficha de vuestra web, la presentación al propietario y campañas.' },
@@ -67,7 +67,7 @@ const es = {
   },
   ai: {
     eyebrow: 'La IA, sin letra pequeña',
-    title: 'Qué hace la IA y qué hacemos nosotros',
+    title: 'Qué hace la IA | y qué hacemos nosotros',
     lede: 'La IA no inventa la villa: calcula la profundidad de cada foto (qué está cerca y qué está lejos) y, con ella, mueve la cámara dentro de la imagen. El criterio lo ponemos nosotros.',
     does: {
       title: 'Lo que hace la IA',
@@ -89,14 +89,14 @@ const es = {
   },
   pricing: {
     eyebrow: 'Packs y precios',
-    title: 'Tres packs, precio cerrado',
+    title: 'Tres packs, | precio cerrado',
     lede: 'Precio de lanzamiento para los 10 primeros clientes. Cada vídeo es una pieza montada con varios planos, no un clip suelto.',
     link: 'Comparar packs en detalle',
   },
-  guides: { eyebrow: 'Guías', title: 'Lo que conviene saber antes de encargar un vídeo', link: 'Todas las guías' },
+  guides: { eyebrow: 'Guías', title: 'Lo que conviene saber | antes de encargar un vídeo', link: 'Todas las guías' },
   faq: {
     eyebrow: 'Preguntas frecuentes',
-    title: 'Lo que conviene saber del vídeo con IA',
+    title: 'Lo que conviene saber | del vídeo con IA',
     link: 'Preguntas sobre contratación',
     items: [
       { q: '¿Cómo funciona realmente un vídeo inmobiliario hecho con IA?', a: 'Partimos de vuestras fotos. La IA genera un movimiento de cámara sobre cada una (avance, deslizamiento, elevación) y nosotros seleccionamos los mejores planos, los montamos con ritmo y música y los entregamos en 16:9 y, según el pack, en 9:16. Lo contamos paso a paso en <a href="/como-funciona/">cómo convertimos vuestras fotos en vídeo</a>.' },
@@ -109,7 +109,7 @@ const es = {
   },
   cta: {
     eyebrow: 'Demo sin coste',
-    title: '¿Lo vemos con una de vuestras villas?',
+    title: '¿Lo vemos | con una de vuestras villas?',
     text: 'Enviadnos las fotos de un espacio y en 72 horas tenéis una muestra en vídeo. Sin coste y sin compromiso.',
     secondary: 'Ver packs y precios',
   },
@@ -123,7 +123,7 @@ const en: typeof es = {
   },
   hero: {
     eyebrow: 'AI real estate video for luxury villas',
-    title: 'Your photos already hold a film',
+    title: 'Your photos already hold a *film*',
     lede: 'We turn the photographs of your villas into aerial-style films generated with artificial intelligence. No shoot, no drone, no flight permits: ready in 72 hours for portals, your website and social media.',
     secondary: 'See the demos',
     facts: [
@@ -135,7 +135,7 @@ const en: typeof es = {
   },
   p2v: {
     eyebrow: 'From photo to film',
-    title: 'Four photos. One cinematic sequence.',
+    title: 'Four photos. | One cinematic sequence.',
     lede: 'This is demo 01: the four photographs we started from and the film made from them. Every shot comes from a single photo, with the camera moving inside it. Nobody flew a drone or set foot on the property.',
     inLabel: 'source photographs',
     outLabel: 'aerial-style film',
@@ -146,7 +146,7 @@ const en: typeof es = {
     'We start from what already exists: your photos. The AI reads the depth of each one and moves the camera inside it; nothing enters the shot that wasn’t in the photo. We select, edit and review with you until the film tells the story of your villa and no other.',
   demos: {
     eyebrow: 'Demos',
-    title: 'Two properties, two languages',
+    title: 'Two properties, | two languages',
     lede: 'A contemporary villa by the sea and a rustic estate among olive trees. The same method: every shot comes from a single photo, with the camera moving inside it, and studio editing.',
     cta: { eyebrow: 'Demo 03', title: 'Yours', text: 'Send us the photos of one property and within 72 hours you’ll have a sample film, free of charge.' },
   },
@@ -163,7 +163,7 @@ const en: typeof es = {
   },
   why: {
     eyebrow: 'Why LUXAI',
-    title: 'Everything an aerial film gives you, without the cost of shooting it',
+    title: 'Everything an aerial film gives you, | without the cost of shooting it',
     items: [
       { title: 'No permits, no weather', text: 'No drone flight authorisations, no waiting for the wind to drop or the haze to lift. We work with the photos you already have.' },
       { title: 'No site visits', text: 'Nobody has to travel or coordinate dates with owners, guests or maintenance staff.' },
@@ -175,7 +175,7 @@ const en: typeof es = {
   },
   audience: {
     eyebrow: 'Who it’s for',
-    title: 'For those who sell and rent luxury property',
+    title: 'For those who sell | and rent luxury property',
     lede: 'We work from Mallorca, remotely, with properties all over Spain: nobody needs to travel, you just send us the photos.',
     cards: [
       { key: 'agencies', title: 'Luxury real estate agencies', text: 'A film for every property in your portfolio, not just the flagship listing: for portals, your property pages, owner pitches and campaigns.' },
@@ -184,7 +184,7 @@ const en: typeof es = {
   },
   ai: {
     eyebrow: 'AI, no small print',
-    title: 'What the AI does, and what we do',
+    title: 'What the AI does, | and what we do',
     lede: 'The AI doesn’t invent the villa: it computes the depth of each photo (what’s near and what’s far) and uses it to move the camera inside the image. The judgement is ours.',
     does: {
       title: 'What the AI does',
@@ -206,11 +206,11 @@ const en: typeof es = {
   },
   pricing: {
     eyebrow: 'Packages & pricing',
-    title: 'Three packages, fixed prices',
+    title: 'Three packages, | fixed prices',
     lede: 'Launch pricing for our first 10 clients. Every film is edited from several shots, not a single loose clip.',
     link: 'Compare packages in detail',
   },
-  guides: { eyebrow: 'Guides', title: 'Worth knowing before you commission a property film', link: 'All guides' },
+  guides: { eyebrow: 'Guides', title: 'Worth knowing | before you commission a property film', link: 'All guides' },
   faq: {
     eyebrow: 'FAQ',
     title: 'Worth knowing about AI property film',
@@ -226,7 +226,7 @@ const en: typeof es = {
   },
   cta: {
     eyebrow: 'Complimentary demo',
-    title: 'Shall we try it on one of your villas?',
+    title: 'Shall we try it on one | of your villas?',
     text: 'Send us the photos of one property and within 72 hours you’ll have a sample film. No cost, no commitment.',
     secondary: 'See packages & pricing',
   },

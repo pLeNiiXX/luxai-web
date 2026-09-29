@@ -43,7 +43,7 @@ const copy = {
 ---
 <ul class:list={['packs', { 'packs--compact': compact }]} data-reveal="stagger">
   {PACKS.map((p) => (
-    <li class:list={['pack', { 'pack--featured': p.featured }]}>
+    <li class:list={['pack', { 'pack--featured surface-dark': p.featured }]}>
       {p.featured && <span class="pack__badge small-caps">{copy.recommended}</span>}
       <h3 class="pack__name">{packName[p.id][lang]}</h3>
       <p class="pack__price num"><span class="pack__amount">{p.price}</span><span class="pack__currency">€</span></p>
@@ -55,7 +55,7 @@ const copy = {
         </ul>
       )}
       <a
-        class:list={['btn', { 'btn--gold': p.featured }, 'pack__cta']}
+        class:list={['btn', 'btn--gold', 'pack__cta']}
         href={`${routes.contact[lang]}#demo`}
         data-open-demo-modal
         data-pack={packName[p.id][lang]}
@@ -65,33 +65,27 @@ const copy = {
 </ul>
 
 <style>
-  .packs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .packs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
   @media (width >= 900px) { .packs { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; } }
   .pack {
     position: relative; display: flex; flex-direction: column; gap: 14px;
-    padding: clamp(28px, 3vw, 40px); border: 1px solid var(--line); background: var(--bg-raised);
+    padding: clamp(24px, 2.6vw, 34px); border-radius: var(--radius-lg); background: var(--bg-raised);
   }
-  .pack--featured { border-color: var(--gold-soft); background: linear-gradient(180deg, #1b1815 0%, var(--bg-raised) 70%); }
-  /* sobre fondo blanco, el pack recomendado se invierte (tarjeta oscura) */
-  :global(.section--light) .pack--featured {
-    --ink: #f2ede4; --ink-soft: #f2ede4d1; --muted: #9a948a; --line: #f2ede41f; --line-strong: #f2ede438;
-    --gold: #c8a97e; --gold-soft: #c8a97e73;
-    background: #141312; border-color: #141312; color: var(--ink);
+  /* el recomendado va en grafito (tokens de .surface-dark) */
+  .pack--featured { background: var(--dark); }
+  .pack__badge {
+    position: absolute; top: 18px; right: 18px; padding: 6px 12px; border-radius: 999px;
+    background: #ffffff; color: var(--dark);
   }
-  :global(.section--light) .pack--featured :global(.btn--gold) { --btn-bg: #c8a97e; --btn-ink: #0b0b0c; --btn-border: #c8a97e; }
-  @media (hover: hover) and (pointer: fine) {
-    :global(.section--light) .pack--featured :global(.btn--gold:hover) { --btn-bg: #d6bb93; --btn-border: #d6bb93; }
-  }
-  .pack__badge { position: absolute; top: -1px; right: -1px; padding: 8px 12px; background: var(--gold); color: #0b0b0c; }
-  .pack__name { font-family: var(--font-display); font-weight: 400; font-size: 1.125rem; letter-spacing: 0.24em; text-transform: uppercase; }
-  .pack__price { display: flex; align-items: flex-start; gap: 6px; margin-top: 6px; }
-  .pack__amount { font-family: var(--font-display); font-weight: 300; font-size: clamp(3rem, 2.4rem + 2vw, 4.25rem); line-height: 0.95; letter-spacing: 0.02em; }
-  .pack__currency { font-family: var(--font-display); font-size: 1.25rem; color: var(--gold); margin-top: 6px; }
-  .pack__meta { color: var(--muted); font-size: 0.875rem; }
-  .pack__pitch { color: var(--ink-soft); padding-bottom: 6px; border-bottom: 1px solid var(--line); }
-  .pack__features { display: grid; gap: 12px; padding-top: 6px; font-size: 0.9688rem; }
+  .pack__name { font-family: var(--font-display); font-weight: 500; font-size: 1.375rem; letter-spacing: -0.03em; }
+  .pack__price { display: flex; align-items: flex-start; gap: 4px; margin-top: 10px; }
+  .pack__amount { font-family: var(--font-display); font-weight: 500; font-size: clamp(3rem, 2.3rem + 2.2vw, 4.25rem); line-height: 1; letter-spacing: -0.055em; }
+  .pack__currency { font-family: var(--font-display); font-weight: 500; font-size: 1.5rem; color: var(--muted); margin-top: 4px; }
+  .pack__meta { font-family: var(--font-label); text-transform: uppercase; color: var(--muted); font-size: 0.875rem; }
+  .pack__pitch { color: var(--ink-soft); padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .pack__features { display: grid; gap: 12px; padding-top: 4px; padding-bottom: 12px; font-size: 0.9688rem; }
   .pack__features li { display: grid; grid-template-columns: 16px 1fr; gap: 12px; align-items: start; }
-  .pack__features :global(svg) { width: 14px; height: 14px; margin-top: 5px; color: var(--gold); }
+  .pack__features :global(svg) { width: 14px; height: 14px; margin-top: 5px; color: var(--ink); }
   .pack__cta { margin-top: auto; }
   .packs--compact .pack__cta { margin-top: 8px; }
 </style>

@@ -23,6 +23,9 @@ herramientas/demos/work/qa/*
 !herramientas/demos/work/qa/profundidad-base-nc-vs-small-apache.jpg
 !herramientas/demos/work/qa/fotos-vs-fotogramas.jpg
 
+# material de terceros y comparativas internas: solo en local
+referencias-motionsites/
+
 # local
 .claude/
 .DS_Store

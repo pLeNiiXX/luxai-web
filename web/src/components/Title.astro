@@ -1,0 +1,7 @@
+---
+import { splitTitle } from '../lib/title';
+
+interface Props { text: string }
+const { main, rest } = splitTitle(Astro.props.text);
+---
+{main}{rest && <> <span class="title-muted">{rest}</span></>}

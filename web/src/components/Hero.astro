@@ -19,15 +19,25 @@ const { lang, eyebrow, title, lede, primary, secondary, facts = [] } = Astro.pro
 const u = t(lang);
 
 const desk = await Promise.all([1280, 1920].map((w) => getImage({ src: heroPoster, width: w, format: 'webp', quality: 72 })));
-const mob = await Promise.all([540, 720].map((w) => getImage({ src: heroPosterMobile, width: w, format: 'webp', quality: 70 })));
+// el póster queda bajo el velo y lo sustituye el vídeo: calidad contenida para no competir con el titular (LCP)
+const mob = await Promise.all([540, 720].map((w) => getImage({ src: heroPosterMobile, width: w, format: 'webp', quality: 56 })));
+// AVIF primero: mismo aspecto con bastante menos peso (el navegador que no lo admite usa el WebP)
+const mobAvif = await Promise.all([540, 720].map((w) => getImage({ src: heroPosterMobile, width: w, format: 'avif', quality: 50 })));
+const deskAvif = await Promise.all([1280, 1920].map((w) => getImage({ src: heroPoster, width: w, format: 'avif', quality: 55 })));
+// «Vuestras fotos ya tienen una *película* dentro»: la palabra entre asteriscos va en cursiva y en acento
+const titleParts = title.split('*');
 const deskSet = desk.map((i, k) => `${i.src} ${[1280, 1920][k]}w`).join(', ');
 const mobSet = mob.map((i, k) => `${i.src} ${[540, 720][k]}w`).join(', ');
+const mobAvifSet = mobAvif.map((i, k) => `${i.src} ${[540, 720][k]}w`).join(', ');
+const deskAvifSet = deskAvif.map((i, k) => `${i.src} ${[1280, 1920][k]}w`).join(', ');
 ---
 <section class="hero" data-hero>
   <div class="hero__media" data-hero-media>
     <picture>
-      <source media="(max-width: 767px)" srcset={mobSet} sizes="100vw" />
-      <img class="hero__poster" src={desk[1].src} srcset={deskSet} sizes="100vw" width="1920" height="1080" alt="" fetchpriority="high" decoding="async" />
+      <source media="(max-width: 767px)" type="image/avif" srcset={mobAvifSet} sizes="100vw" />
+      <source media="(max-width: 767px)" type="image/webp" srcset={mobSet} sizes="100vw" />
+      <source type="image/avif" srcset={deskAvifSet} sizes="100vw" />
+      <img class="hero__poster" src={desk[1].src} srcset={deskSet} sizes="100vw" width="1920" height="1080" alt="" decoding="async" />
     </picture>
     <video
       class="hero__video"
@@ -50,12 +60,12 @@ const mobSet = mob.map((i, k) => `${i.src} ${[540, 720][k]}w`).join(', ');
   <div class="wrap wrap--wide hero__content" data-hero-content>
     <h1 class="hero__title">
       <span class="eyebrow hero__eyebrow" data-hero-fade>{eyebrow}</span>
-      <span class="h-hero hero__headline" data-hero-headline>{title}</span>
+      <span class="h-hero hero__headline" data-hero-headline>{titleParts.map((part, i) => (i % 2 ? <em class="hero__accent">{part}</em> : part))}</span>
     </h1>
     <p class="lede lede--ink hero__lede" data-hero-fade>{lede}</p>
     <div class="actions" data-hero-fade>
       <a class="btn btn--gold" href={primary.href} data-open-demo-modal={primary.modal ? '' : undefined}>{primary.label}<Icon name="arrow" /></a>
-      {secondary && <a class="link-quiet" href={secondary.href}>{secondary.label}<Icon name="arrow" /></a>}
+      {secondary && <a class="btn" href={secondary.href}>{secondary.label}<Icon name="arrow" /></a>}
     </div>
   </div>
 
@@ -80,35 +90,40 @@ const mobSet = mob.map((i, k) => `${i.src} ${[540, 720][k]}w`).join(', ');
   .hero {
     position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr auto;
     padding-top: calc(var(--header-h) + 40px); isolation: isolate; overflow: clip;
+    background: var(--dark); color: #ffffff;
   }
-  .hero__media { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: var(--bg); }
+  .hero__media { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: var(--dark); }
   .hero__poster, .hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .hero__video { opacity: 0; transition: opacity 1.2s var(--ease-out); }
   .hero__video[data-playing] { opacity: 1; }
+  /* velo suave: más denso detrás del texto centrado y en el pie */
   .hero__shade {
     position: absolute; inset: 0;
     background:
-      linear-gradient(180deg, #0b0b0cb3 0%, #0b0b0c40 26%, #0b0b0c4d 55%, #0b0b0cf2 100%),
-      linear-gradient(90deg, #0b0b0cd1 0%, #0b0b0c99 38%, #0b0b0c26 72%, #0b0b0c14 100%);
+      radial-gradient(ellipse 70% 55% at 50% 48%, #1a1a1a8c 0%, #1a1a1a40 60%, #1a1a1a1a 100%),
+      linear-gradient(180deg, #1a1a1a59 0%, #1a1a1a00 28%, #1a1a1a00 62%, #1a1a1ab3 100%);
   }
-  @media (width < 768px) {
-    .hero__shade { background: linear-gradient(180deg, #0b0b0cb3 0%, #0b0b0c59 30%, #0b0b0c8c 55%, #0b0b0cf5 100%); }
-  }
-  .hero__content { align-self: end; display: grid; gap: 26px; padding-bottom: clamp(32px, 5vw, 56px); }
-  .hero__title { display: grid; gap: 22px; margin: 0; font-weight: inherit; }
-  .hero__headline { max-width: 17ch; }
-  .hero__lede { max-width: 50ch; }
+  .hero__content { align-self: center; display: grid; gap: 26px; justify-items: center; text-align: center; padding-block: 16px 48px; }
+  .hero__title { display: grid; gap: 22px; justify-items: center; margin: 0; font-weight: inherit; }
+  .hero__eyebrow { color: #ffffff; font-size: 0.9375rem; }
+  .hero__eyebrow::before { filter: invert(1); }
+  .hero__headline { max-width: 13ch; text-shadow: 0 2px 30px #0000004d; }
+  .hero__accent { font-style: italic; font-weight: 500; color: var(--accent); padding-right: 0.06em; }
+  .hero__lede { max-width: 46ch; color: #ffffffe6; }
+  .hero__content .actions { justify-content: center; }
+  .hero__content :global(.btn--gold) { --btn-border: #ffffff38; }
   .hero__foot {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px;
-    padding-block: 22px max(22px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px;
+    padding-block: 20px max(20px, env(safe-area-inset-bottom)); border-top: 1px solid #ffffff2e;
   }
-  .hero__facts { display: flex; flex-wrap: wrap; gap: 14px 40px; }
+  .hero__facts { display: flex; flex-wrap: wrap; gap: 12px 40px; }
   .hero__facts li { display: flex; align-items: baseline; gap: 10px; }
-  .hero__fact-value { font-family: var(--font-display); font-size: 1.125rem; letter-spacing: 0.08em; color: var(--ink); }
-  .hero__fact-label { font-size: 0.8125rem; color: var(--muted); letter-spacing: 0.04em; }
+  .hero__fact-value { font-family: var(--font-display); font-weight: 500; font-size: 1.25rem; letter-spacing: -0.03em; color: #ffffff; }
+  .hero__fact-label { font-family: var(--font-label); font-size: 0.875rem; text-transform: uppercase; color: #ffffffc2; }
   .hero__toggle {
-    display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0;
-    border: 0; background: transparent; color: var(--ink-soft); cursor: pointer; transition: color 0.2s ease;
+    display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px; border-radius: 999px;
+    border: 0; background: #ffffff1f; color: #ffffff; cursor: pointer; transition: background-color 0.2s ease;
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   }
   .hero__toggle-icon { position: relative; width: 10px; height: 12px; }
   .hero__toggle-icon::before, .hero__toggle-icon::after { content: ''; position: absolute; top: 0; bottom: 0; width: 2px; background: currentColor; }
@@ -116,10 +131,10 @@ const mobSet = mob.map((i, k) => `${i.src} ${[540, 720][k]}w`).join(', ');
   .hero__toggle-icon::after { right: 1px; }
   .hero__toggle[data-paused] .hero__toggle-icon::before { left: 1px; width: 0; height: 0; top: 0; background: none; border-style: solid; border-width: 6px 0 6px 9px; border-color: transparent transparent transparent currentColor; }
   .hero__toggle[data-paused] .hero__toggle-icon::after { display: none; }
-  @media (hover: hover) and (pointer: fine) { .hero__toggle:hover { color: var(--ink); } }
+  @media (hover: hover) and (pointer: fine) { .hero__toggle:hover { background: #ffffff33; } }
   @media (width < 700px) {
     .hero__facts { gap: 10px 24px; }
-    .hero__facts li { flex-direction: column; gap: 2px; }
+    .hero__facts li { flex-direction: column; gap: 0; }
   }
   /* entrada en CSS puro: no depende del JS, así el texto pinta en el primer fotograma (LCP) */
   .hero__eyebrow, .hero__headline, .hero__lede, .hero__content .actions, .hero__foot {
@@ -135,11 +150,11 @@ const mobSet = mob.map((i, k) => `${i.src} ${[540, 720][k]}w`).join(', ');
     to { opacity: 1; transform: none; }
   }
   .hero__poster, .hero__video { animation: hero-zoom 2.4s var(--ease-out) both; }
-  /* escritorio: el encuadre se abre desde un marco hasta la pantalla completa (en CSS, sin saltos) */
+  /* escritorio: el encuadre se abre desde una tarjeta redondeada hasta la pantalla completa */
   @media (min-width: 768px) {
     .hero__media { animation: hero-frame 1.5s var(--ease-in-out) both; }
   }
-  @keyframes hero-frame { from { clip-path: inset(5% 4% 5% 4%); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes hero-frame { from { clip-path: inset(6% 5% 6% 5% round 28px); } to { clip-path: inset(0 0 0 0 round 0); } }
   @keyframes hero-zoom { from { transform: scale(1.1); } to { transform: none; } }
 </style>
 

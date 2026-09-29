@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import Title from './Title.astro';
 import VideoToggle from './VideoToggle.astro';
 import PreviewSources from './PreviewSources.astro';
 import type { Demo } from '../data/demos';
@@ -24,7 +25,7 @@ const n = demo.photos.length;
   <div class="p2v__stage" data-p2v-stage>
     <div class="wrap wrap--wide p2v__head">
       <p class="eyebrow">{eyebrow}</p>
-      <h2 id="p2v-title" class="h-1" data-reveal="lines">{title}</h2>
+      <h2 id="p2v-title" class="display title" data-reveal="lines"><Title text={title} /></h2>
       <p class="lede">{lede}</p>
     </div>
 
@@ -35,8 +36,8 @@ const n = demo.photos.length;
           <ol class="p2v__photos" data-p2v-photos>
             {demo.photos.map((p, i) => (
               <li class="p2v__photo" data-p2v-photo>
-                <Image src={p.src} alt={p.alt[lang]} widths={[360, 640]} sizes="(min-width: 900px) 22vw, 45vw" quality={70} loading="lazy" />
-                <span class="p2v__tag num">{String(i + 1).padStart(2, '0')}</span>
+                <Image src={p.src} alt={p.alt[lang]} widths={[360, 640]} sizes="(min-width: 900px) 22vw, 45vw" quality={70} loading="lazy" fetchpriority="low" />
+                <span class="p2v__tag chip num">{String(i + 1).padStart(2, '0')}</span>
               </li>
             ))}
           </ol>
@@ -47,7 +48,7 @@ const n = demo.photos.length;
         <figure class="p2v__film" data-p2v-film>
           <p class="small-caps p2v__label" data-p2v-label-out><span class="gold">LUXAI</span> {outLabel}</p>
           <div class="p2v__screen media-frame ratio-16x9">
-            <Image src={demo.poster} alt="" widths={[640, 1280]} sizes="(min-width: 900px) 60vw, 100vw" quality={70} loading="lazy" class="p2v__poster" />
+            <Image src={demo.poster} alt="" widths={[640, 1280]} sizes="(min-width: 900px) 60vw, 100vw" quality={70} loading="lazy" fetchpriority="low" class="p2v__poster" />
             <video id="p2v-vid" muted loop playsinline preload="none" data-inview aria-label={demo.description[lang]}>
               <PreviewSources preview={demo.video.preview} />
             </video>
@@ -65,29 +66,28 @@ const n = demo.photos.length;
 
 <style>
   .p2v { overflow: clip; }
-  .p2v__head { display: grid; gap: 20px; max-width: calc(820px + var(--gutter) * 2); margin-inline: 0; margin-bottom: clamp(40px, 6vw, 72px); }
-  .p2v__canvas { position: relative; display: grid; gap: 28px; align-items: center; }
-  @media (width >= 900px) { .p2v__canvas { grid-template-columns: minmax(0, 5fr) auto minmax(0, 6.4fr); gap: clamp(24px, 3vw, 44px); } }
-  .p2v__label { margin-bottom: 14px; color: var(--muted); }
+  .p2v__head { display: grid; gap: 22px; justify-items: center; text-align: center; margin-bottom: clamp(40px, 6vw, 72px); }
+  .p2v__head .title { max-width: 18ch; }
+  .p2v__canvas { position: relative; display: grid; gap: 24px; align-items: center; }
+  @media (width >= 900px) { .p2v__canvas { grid-template-columns: minmax(0, 5fr) auto minmax(0, 6.4fr); gap: clamp(20px, 2.6vw, 40px); } }
+  .p2v__label { margin-bottom: 12px; color: var(--muted); }
   .p2v__photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .p2v__photo { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-raised); }
+  .p2v__photo { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 14px; background: var(--bg-sunk); }
   .p2v__photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .p2v__tag {
-    position: absolute; left: 8px; bottom: 8px; padding: 3px 7px; background: #0b0b0cb3;
-    font-size: 0.6875rem; letter-spacing: 0.14em; color: var(--ink);
-  }
-  .p2v__arrow { display: grid; place-items: center; width: 48px; height: 48px; margin-inline: auto; border: 1px solid var(--gold-soft); border-radius: 50%; color: var(--gold); }
-  .p2v__arrow :global(svg) { width: 16px; height: 16px; }
+  .p2v__tag { position: absolute; left: 8px; bottom: 8px; }
+  .p2v__arrow { display: grid; place-items: center; width: 48px; height: 48px; margin-inline: auto; border-radius: 50%; background: var(--dark); color: #ffffff; }
+  .p2v__arrow :global(svg) { width: 15px; height: 15px; }
   @media (width < 900px) { .p2v__arrow :global(svg) { transform: rotate(90deg); } }
-  .p2v__screen { position: relative; }
+  .p2v__screen { position: relative; border-radius: var(--radius-lg); }
   .p2v__screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .p2v__poster { width: 100%; height: 100%; object-fit: cover; }
-  .p2v__caption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; margin-top: 14px; color: var(--muted); font-size: 0.9375rem; }
+  .p2v__caption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; margin-top: 12px; color: var(--muted); font-family: var(--font-label); text-transform: uppercase; font-size: 0.875rem; }
+  .p2v__caption :global(.link-quiet) { font-family: var(--font-display); text-transform: none; font-size: 0.9375rem; }
 
   /* modo animado: el escenario se ancla y las fotos convergen en el vídeo */
-  :global(.p2v[data-live]) .p2v__stage { min-height: 100svh; display: grid; align-content: center; padding-block: calc(var(--header-h) + 8px) 24px; }
+  :global(.p2v[data-live]) .p2v__stage { min-height: 100svh; display: grid; align-content: center; padding-block: calc(var(--header-h) + 16px) 24px; }
   :global(.p2v[data-live]) { padding-block: 0; }
-  :global(.p2v[data-live]) .p2v__head { margin-bottom: clamp(24px, 4vw, 48px); }
+  :global(.p2v[data-live]) .p2v__head { margin-bottom: clamp(24px, 3.4vw, 44px); }
 </style>
 
 <script>
@@ -150,7 +150,7 @@ const n = demo.photos.length;
         },
       });
 
-      tl.fromTo(screen, { clipPath: 'inset(46% 46% 46% 46%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'expo.inOut' }, 0.85)
+      tl.fromTo(screen, { clipPath: 'inset(46% 46% 46% 46% round 28px)' }, { clipPath: 'inset(0% 0% 0% 0% round 28px)', duration: 1, ease: 'expo.inOut' }, 0.85)
         .from(film.querySelectorAll('.p2v__label, .p2v__caption'), { opacity: 0, y: 14, duration: 0.4, stagger: 0.1 }, 1.45)
         .to(photos, {
           x: (_i, el) => delta(el as HTMLElement).x,

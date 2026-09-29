@@ -76,23 +76,24 @@ const schema = [itemListNode(path, guides.map((g) => ({ name: g.data.title, path
 </Base>
 
 <style>
-  .guides { display: grid; border-top: 1px solid var(--line); }
+  .guides { display: grid; gap: 12px; }
   .guide-row {
-    display: grid; grid-template-columns: 48px 1fr; gap: 12px 20px; align-items: start;
-    padding: 32px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink);
+    display: grid; grid-template-columns: 40px 1fr; gap: 12px 16px; align-items: start;
+    padding: clamp(22px, 2.6vw, 32px); border-radius: var(--radius); background: var(--bg-raised);
+    text-decoration: none; color: var(--ink); border: 1px solid transparent; transition: border-color 0.25s ease;
   }
-  @media (width >= 900px) { .guide-row { grid-template-columns: 64px minmax(0, 1fr) 180px 32px; align-items: center; } }
-  .guide-row__n { font-family: var(--font-display); color: var(--gold); letter-spacing: 0.16em; font-size: 0.875rem; }
+  @media (width >= 900px) { .guide-row { grid-template-columns: 56px minmax(0, 1fr) 190px 44px; align-items: center; } }
+  .guide-row__n { font-family: var(--font-label); color: var(--muted); font-size: 0.9375rem; }
   .guide-row__main { display: grid; gap: 10px; }
-  .guide-row__title { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.0625rem, 0.95rem + 0.6vw, 1.375rem); letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.35; }
-  .guide-row__excerpt { color: var(--muted); max-width: 70ch; }
-  .guide-row__meta { grid-column: 2; line-height: 1.8; }
+  .guide-row__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem); letter-spacing: -0.04em; line-height: 1.15; text-wrap: balance; }
+  .guide-row__excerpt { font-family: var(--font-label); text-transform: uppercase; color: var(--muted); max-width: 70ch; line-height: 1.45; }
+  .guide-row__meta { grid-column: 2; line-height: 1.6; }
   @media (width >= 900px) { .guide-row__meta { grid-column: auto; text-align: right; } }
-  .guide-row__arrow { display: none; color: var(--gold); }
-  .guide-row__arrow :global(svg) { width: 18px; height: 18px; transition: transform 0.25s var(--ease-out); }
-  @media (width >= 900px) { .guide-row__arrow { display: block; } }
+  .guide-row__arrow { display: none; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--dark); color: #ffffff; }
+  .guide-row__arrow :global(svg) { width: 14px; height: 14px; transition: transform 0.25s var(--ease-out); }
+  @media (width >= 900px) { .guide-row__arrow { display: grid; } }
   @media (hover: hover) and (pointer: fine) {
-    .guide-row:hover .guide-row__title { color: var(--gold-bright); }
-    .guide-row:hover .guide-row__arrow :global(svg) { transform: translateX(4px); }
+    .guide-row:hover { border-color: var(--line-strong); }
+    .guide-row:hover .guide-row__arrow :global(svg) { transform: translateX(3px); }
   }
 </style>

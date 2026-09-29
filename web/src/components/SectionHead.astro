@@ -1,11 +1,13 @@
 ---
+import Title from './Title.astro';
+
 interface Props { eyebrow?: string; title: string; lede?: string; id?: string; as?: 'h1' | 'h2'; stack?: boolean; size?: 'title' | 'h1' }
 const { eyebrow, title, lede, id, as: Tag = 'h2', stack = false, size = 'title' } = Astro.props;
 ---
 <header class:list={['section-head', { 'section-head--stack': stack }]}>
   <div class="section-head__main">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <Tag id={id} class:list={[size === 'h1' ? 'h-1' : 'display title']} data-reveal="lines">{title}</Tag>
+    <Tag id={id} class:list={[size === 'h1' ? 'h-1' : 'display title']} data-reveal="lines"><Title text={title} /></Tag>
   </div>
   {(lede || Astro.slots.has('default')) && (
     <div class="section-head__aside" data-reveal="fade">
@@ -16,6 +18,8 @@ const { eyebrow, title, lede, id, as: Tag = 'h2', stack = false, size = 'title' 
 </header>
 
 <style>
-  .section-head__main { display: grid; gap: 20px; }
-  .section-head__aside { display: grid; gap: 20px; justify-items: start; }
+  .section-head__main { display: grid; gap: 22px; justify-items: inherit; }
+  .section-head__main :global(.title) { max-width: 20ch; }
+  .section-head__aside { display: grid; gap: 22px; justify-items: inherit; }
+  .section-head__aside :global(.lede) { max-width: 60ch; }
 </style>

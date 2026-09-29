@@ -1,5 +1,6 @@
 ---
 import Breadcrumbs from './Breadcrumbs.astro';
+import Title from './Title.astro';
 import type { Lang } from '../i18n/routes';
 import type { Crumb } from '../lib/seo';
 
@@ -12,7 +13,7 @@ const { lang, crumbs, eyebrow, title, lede, split = false } = Astro.props;
       <Breadcrumbs lang={lang} crumbs={crumbs} />
       <div class="page-hero__title">
         {eyebrow && <p class="eyebrow page-hero__eyebrow enter" style="--d: 0.05s">{eyebrow}</p>}
-        <h1 class="h-1 enter" style="--d: 0.1s">{title}</h1>
+        <h1 class="h-1 enter" style="--d: 0.1s"><Title text={title} /></h1>
       </div>
       {lede && <p class="lede lede--ink enter" style="--d: 0.25s">{lede}</p>}
       {Astro.slots.has('actions') && <div class="actions enter" style="--d: 0.35s"><slot name="actions" /></div>}
@@ -23,11 +24,12 @@ const { lang, crumbs, eyebrow, title, lede, split = false } = Astro.props;
 </section>
 
 <style>
-  .page-hero { padding-top: calc(var(--header-h) + clamp(40px, 7vw, 96px)); padding-bottom: clamp(56px, 8vw, 112px); border-bottom: 1px solid var(--line); }
-  .page-hero__inner { display: grid; gap: clamp(40px, 6vw, 72px); }
-  .page-hero__text { display: grid; gap: 26px; align-content: start; max-width: 900px; }
-  .page-hero__title { display: grid; gap: 20px; margin: 0; font-weight: inherit; }
+  .page-hero { padding-top: calc(var(--header-h) + clamp(56px, 8vw, 112px)); padding-bottom: clamp(56px, 7vw, 96px); background: #ffffff; }
+  .page-hero__inner { display: grid; gap: clamp(40px, 5vw, 64px); }
+  .page-hero__text { display: grid; gap: 24px; align-content: start; max-width: 1000px; }
+  .page-hero__title { display: grid; gap: 22px; justify-items: start; margin: 0; font-weight: inherit; }
+  .page-hero__media { overflow: hidden; border-radius: var(--radius-lg); }
   @media (width >= 1000px) {
-    .page-hero--split .page-hero__inner { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: end; }
+    .page-hero--split .page-hero__inner { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: center; }
   }
 </style>

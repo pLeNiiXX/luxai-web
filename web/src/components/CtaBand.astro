@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import Title from './Title.astro';
 import poster from '../assets/demos/demo-02/poster.webp';
 import { routes, type Lang } from '../i18n/routes';
 import { t } from '../i18n/ui';
@@ -10,25 +11,35 @@ const { lang, eyebrow, title, text, secondary } = Astro.props;
 const u = t(lang);
 ---
 <section class="cta-band" aria-labelledby="cta-band-title">
+  <div class="cta-band__box">
   <div class="cta-band__media" aria-hidden="true">
     <Image src={poster} alt="" widths={[960, 1600, 1920]} sizes="100vw" quality={65} loading="lazy" data-parallax="6" />
   </div>
   <div class="wrap wrap--wide cta-band__inner">
     <p class="eyebrow">{eyebrow}</p>
-    <h2 id="cta-band-title" class="h-1 cta-band__title" data-reveal="lines">{title}</h2>
+    <h2 id="cta-band-title" class="h-1 cta-band__title" data-reveal="lines"><Title text={title} /></h2>
     <p class="lede lede--ink" data-reveal="fade">{text}</p>
     <div class="actions" data-reveal="fade" data-delay="0.1">
       <a class="btn btn--gold" href={`${routes.contact[lang]}#demo`} data-open-demo-modal>{u.cta.demoLong}<Icon name="arrow" /></a>
-      {secondary && <a class="link-quiet" href={secondary.href}>{secondary.label}<Icon name="arrow" /></a>}
+      {secondary && <a class="btn" href={secondary.href}>{secondary.label}<Icon name="arrow" /></a>}
     </div>
+  </div>
   </div>
 </section>
 
 <style>
-  .cta-band { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(120px, 16vw, 220px); border-top: 1px solid var(--line); }
+  /* tarjeta redondeada a sangre casi completa, con la foto de fondo y el texto centrado */
+  .cta-band { padding: 12px; background: #ffffff; }
+  .cta-band__box { position: relative; isolation: isolate; overflow: hidden; border-radius: var(--radius-lg); background: var(--dark); color: #ffffff; padding-block: clamp(104px, 13vw, 200px); }
   .cta-band__media { position: absolute; inset: -12% 0; z-index: -2; }
   .cta-band__media :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .cta-band::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #0b0b0cf2 0%, #0b0b0cc7 45%, #0b0b0c66 100%); }
-  .cta-band__inner { display: grid; gap: 26px; justify-items: start; }
+  .cta-band__box::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse 70% 70% at 50% 50%, #1a1a1a9e 0%, #1a1a1a66 70%, #1a1a1a4d 100%); }
+  .cta-band__inner { display: grid; gap: 24px; justify-items: center; text-align: center; }
+  .cta-band__inner .eyebrow { color: #ffffff; }
+  .cta-band__inner .eyebrow::before { filter: invert(1); }
   .cta-band__title { max-width: 16ch; }
+  .cta-band__title :global(.title-muted) { color: #ffffffb3; }
+  .cta-band__inner .lede { color: #ffffffe6; max-width: 52ch; }
+  .cta-band__inner .actions { justify-content: center; }
+  .cta-band__inner :global(.btn--gold) { --btn-border: #ffffff38; }
 </style>

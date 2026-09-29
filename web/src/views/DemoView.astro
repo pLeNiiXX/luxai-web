@@ -5,6 +5,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import FaqList from '../components/FaqList.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Icon from '../components/Icon.astro';
+import Title from '../components/Title.astro';
 import { DEMOS, type Demo } from '../data/demos';
 import { routes, collectionBase, otherLang, type Lang } from '../i18n/routes';
 import { videoNode, faqNode } from '../lib/seo';
@@ -23,24 +24,24 @@ const seo = {
     es: {
       title: 'Villa contemporánea: de 4 fotos a vídeo con IA | LUXAI',
       description: 'Cuatro fotos de una villa frente al mar convertidas en una secuencia de estilo aéreo: piscina infinita, pista de tenis y atardecer. Vídeo en 16:9.',
-      h1: 'Villa Contemporánea Costa: de 4 fotos a un vídeo de estilo aéreo',
+      h1: 'Villa Contemporánea Costa: | de 4 fotos a un vídeo de estilo aéreo',
     },
     en: {
       title: 'Coastal Villa: 4 Photos Turned into an AI Film | LUXAI',
       description: 'Four photos of a sea-view villa turned into an aerial-style sequence: infinity pool, tennis court and sunset over the water. 16:9 film.',
-      h1: 'Coastal Contemporary Villa: from 4 photos to an aerial-style film',
+      h1: 'Coastal Contemporary Villa: | from 4 photos to an aerial-style film',
     },
   },
   'finca-rustica': {
     es: {
       title: 'Finca rústica: de 5 fotos a 24 s de vídeo con IA | LUXAI',
       description: 'Cinco fotos de una finca de piedra convertidas en 24 segundos de vídeo: jardines de lavanda, piscina de piedra y paso al interior con chimenea.',
-      h1: 'Finca Rústica Mediterránea: de 5 fotos a 24 segundos de vídeo',
+      h1: 'Finca Rústica Mediterránea: | de 5 fotos a 24 segundos de vídeo',
     },
     en: {
       title: 'Rustic Estate: 5 Photos, 24 Seconds of AI Film | LUXAI',
       description: 'Five photos of a stone finca turned into 24 seconds of film: lavender gardens, natural stone pool and a move indoors to the fireplace and timber beams.',
-      h1: 'Mediterranean Rustic Estate: 5 photos, 24 seconds of film',
+      h1: 'Mediterranean Rustic Estate: | 5 photos, 24 seconds of film',
     },
   },
 }[demo.key as 'villa-costa' | 'finca-rustica'][lang];
@@ -54,7 +55,7 @@ const c = {
     shots: { eyebrow: 'Plano a plano', title: 'Cómo está construido el vídeo' },
     retouch: {
       eyebrow: 'Qué ha hecho la IA',
-      title: 'Lo que hace la IA y lo que no',
+      title: 'Lo que hace la IA | y lo que no',
       done: { t: 'Hecho con IA', items: ['El mapa de profundidad de cada foto', 'El movimiento de cámara con paralaje dentro de cada foto', 'Nada más: el orden, el ritmo y los fundidos son montaje nuestro'] },
       kept: { t: 'Sin tocar', items: ['La arquitectura, los materiales y el mobiliario', 'Las vistas y el entorno de cada foto', 'Ninguna estancia ni objeto añadido'] },
     },
@@ -84,7 +85,7 @@ const c = {
     shots: { eyebrow: 'Shot by shot', title: 'How the film is built' },
     retouch: {
       eyebrow: 'What the AI did',
-      title: 'What the AI does, and what it doesn’t',
+      title: 'What the AI does, | and what it doesn’t',
       done: { t: 'Made with AI', items: ['The depth map of each photo', 'The parallax camera movement inside each photo', 'Nothing else: the order, pacing and dissolves are our own editing'] },
       kept: { t: 'Untouched', items: ['The architecture, materials and furniture', 'The views and surroundings in each photo', 'No room or object added'] },
     },
@@ -121,7 +122,7 @@ const schema = [videoNode(demo, lang, path, thumb.src), faqNode(path, c.faq)];
       <Breadcrumbs lang={lang} crumbs={crumbs} />
       <div class="watch__title">
         <p class="eyebrow enter" style="--d: 0.05s">Demo {demo.num} · {demo.summary[lang]}</p>
-        <h1 class="h-1 enter" style="--d: 0.1s">{seo.h1}</h1>
+        <h1 class="h-1 enter" style="--d: 0.1s"><Title text={seo.h1} /></h1>
       </div>
       <figure class="watch__player" style={`view-transition-name: ${demo.vt}`}>
         <div class="media-frame ratio-16x9">
@@ -180,7 +181,7 @@ const schema = [videoNode(demo, lang, path, thumb.src), faqNode(path, c.faq)];
   <section class="section section--light" aria-labelledby="retouch-title">
     <div class="wrap wrap--wide">
       <header class="section-head section-head--stack">
-        <div class="section-head__main"><p class="eyebrow">{c.retouch.eyebrow}</p><h2 id="retouch-title" class="display title" data-reveal="lines">{c.retouch.title}</h2></div>
+        <div class="section-head__main"><p class="eyebrow">{c.retouch.eyebrow}</p><h2 id="retouch-title" class="display title" data-reveal="lines"><Title text={c.retouch.title} /></h2></div>
       </header>
       <div class="grid-2" data-reveal="stagger">
         <div class="card"><h3 class="card__title">{c.retouch.done.t}</h3><ul class="check-list">{c.retouch.done.items.map((i) => <li>{i}</li>)}</ul></div>
@@ -197,26 +198,28 @@ const schema = [videoNode(demo, lang, path, thumb.src), faqNode(path, c.faq)];
 </Base>
 
 <style>
-  .watch { padding-top: calc(var(--header-h) + clamp(32px, 5vw, 64px)); padding-bottom: clamp(48px, 7vw, 88px); }
+  .watch { padding-top: calc(var(--header-h) + clamp(40px, 6vw, 80px)); padding-bottom: clamp(48px, 7vw, 88px); background: #ffffff; }
   .watch__inner { display: grid; gap: 28px; }
-  .watch__title { display: grid; gap: 18px; margin: 0; font-weight: inherit; max-width: 1000px; }
+  .watch__title { display: grid; gap: 22px; justify-items: start; margin: 0; font-weight: inherit; max-width: 1100px; }
   .watch__player { margin-top: 8px; }
+  .watch__player :global(.media-frame) { border-radius: var(--radius-lg); }
   .watch__player video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
   .watch__caption { display: grid; gap: 10px; margin-top: 16px; max-width: 78ch; }
   .watch__ai { display: inline-flex; align-items: center; gap: 10px; color: var(--ink-soft); }
-  .watch__ai-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+  .watch__ai-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink); }
   .watch__facts { margin-top: 16px; }
+  .watch__facts :global(.fact) { background: var(--bg); }
   /* «Contemporánea» no cabe entera en media columna de móvil: se guiona (y, si no hay diccionario, se parte) */
-  .fact__value--text { font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem); letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.3; hyphens: auto; overflow-wrap: break-word; }
-  .source-grid { display: grid; gap: 20px; }
+  .fact__value--text { font-size: clamp(1.25rem, 0.95rem + 1.2vw, 2.125rem); text-transform: uppercase; letter-spacing: 0; line-height: 1.1; hyphens: auto; overflow-wrap: break-word; }
+  .source-grid { display: grid; gap: 12px; }
   @media (width >= 700px) { .source-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (width >= 1100px) { .source-grid--5 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   .source-grid :global(img) { width: 100%; height: 100%; object-fit: cover; }
   .shots { display: grid; gap: 40px; }
   @media (width >= 900px) { .shots { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; } }
-  .shots__list { display: grid; border-top: 1px solid var(--line); }
-  .shots__list li { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--line); color: var(--ink-soft); }
-  .shots__num { font-family: var(--font-display); color: var(--gold); letter-spacing: 0.16em; font-size: 0.875rem; padding-top: 3px; }
-  .demo-faq { margin-top: clamp(48px, 6vw, 80px); max-width: 860px; }
-  .related-links { display: flex; flex-wrap: wrap; gap: 8px 36px; margin-top: 40px; }
+  .shots__list { display: grid; gap: 8px; }
+  .shots__list li { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 20px 22px; border-radius: var(--radius-sm); background: var(--bg-raised); color: var(--ink-soft); }
+  .shots__num { font-family: var(--font-label); color: var(--muted); font-size: 0.9375rem; padding-top: 2px; }
+  .demo-faq { margin-top: clamp(48px, 6vw, 80px); max-width: 860px; margin-inline: auto; }
+  .related-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 28px; margin-top: 40px; }
 </style>

@@ -27,10 +27,19 @@ let motionPromise: Promise<Motion | null> | null = null;
  * Carga GSAP + plugins una sola vez por página.
  * Devuelve null si el usuario prefiere movimiento reducido: los componentes muestran su estado final.
  */
+/** Resuelve cuando la página ha cargado y el navegador está libre (lo primero es pintar el titular). */
+const afterLoad = () =>
+  new Promise<void>((resolve) => {
+    const idle = () => ('requestIdleCallback' in window ? requestIdleCallback(() => resolve(), { timeout: 300 }) : setTimeout(resolve, 60));
+    if (document.readyState === 'complete') idle();
+    else window.addEventListener('load', idle, { once: true });
+  });
+
 export function loadMotion(): Promise<Motion | null> {
   if (reducedMotion()) return Promise.resolve(null);
   if (!motionPromise) {
-    motionPromise = Promise.all([import('gsap'), import('gsap/ScrollTrigger'), import('gsap/SplitText')])
+    motionPromise = afterLoad()
+      .then(() => Promise.all([import('gsap'), import('gsap/ScrollTrigger'), import('gsap/SplitText')]))
       .then(([g, st, sp]) => {
         const gsap = g.gsap;
         gsap.registerPlugin(st.ScrollTrigger, sp.SplitText);

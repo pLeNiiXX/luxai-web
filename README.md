@@ -34,3 +34,8 @@ node scripts/check-links.mjs   # enlaces, metas, hreflang, JSON-LD y sitemaps
 
 - **Definitiva:** Cloudflare Pages, con raíz `web/`, comando `npm run build`, salida `dist` y `NODE_VERSION=22`. Los pasos completos están en `INFORME.md`.
 - **Vista previa (no indexable):** `bash web/scripts/vista-previa-vercel.sh` publica en https://luxaivideo.vercel.app.
+
+## Licencias
+
+- Código y textos: © LUXAI. Todos los derechos reservados salvo que se indique otra cosa.
+- Tipografías: Google Sans Flex y Abel, con licencia SIL Open Font License 1.1 (`web/src/assets/fonts/OFL.txt`; Abel se instala desde npm con su licencia).

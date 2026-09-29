@@ -20,25 +20,25 @@ const u = t(lang).modal;
 
 <style>
   .demo-modal {
-    width: min(560px, calc(100vw - 32px));
-    max-height: calc(100dvh - 32px);
-    margin: auto; padding: 0; border: 1px solid var(--line-strong);
-    background: var(--bg-raised); color: var(--ink);
+    width: min(560px, calc(100vw - 24px));
+    max-height: calc(100dvh - 24px);
+    margin: auto; padding: 0; border: 0; border-radius: var(--radius-lg);
+    background: #ffffff; color: var(--ink); box-shadow: 0 30px 80px #0000002e;
     overflow: auto; overscroll-behavior: contain;
     opacity: 0; transform: translateY(16px) scale(0.98);
     transition: opacity 0.24s var(--ease-out), transform 0.3s var(--ease-out);
   }
   .demo-modal[data-open] { opacity: 1; transform: none; }
-  .demo-modal::backdrop { background: #070708cc; backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.24s ease; }
+  .demo-modal::backdrop { background: #26262659; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.24s ease; }
   .demo-modal[data-open]::backdrop { opacity: 1; }
-  .demo-modal__panel { position: relative; display: grid; gap: 18px; padding: clamp(28px, 5vw, 48px); }
-  .demo-modal__title { font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem); letter-spacing: 0.2em; }
-  .demo-modal__text { color: var(--muted); margin-bottom: 8px; }
+  .demo-modal__panel { position: relative; display: grid; gap: 16px; padding: clamp(28px, 5vw, 44px); }
+  .demo-modal__title { font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem); letter-spacing: -0.05em; padding-right: 36px; }
+  .demo-modal__text { font-family: var(--font-label); text-transform: uppercase; color: var(--muted); margin-bottom: 8px; line-height: 1.45; }
   .demo-modal__close {
-    position: absolute; top: 12px; right: 12px; display: grid; place-items: center;
-    width: 44px; height: 44px; border: 0; background: transparent; color: var(--muted); cursor: pointer;
-    transition: color 0.2s ease;
+    position: absolute; top: 14px; right: 14px; display: grid; place-items: center;
+    width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--bg); color: var(--ink); cursor: pointer;
+    transition: background-color 0.2s ease;
   }
-  .demo-modal__close :global(svg) { width: 16px; height: 16px; }
-  @media (hover: hover) and (pointer: fine) { .demo-modal__close:hover { color: var(--ink); } }
+  .demo-modal__close :global(svg) { width: 14px; height: 14px; }
+  @media (hover: hover) and (pointer: fine) { .demo-modal__close:hover { background: var(--bg-sunk); } }
 </style>

@@ -63,13 +63,13 @@ const wa = SITE.whatsapp.replace(/\D/g, '');
 </div>
 
 <style>
-  .demo-form__form { display: grid; gap: 20px; }
-  .demo-form__fine { text-align: center; color: var(--muted); font-size: 0.8125rem; letter-spacing: 0.04em; }
+  .demo-form__form { display: grid; gap: 18px; }
+  .demo-form__fine { text-align: center; font-family: var(--font-label); text-transform: uppercase; color: var(--muted); font-size: 0.875rem; }
   .demo-form__privacy { color: var(--muted); font-size: 0.8125rem; text-align: center; margin-top: -8px; }
   .demo-form__privacy a { color: var(--ink); }
-  .demo-form__error { display: grid; gap: 18px; margin-top: 20px; padding: 20px; border: 1px solid var(--gold-soft); font-size: 0.9375rem; }
+  .demo-form__error { display: grid; gap: 18px; margin-top: 20px; padding: 20px; border-radius: var(--radius-sm); background: var(--bg); font-size: 0.9375rem; }
   .demo-form__success { display: grid; justify-items: start; gap: 12px; padding-block: 24px; }
   .demo-form__success [tabindex='-1']:focus { outline: none; }
-  .demo-form__check { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--gold); color: var(--gold); }
+  .demo-form__check { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--dark); color: #ffffff; }
   .demo-form__check :global(svg) { width: 20px; height: 20px; }
 </style>

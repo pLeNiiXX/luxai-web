@@ -62,11 +62,14 @@ function initHeader() {
  * ------------------------------------------------------------------ */
 function initMenu() {
   const btn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
-  const panel = document.getElementById('mobile-menu');
+  const panel = document.getElementById('site-menu');
   if (!btn || !panel) return;
   const root = document.documentElement;
-  const background = [document.querySelector('main'), document.querySelector('footer'), document.querySelector('.skip-link')].filter(Boolean) as HTMLElement[];
-  const setOpen = (open: boolean) => {
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const backdrop = document.querySelector<HTMLElement>('[data-menu-backdrop]');
+  const background = [header, document.querySelector('main'), document.querySelector('footer'), document.querySelector('.skip-link')].filter(Boolean) as HTMLElement[];
+  const isOpen = () => root.hasAttribute('data-menu-open');
+  const setOpen = (open: boolean, returnFocus = false) => {
     btn.setAttribute('aria-expanded', String(open));
     btn.setAttribute('aria-label', open ? btn.dataset.labelClose! : btn.dataset.labelOpen!);
     root.toggleAttribute('data-menu-open', open);
@@ -74,23 +77,23 @@ function initMenu() {
     background.forEach((el) => el.toggleAttribute('inert', open));
     const lenis = getLenis();
     if (open) {
+      header?.removeAttribute('data-hidden');
       lenis?.stop();
-      panel.querySelector<HTMLElement>('a')?.focus({ preventScroll: true });
+      panel.querySelector<HTMLElement>('.nav-links a')?.focus({ preventScroll: true });
     } else {
       lenis?.start();
+      if (returnFocus) btn.focus({ preventScroll: true });
     }
   };
-  btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+  btn.addEventListener('click', () => setOpen(!isOpen()));
+  panel.querySelectorAll<HTMLElement>('[data-menu-close]').forEach((b) => b.addEventListener('click', () => setOpen(false, true)));
+  backdrop?.addEventListener('click', () => setOpen(false, true));
   panel.addEventListener('click', (e) => {
     if ((e.target as HTMLElement).closest('a')) setOpen(false);
   });
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && root.hasAttribute('data-menu-open')) {
-      setOpen(false);
-      btn.focus();
-    }
+    if (e.key === 'Escape' && isOpen()) setOpen(false, true);
   });
-  window.matchMedia('(width >= 1280px)').addEventListener('change', (e) => e.matches && setOpen(false));
 }
 
 /* ------------------------------------------------------------------ *
@@ -110,8 +113,8 @@ export function initDemoForms() {
     const packInput = dialog.querySelector<HTMLInputElement>('[data-pack-input]');
     if (packInput) packInput.value = pack;
     const active = document.activeElement as HTMLElement | null;
-    // si se abre desde el menú móvil (que se cierra), el foco vuelve al botón del menú
-    lastFocus = active?.closest('#mobile-menu') ? menuBtn : active;
+    // si se abre desde el menú (que se cierra), el foco vuelve al botón del menú
+    lastFocus = active?.closest('#site-menu') ? menuBtn : active;
     dialog.showModal();
     dialog.setAttribute('data-open', '');
     getLenis()?.stop();

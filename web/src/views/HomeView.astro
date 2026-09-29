@@ -74,7 +74,7 @@ const schema = [serviceNode(lang, path), faqNode(path, c.faq.items)];
           <h3 class="ai-col__title"><span class="ai-dot ai-dot--yes" aria-hidden="true"></span>{c.ai.does.title}</h3>
           <ul class="check-list">{c.ai.does.items.map((it) => <li>{it}</li>)}</ul>
         </div>
-        <div class="ai-col ai-col--never">
+        <div class="ai-col ai-col--never surface-dark">
           <h3 class="ai-col__title"><span class="ai-dot ai-dot--no" aria-hidden="true"></span>{c.ai.never.title}</h3>
           <ul class="check-list">{c.ai.never.items.map((it) => <li>{it}</li>)}</ul>
         </div>
@@ -101,7 +101,7 @@ const schema = [serviceNode(lang, path), faqNode(path, c.faq.items)];
 
   <section class="section section--light" aria-labelledby="why-title">
     <div class="wrap wrap--wide">
-      <SectionHead eyebrow={c.why.eyebrow} title={c.why.title} id="why-title" stack />
+      <SectionHead eyebrow={c.why.eyebrow} title={c.why.title} id="why-title" />
       <ul class="reasons" data-reveal="stagger">
         {c.why.items.map((it, i) => (
           <li class="reason">
@@ -164,41 +164,38 @@ const schema = [serviceNode(lang, path), faqNode(path, c.faq.items)];
 </Base>
 
 <style>
-  .manifesto { padding-block: clamp(120px, 16vw, 220px); }
+  .manifesto { padding-block: clamp(112px, 15vw, 208px); }
   .manifesto__text {
-    max-width: 30ch; font-family: var(--font-display); font-weight: 300; text-transform: uppercase;
-    font-size: clamp(1.5rem, 0.9rem + 2.6vw, 3.25rem); letter-spacing: 0.08em; line-height: 1.28; text-wrap: pretty;
+    max-width: 28ch; margin-inline: auto; text-align: center;
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(1.75rem, 0.95rem + 2.9vw, 3.5rem); letter-spacing: -0.045em; line-height: 1.12; text-wrap: balance;
   }
 
-  .steps { display: grid; gap: 14px; }
+  .steps { display: grid; gap: 12px; }
   @media (width >= 900px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  .step { display: grid; gap: 14px; align-content: start; padding: clamp(28px, 3.4vw, 44px); background: var(--bg); border: 1px solid var(--line); }
-  .step__num { font-family: var(--font-display); font-weight: 300; font-size: 3rem; line-height: 1; color: var(--gold); letter-spacing: 0.04em; }
-  .step__title { font-family: var(--font-display); font-weight: 400; font-size: 1.125rem; letter-spacing: 0.16em; text-transform: uppercase; }
-  .step__text { color: var(--muted); }
+  .step { display: grid; gap: 14px; align-content: start; padding: clamp(24px, 2.8vw, 36px); border-radius: var(--radius-lg); background: var(--bg-raised); }
+  .step__num { font-family: var(--font-label); font-size: clamp(4rem, 3rem + 3vw, 6rem); line-height: 0.9; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 18px; }
+  .step__title { font-family: var(--font-display); font-weight: 500; font-size: 1.5rem; letter-spacing: -0.035em; line-height: 1.15; }
+  .step__text { font-family: var(--font-label); text-transform: uppercase; color: var(--muted); line-height: 1.45; }
 
-  .reasons { display: grid; gap: 0; border-top: 1px solid var(--line); }
-  @media (width >= 760px) { .reasons { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 5vw, 72px); } }
+  .reasons { display: grid; gap: 12px; }
+  @media (width >= 760px) { .reasons { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (width >= 1100px) { .reasons { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  .reason { display: grid; grid-template-columns: 44px 1fr; gap: 6px 16px; align-content: start; padding-block: 28px 32px; border-bottom: 1px solid var(--line); }
-  .reason__num { grid-row: span 2; font-family: var(--font-display); font-size: 0.8125rem; letter-spacing: 0.2em; color: var(--gold); padding-top: 3px; }
-  .reason__title { font-family: var(--font-display); font-weight: 400; font-size: 1rem; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1.4; }
-  .reason p { color: var(--muted); }
+  .reason { display: grid; gap: 12px; align-content: start; padding: clamp(24px, 2.6vw, 32px); border-radius: var(--radius); background: var(--bg-raised); }
+  .reason__num { font-family: var(--font-label); font-size: 0.875rem; color: var(--muted); }
+  .reason__title { font-family: var(--font-display); font-weight: 500; font-size: 1.375rem; letter-spacing: -0.035em; line-height: 1.15; margin-top: 28px; }
+  .reason p { font-family: var(--font-label); text-transform: uppercase; color: var(--muted); line-height: 1.45; }
 
   .audience-item { display: grid; }
-  .ai-cols { display: grid; gap: 14px; }
+  .ai-cols { display: grid; gap: 12px; }
   @media (width >= 900px) { .ai-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .ai-col { display: grid; gap: 22px; align-content: start; padding: clamp(28px, 3.4vw, 44px); border: 1px solid var(--line); }
-  .ai-col--never { background: var(--bg-raised); }
-  .ai-col__title { display: flex; align-items: center; gap: 14px; font-family: var(--font-display); font-weight: 400; font-size: 1rem; letter-spacing: 0.18em; text-transform: uppercase; }
-  .ai-dot { width: 9px; height: 9px; border-radius: 50%; }
-  .ai-dot--yes { background: var(--gold); }
-  .ai-dot--no { border: 1px solid var(--muted); }
+  .ai-col { display: grid; gap: 24px; align-content: start; padding: clamp(28px, 3.2vw, 44px); border-radius: var(--radius-lg); background: var(--bg-raised); }
+  .ai-col--never { background: var(--dark); }
+  .ai-col__title { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 500; font-size: 1.5rem; letter-spacing: -0.035em; }
+  .ai-dot { flex: none; width: 10px; height: 10px; border-radius: 50%; }
+  .ai-dot--yes { background: var(--ink); }
+  .ai-dot--no { border: 1.5px solid var(--ink); }
   .ai-col .check-list { color: var(--ink-soft); }
   .audience-card { height: 100%; }
-  .price-note { margin-top: 20px; font-size: 0.875rem; }
-  @media (width >= 1000px) {
-    .faq-layout { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; align-items: start; }
-    .faq-layout :global(.section-head) { position: sticky; top: calc(var(--header-h) + 32px); margin-bottom: 0; }
-  }
+  .price-note { margin-top: 20px; font-family: var(--font-label); text-transform: uppercase; font-size: 0.875rem; text-align: center; }
 </style>
