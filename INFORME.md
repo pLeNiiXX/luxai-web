@@ -118,7 +118,7 @@ Pediste cambiar por completo el estilo, tomando como referencia https://nubo.fra
 | `seo/MAPA-KEYWORDS.md` | Arquitectura final, keyword por URL, titles, metas y preguntas reales |
 | `seo/INVESTIGACION-CONTENIDOS.md` | Hechos con fuente para guías y páginas: drones, formatos, IA y alquiler turístico |
 | `seo/lighthouse/` | Informes Lighthouse, antes y después |
-| `referencias-motionsites/` | Capturas de las referencias de movimiento estudiadas |
+| `referencias-motionsites/` | Capturas de las referencias de movimiento estudiadas (solo en local, no está en el repositorio) |
 | `herramientas/demos/` | Proceso de las demos por paralaje de profundidad, con README |
 | `versiones/web-estilo-oscuro-2026-09-28/` | Copia de la web con el estilo oscuro anterior |
 | `vista-previa-vercel/` | Copia del build que se sube a Vercel (la genera el script; no se edita a mano) |
